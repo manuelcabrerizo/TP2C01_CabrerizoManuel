@@ -7,6 +7,7 @@ public class DroneShoot : MonoBehaviour
     [SerializeField] private Camera cam;
     [SerializeField] private LayerMask enemyMask;
     [SerializeField] private GameObject bulletPrefab;
+    [SerializeField] private ParticleSystem hitParticles;
 
     [SerializeField] GameObject gun;
 
@@ -43,6 +44,8 @@ public class DroneShoot : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(cameraRay, out hit, playerData.ShootDistance, enemyMask))
             {
+                hitParticles.transform.position = hit.point;
+                hitParticles.Play();
                 EventManager.Instance.onEnemyHit.Invoke(hit, cameraRay);
             }
         }

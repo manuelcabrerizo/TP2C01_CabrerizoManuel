@@ -41583,10 +41583,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5753bf664c2e85c41872da833cf9e8d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cameraData: {fileID: 11400000, guid: 0561b6cce53f47043b31ebf2189bf558, type: 2}
   target: {fileID: 1722440415}
-  mouseSpeed: 1
-  maxDistance: 5
-  cameraRadius: 0.5
   wallLayer:
     serializedVersion: 2
     m_Bits: 64

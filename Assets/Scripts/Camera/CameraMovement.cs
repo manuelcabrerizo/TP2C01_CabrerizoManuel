@@ -2,10 +2,8 @@ using UnityEngine;
 
 public class CameraMovement : MonoBehaviour
 {
+    [SerializeField] private CameraData cameraData;
     [SerializeField] private GameObject target;
-    [SerializeField] private float mouseSpeed = 1.0f;
-    [SerializeField] private float maxDistance = 5.0f;
-    [SerializeField] private float cameraRadius = 0.5f;
     [SerializeField] private LayerMask wallLayer;
 
     private float _yaw = 0;
@@ -19,7 +17,7 @@ public class CameraMovement : MonoBehaviour
 	    direction = Quaternion.AngleAxis(_yaw, Vector3.up) * direction;
 	    direction.Normalize();
 	
-	    transform.position = targetPosition + direction * maxDistance;	
+	    transform.position = targetPosition + direction * cameraData.MaxDistance;	
 	    transform.LookAt(targetPosition, Vector3.up);
     }
 
@@ -44,8 +42,8 @@ public class CameraMovement : MonoBehaviour
 	        float mouseX = Input.GetAxis("Mouse X");
 	        float mouseY = -Input.GetAxis("Mouse Y");
 
-	        _yaw += mouseX * mouseSpeed;
-	        _pitch = Mathf.Clamp(_pitch + mouseY * mouseSpeed, -89.0f, 89.0f);
+	        _yaw += mouseX * cameraData.MouseSpeed;
+	        _pitch = Mathf.Clamp(_pitch + mouseY * cameraData.MouseSpeed, -89.0f, 89.0f);
              
 	        Vector3 targetPosition = target.transform.position + Vector3.up * 0.5f;
 	        Vector3 direction = new Vector3(0.0f, 0.0f, -1.0f);
@@ -53,16 +51,16 @@ public class CameraMovement : MonoBehaviour
 	        direction = Quaternion.AngleAxis(_yaw, Vector3.up) * direction;
 	        direction.Normalize();
 
-            Vector3 cameraPosition = targetPosition + direction * maxDistance;
+            Vector3 cameraPosition = targetPosition + direction * cameraData.MaxDistance;
             RaycastHit hitInfo;
-            if (Physics.SphereCast(targetPosition, cameraRadius, direction, out hitInfo, maxDistance, wallLayer))
+            if (Physics.SphereCast(targetPosition, cameraData.CameraRadius, direction, out hitInfo, cameraData.MaxDistance, wallLayer))
             {
                 cameraPosition = targetPosition + direction * hitInfo.distance;
             }
             else
             {
                 // TODO: test if this realy help
-                if (Physics.Raycast(targetPosition, direction, out hitInfo, maxDistance, wallLayer))
+                if (Physics.Raycast(targetPosition, direction, out hitInfo, cameraData.MaxDistance, wallLayer))
                 {
                     cameraPosition = targetPosition + direction * hitInfo.distance;
                 }

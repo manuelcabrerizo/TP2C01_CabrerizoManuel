@@ -3,91 +3,71 @@ using UnityEngine;
 
 public class EnemyManager : MonoBehaviour
 {
-    [SerializeField] private EnemyManagerData enemyManagerData;
-    private List<SpawnedEnemy> enemies;
-    
-    [SerializeField] private EnemySpawner spawner;
-    [SerializeField] private Transform[] spawnPoints;
-    [SerializeField] private int[] spawnCount;
-    private float[] timers;
+    static public EnemyManager Instance;
 
-    [SerializeField] private Transform[] patrolPath0;
-    [SerializeField] private Transform[] patrolPath1;
-    private Transform[][] patrolPaths;
+    [SerializeField] private EnemyManagerData enemyManagerData;
+
+    private List<PoolEnemy> enemies;
+    private EnemyPool pool;
 
     private void Awake()
     {
-        enemies = new List<SpawnedEnemy>();
-        spawnCount = new int[spawnPoints.Length];
-        timers = new float[spawnPoints.Length];
-        for (int i = 0; i < spawnPoints.Length; ++i)
+        if (Instance == null)
         {
-            spawnCount[i] = 0;
-            timers[i] = enemyManagerData.TimeToSpawn;
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+            return;
         }
 
-        patrolPaths = new Transform[2][];
-        patrolPaths[0] = patrolPath0;
-        patrolPaths[1] = patrolPath1;
+        pool = GetComponent<EnemyPool>();
+        enemies = new List<PoolEnemy>();
     }
 
     private void Start()
     {
         EventManager.Instance.onEnemyHit.AddListener(OnEnemyHit);
     }
-
-    private void Update()
+   
+    public PoolEnemy GetReconEnemy()
     {
-        for (int i = 0; i < spawnPoints.Length; ++i)
-        {
-            if (timers[i] <= 0.0f && spawnCount[i] <= 0)
-            {
-                SpawnedEnemy enemy = null;
-                switch (i)
-                {
-                    case 0:
-                    case 1:
-                        {
-                            enemy = spawner.SpawnReconEnemy();
-                            enemy.reconBehavior.SetPatrolPoints(patrolPaths[i]);
-                        } break;
-                    case 2:
-                    case 3:
-                        {
-                            enemy = spawner.SpawnAssaultEnemy();
-                        } break;
-                }
+        PoolEnemy enemy = pool.GetReconEnemy();
+        enemies.Add(enemy);
+        return enemy;
+    }
 
-                if (enemy != null)
-                {
-                    enemy.spawnIndex = i;
-                    enemy.go.transform.position = spawnPoints[i].position;
-                    enemies.Add(enemy);
-                    spawnCount[i]++;
-                }
-            }
-            timers[i] -= Time.deltaTime;
-        }
+    public PoolEnemy GetAssaultEnemy()
+    {
+        PoolEnemy enemy = pool.GetAssaultEnemy();
+        enemies.Add(enemy);
+        return enemy;
+    }
+
+    public PoolEnemy GetRandomEnemy()
+    {
+        PoolEnemy enemy = pool.GetRandomEnemy();
+        enemies.Add(enemy);
+        return enemy;
     }
 
     private void OnEnemyHit(RaycastHit hit, Ray ray)
     {
         GameObject go = hit.collider.gameObject;
-        SpawnedEnemy enemy = spawner.GetSpawnEnemy(go);
+        PoolEnemy poolEnemy = pool.GetPoolEnemy(go);
+        Enemy enemy = poolEnemy.enemy;
 
-        enemy.behavior.State.TakeDamage(1);
-        if (enemy.behavior.State.GetLife() <= 0)
+        enemy.State.TakeDamage(1);
+        if (enemy.State.GetLife() <= 0)
         {
-            spawnCount[enemy.spawnIndex]--;
-            timers[enemy.spawnIndex] = enemyManagerData.TimeToSpawn;
-
-            enemies.Remove(enemy);
-            spawner.ReleaseEnemy(enemy);
+            poolEnemy.spawner.OnEnemyDestroy(poolEnemy);
+            enemies.Remove(poolEnemy);
+            pool.ReleaseEnemy(poolEnemy);
         }
         else 
         {
-            enemy.behavior.Body.AddForce(ray.direction * 40.0f, ForceMode.Impulse);
+            enemy.Body.AddForce(ray.direction * 40.0f, ForceMode.Impulse);
         }
     }
-
 }

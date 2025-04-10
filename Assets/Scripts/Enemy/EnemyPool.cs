@@ -2,23 +2,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
 
-public class SpawnedEnemy
+public class PoolEnemy
 {
     public GameObject go;
-    public EnemyBehavior behavior;
-    public ReconEnemyBehavior reconBehavior;
-    public AssaultEnemyBehavior assaultBehavior;
+    public Enemy enemy;
     public int poolIndex;
-    public int spawnIndex;
+    public IEnemySpawner spawner;
 }
 
-public class EnemySpawner : MonoBehaviour
+public class EnemyPool : MonoBehaviour
 {
-
     [SerializeField] private GameObject[] enemyPrefabs;
 
-    private IObjectPool<SpawnedEnemy>[] enemyPools;
-    private Dictionary<GameObject, SpawnedEnemy> goToEnemy;
+    private IObjectPool<PoolEnemy>[] enemyPools;
+    private Dictionary<GameObject, PoolEnemy> goToEnemy;
 
     // throw an exception if we try to return an existing item,
     // already in the pool
@@ -27,95 +24,90 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private int defaultCapacity = 20;
     [SerializeField] private int maxSize = 100;
 
-
     private void Awake()
     {
-        enemyPools = new ObjectPool<SpawnedEnemy>[enemyPrefabs.Length];
-        enemyPools[0] = new ObjectPool<SpawnedEnemy>(
+        enemyPools = new ObjectPool<PoolEnemy>[enemyPrefabs.Length];
+        enemyPools[0] = new ObjectPool<PoolEnemy>(
             OnCreateReconEnemy,
             OnGetFromPool,
             OnReleaseToPool,
             OnDestroyPooledObject,
             collectionCheck, defaultCapacity, maxSize);
 
-        enemyPools[1] = new ObjectPool<SpawnedEnemy>(
+        enemyPools[1] = new ObjectPool<PoolEnemy>(
             OnCreateAssaultEnemy,
             OnGetFromPool,
             OnReleaseToPool,
             OnDestroyPooledObject,
             collectionCheck, defaultCapacity, maxSize);
 
-        goToEnemy = new Dictionary<GameObject, SpawnedEnemy>();
+        goToEnemy = new Dictionary<GameObject, PoolEnemy>();
     }
 
-    public SpawnedEnemy SpawnReconEnemy()
+    public PoolEnemy GetReconEnemy()
     {
-        SpawnedEnemy enemy = enemyPools[0].Get();
+        PoolEnemy enemy = enemyPools[0].Get();
         return enemy;
     }
 
-    public SpawnedEnemy SpawnAssaultEnemy()
+    public PoolEnemy GetAssaultEnemy()
     {
-        SpawnedEnemy enemy = enemyPools[1].Get();
+        PoolEnemy enemy = enemyPools[1].Get();
         return enemy;
     }
 
-    public SpawnedEnemy SpawnRandomEnemy()
+    public PoolEnemy GetRandomEnemy()
     {
         int index = Random.Range(0, enemyPrefabs.Length);
-        SpawnedEnemy enemy = enemyPools[index].Get();
+        PoolEnemy enemy = enemyPools[index].Get();
         return enemy;
     }
 
-    public void ReleaseEnemy(SpawnedEnemy enemy)
+    public void ReleaseEnemy(PoolEnemy enemy)
     {
         enemyPools[enemy.poolIndex].Release(enemy);
     }
 
-    public SpawnedEnemy GetSpawnEnemy(GameObject go)
+    public PoolEnemy GetPoolEnemy(GameObject go)
     {
         return goToEnemy[go];
     }
-   
-    private SpawnedEnemy OnCreateReconEnemy()
+
+    private PoolEnemy OnCreateReconEnemy()
     {
-        SpawnedEnemy enemy = new SpawnedEnemy();
+        PoolEnemy enemy = new PoolEnemy();
         enemy.go = Instantiate(enemyPrefabs[0]);
-        enemy.behavior = enemy.go.GetComponent<EnemyBehavior>();
-        enemy.reconBehavior = enemy.go.GetComponent<ReconEnemyBehavior>();
+        enemy.enemy = enemy.go.GetComponent<ReconEnemy>();
         enemy.go.SetActive(false);
         enemy.poolIndex = 0;
         goToEnemy.Add(enemy.go, enemy);
         return enemy;
     }
 
-    private SpawnedEnemy OnCreateAssaultEnemy()
+    private PoolEnemy OnCreateAssaultEnemy()
     {
-        SpawnedEnemy enemy = new SpawnedEnemy();
+        PoolEnemy enemy = new PoolEnemy();
         enemy.go = Instantiate(enemyPrefabs[1]);
-        enemy.behavior = enemy.go.GetComponent<EnemyBehavior>();
-        enemy.assaultBehavior = enemy.go.GetComponent<AssaultEnemyBehavior>();
+        enemy.enemy = enemy.go.GetComponent<AssaultEnemy>();
         enemy.go.SetActive(false);
         enemy.poolIndex = 1;
         goToEnemy.Add(enemy.go, enemy);
         return enemy;
     }
-    private void OnReleaseToPool(SpawnedEnemy enemy)
+    private void OnReleaseToPool(PoolEnemy enemy)
     {
-        enemy.behavior.OnRelease();
+        enemy.enemy.OnRelease();
         enemy.go.SetActive(false);
     }
 
-    private void OnGetFromPool(SpawnedEnemy enemy)
+    private void OnGetFromPool(PoolEnemy enemy)
     {
         enemy.go.SetActive(true);
-        enemy.behavior.OnAquire();
+        enemy.enemy.OnAquire();
     }
 
-    private void OnDestroyPooledObject(SpawnedEnemy enemy)
+    private void OnDestroyPooledObject(PoolEnemy enemy)
     {
         Destroy(enemy.go);
     }
 }
-
-

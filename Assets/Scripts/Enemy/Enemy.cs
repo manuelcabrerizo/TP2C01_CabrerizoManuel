@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class EnemyBehavior : MonoBehaviour
+public class Enemy : MonoBehaviour
 {
     protected EnemyState state;
     protected SphereCollider collision;

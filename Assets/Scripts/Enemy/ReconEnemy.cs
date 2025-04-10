@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class ReconEnemyBehavior : EnemyBehavior
+public class ReconEnemy : Enemy
 {
     [SerializeField] private ReconEnemyData reconEnemyData;
     private Transform[] patrolPath = null;
@@ -27,7 +27,6 @@ public class ReconEnemyBehavior : EnemyBehavior
             {
                 body.velocity = velocity.normalized * reconEnemyData.MaxSpeed;
             }
-
         }
         else
         {
@@ -46,37 +45,5 @@ public class ReconEnemyBehavior : EnemyBehavior
     public void SetPatrolPoints(Transform[] path)
     {
         patrolPath = path;
-    }
-
-    public override void OnAquire()
-    {
-        base.OnAquire();
-    }
-
-    public override void OnRelease()
-    {
-        base.OnRelease();
-    }
-
-    private Transform FindClosestPatrolTarget()
-    {
-        Transform closest = null;
-        int closestIndex = -1;
-        float minDistSq = float.MaxValue;
-        for (int i = 0; i < patrolPath.Length; ++i)
-        {
-            Transform targte = patrolPath[i];
-            float distSq = (targte.position - transform.position).sqrMagnitude;
-            if (distSq < minDistSq)
-            {
-                minDistSq = distSq;
-                closestIndex = i;
-            }
-        }
-        if (closestIndex != -1)
-        {
-            closest = patrolPath[closestIndex];
-        }
-        return closest;
     }
 }

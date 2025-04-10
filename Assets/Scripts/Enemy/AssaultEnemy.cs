@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class AssaultEnemyBehavior : EnemyBehavior
+public class AssaultEnemy : Enemy
 {
 
     [SerializeField] private AssaultEnemyData assaultEnemyData;

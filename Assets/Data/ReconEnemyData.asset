@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc624c2f8edf96c428d406323afe4509, type: 3}
   m_Name: ReconEnemyData
   m_EditorClassIdentifier: 
-  TargetReachRadio: 2
+  TargetReachRadio: 4
   Speed: 5
   MaxSpeed: 10

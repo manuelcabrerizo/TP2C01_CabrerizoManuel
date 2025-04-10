@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 6806433366588902551}
   - component: {fileID: 8168581766117728243}
-  - component: {fileID: 1018439902711642130}
   - component: {fileID: 8720513458875535393}
   - component: {fileID: 7498125792475983514}
+  - component: {fileID: 3213858654103622194}
   m_Layer: 7
   m_Name: AssaultEnemy
   m_TagString: Untagged
@@ -49,19 +49,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyData: {fileID: 11400000, guid: b4db2de574982a246bf60e9ad8da3f3a, type: 2}
---- !u!114 &1018439902711642130
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2964277962021797794}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3512590052526b43bdb864fab1e6bdb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  assaultEnemyData: {fileID: 11400000, guid: 58f5a4ae69381c64ead4264aadfcf40a, type: 2}
 --- !u!135 &8720513458875535393
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -110,6 +97,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &3213858654103622194
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2964277962021797794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55b6b9f0d987f7f4abe8db105f93ea29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  assaultEnemyData: {fileID: 11400000, guid: 58f5a4ae69381c64ead4264aadfcf40a, type: 2}
 --- !u!1 &8463436520872427113
 GameObject:
   m_ObjectHideFlags: 0

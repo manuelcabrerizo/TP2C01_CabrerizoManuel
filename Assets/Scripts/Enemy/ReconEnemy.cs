@@ -6,7 +6,6 @@ public class ReconEnemy : Enemy
     private Transform[] patrolPath = null;
     private int targetIndex = 0;
     private int direction = 1;
-
     private void FixedUpdate()
     {
         if (patrolPath == null)
@@ -44,6 +43,7 @@ public class ReconEnemy : Enemy
 
     public void SetPatrolPoints(Transform[] path)
     {
+        targetIndex = 0;
         patrolPath = path;
     }
 }

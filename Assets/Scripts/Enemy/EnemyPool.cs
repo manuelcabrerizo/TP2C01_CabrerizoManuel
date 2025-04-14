@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Pool;
 
 public class PoolEnemy
 {
@@ -14,32 +13,23 @@ public class EnemyPool : MonoBehaviour
 {
     [SerializeField] private GameObject[] enemyPrefabs;
 
-    private IObjectPool<PoolEnemy>[] enemyPools;
+    private PoolAllocator<PoolEnemy>[] enemyPools;
     private Dictionary<GameObject, PoolEnemy> goToEnemy;
-
-    // throw an exception if we try to return an existing item,
-    // already in the pool
-    [SerializeField] private bool collectionCheck = true;
-    // extra options to control the pool capacity and maximun size
-    [SerializeField] private int defaultCapacity = 20;
-    [SerializeField] private int maxSize = 100;
 
     private void Awake()
     {
-        enemyPools = new ObjectPool<PoolEnemy>[enemyPrefabs.Length];
-        enemyPools[0] = new ObjectPool<PoolEnemy>(
+        enemyPools = new PoolAllocator<PoolEnemy>[enemyPrefabs.Length];
+        enemyPools[0] = new PoolAllocator<PoolEnemy>(
             OnCreateReconEnemy,
-            OnGetFromPool,
-            OnReleaseToPool,
             OnDestroyPooledObject,
-            collectionCheck, defaultCapacity, maxSize);
+            OnGetFromPool,
+            OnReleaseToPool);
 
-        enemyPools[1] = new ObjectPool<PoolEnemy>(
+        enemyPools[1] = new PoolAllocator<PoolEnemy>(
             OnCreateAssaultEnemy,
-            OnGetFromPool,
-            OnReleaseToPool,
             OnDestroyPooledObject,
-            collectionCheck, defaultCapacity, maxSize);
+            OnGetFromPool,
+            OnReleaseToPool);
 
         goToEnemy = new Dictionary<GameObject, PoolEnemy>();
     }

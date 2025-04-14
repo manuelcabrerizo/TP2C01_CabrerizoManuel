@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Pool;
 
 public class SpawnedBullet
 {
@@ -13,29 +12,14 @@ public class BulletSpawner : MonoBehaviour
 {
     [SerializeField] private GameObject bulletPrefab;
 
-    private IObjectPool<SpawnedBullet> bulletPool;
+    private PoolAllocator<SpawnedBullet> bulletPool;
     private Dictionary<GameObject, SpawnedBullet> goToBullet;
-
-    // throw an exception if we try to return an existing item,
-    // already in the pool
-    [SerializeField] private bool collectionCheck = true;
-    // extra options to control the pool capacity and maximun size
-    [SerializeField] private int defaultCapacity = 20;
-    [SerializeField] private int maxSize = 100;
-
 
     private void Awake()
     {
-        bulletPool = new ObjectPool<SpawnedBullet>(
-            OnCreatePooledObject,
-            OnGetFromPool,
-            OnReleaseToPool,
-            OnDestroyPooledObject,
-            collectionCheck, defaultCapacity, maxSize);
-
+        bulletPool = new PoolAllocator<SpawnedBullet>(OnCreatePooledObject, OnDestroyPooledObject, OnGetFromPool, OnReleaseToPool);
         goToBullet = new Dictionary<GameObject, SpawnedBullet>();
     }
-
 
     public SpawnedBullet SpawnBullet()
     {

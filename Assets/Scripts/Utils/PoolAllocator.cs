@@ -21,6 +21,8 @@ public class PoolAllocator<T>
     private Action<T> onGet = null;
     private Action<T> onRelease = null;
 
+    // dictionary use to get references to PoolObject from the T type object
+    // use for quick look up on the release
     private Dictionary<T, PoolObject> toPoolObject;
 
     public PoolAllocator(Func<T> onCreate, Action<T> onDestroy, Action<T> onGet, Action<T> onRelease)
@@ -55,24 +57,24 @@ public class PoolAllocator<T>
         PoolObject po = null;
         if(free == null)
         {
-            // Alloc a new game object
+            // Alloc a new object
             po = new PoolObject();
             po.obj = onCreate();
             toPoolObject.Add(po.obj, po);
         }
         else
         {
-            // use the first free
+            // use the first object from the free list
             po = free;
             Debug.Assert(po.isFree == true);
             free = free.next;
         }
-
+        // se to default values
         po.next = null;
         po.prev = null;
         po.isFree = false;
         onGet(po.obj);
-
+        // add the object to the allocated pool
         if(first == null)
         {
             first = po;
@@ -83,39 +85,34 @@ public class PoolAllocator<T>
             po.next = first;
             first = po;
         }
-
-        return first.obj;
+        return po.obj;
     }
 
     public void Release(T obj)
     {
-        // add it to the free list
         PoolObject po = toPoolObject[obj];
         Debug.Assert(po != null, "object allocated from another pool");
         Debug.Assert(po.isFree == false, "object has already been released");
         po.isFree = true;
+        onRelease(po.obj);
+        // update the first element if necesary 
         if(first == po)
         {
             first = po.next;
         }
-
-        if(free != null)
-        {
-            free.prev = po;
-            po.next = free;
-        }
-        
-        onRelease(po.obj);
-
         // remove it from the double linklist
         if(po.prev != null)
         {
             po.prev.next = po.next;
         }
-
         if(po.next != null)
         {
             po.next.prev = po.prev; 
+        }
+        // add the object to the free linklist
+        if(free != null)
+        {
+            po.next = free;
         }
         free = po; 
     }

@@ -2,33 +2,30 @@ using UnityEngine;
 
 public class Citizen : MonoBehaviour
 {
-    // TODO: refactor this ...
+    [SerializeField] private CitizenData citizenData;
     [SerializeField] private MovementGraph movementGraph;
     [SerializeField] private Canvas lifebar;
-    public MovementGraph MovementGraph => movementGraph;
+    [SerializeField] private GameObject male;
+    [SerializeField] private GameObject female;
+    [SerializeField] private GameObject alien;
+
     public MovementGraphNode CurrentNode {get; set; }
     public MovementGraphNode TargetNode { get; set; }
-    public float ReachRadio = 3.0f;
-    public float YPosition = 1.0f;
     private StateMachine fsm;
     private IdleState idleState;
     private WalkingState walkingState;
     private RunningState runningState;
     private ImpostorState impostorState;
     private IState[] states;
-    private bool impostor = false;
-    private bool detected = false;
     private Rigidbody body;
     public Rigidbody Body => body;
-    [SerializeField] private GameObject male;
-    [SerializeField] private GameObject female;
-    [SerializeField] private GameObject alien;
     private Animator animator;
     public Animator Animator => animator;
     private ParticleSystem particles;
-
-    public int MaxLife = 3;
-    public int Life;
+    private int life;
+    public int Life => life;
+    private bool impostor = false;
+    private bool detected = false;
 
     private void Awake()
     {
@@ -81,9 +78,9 @@ public class Citizen : MonoBehaviour
         CurrentNode = movementGraph.GetRandomNode();
         Vector2 offset = Random.insideUnitCircle * 3.0f;
         Vector3 position = CurrentNode.transform.position + new Vector3(offset.x, 0.0f, offset.y);
-        position.y = YPosition;
+        position.y = 1.0f;
         transform.position = position;
-
+        // if its an impostor make it an alien
         fsm.Clear();
         fsm.PushState(states[Random.Range(0, states.Length)]);
         impostor = Random.Range(0, 100) < 10;
@@ -92,7 +89,7 @@ public class Citizen : MonoBehaviour
             GameManager.Instance.AlienHasSpawn();
             particles.Play();
         }
-        Life = MaxLife; 
+        life = citizenData.MaxLife; 
     }
 
     public void OnRelease()
@@ -129,4 +126,10 @@ public class Citizen : MonoBehaviour
         detected = true;
         fsm.ChangeState(impostorState);
     }
+
+    public void ApplayDamage(int damage)
+    {
+        life -= damage;
+    }
+
 }

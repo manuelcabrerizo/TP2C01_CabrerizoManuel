@@ -15,6 +15,7 @@ public class EventManager : MonoBehaviour
     public UnityEvent<int> onAliensKilledChange;
 
     public UnityEvent<float> onTakeDamage;
+
     private void Awake()
     {
         if (Instance == null)
@@ -26,6 +27,10 @@ public class EventManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+    }
+
+    public void Init()
+    {
         onEnemyHit = new UnityEvent<RaycastHit, Ray>();
         onCitizenRelease = new UnityEvent<Citizen>();
         onAlienAliveChange = new UnityEvent<int>();

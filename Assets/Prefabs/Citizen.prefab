@@ -323,14 +323,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dece153f6fd87854d87d6130ef0fb0e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  citizenData: {fileID: 11400000, guid: 8058d5862a039dc40bab5b6462b191d6, type: 2}
   movementGraph: {fileID: 4946348931718968220, guid: 715405f7a9a69744fb328be904f000fa, type: 3}
   lifebar: {fileID: 4472312906989893671}
-  ReachRadio: 2
-  YPosition: 1
   male: {fileID: 4049299956869066642}
   female: {fileID: 3979376337312507122}
   alien: {fileID: 8012120647895330395}
-  MaxLife: 3
   Life: 0
 --- !u!114 &-8851423073316743482
 MonoBehaviour:
@@ -344,10 +342,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd067ee3ee426cf4e8e10d14612728cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  citizenData: {fileID: 11400000, guid: 8058d5862a039dc40bab5b6462b191d6, type: 2}
   hitLayer:
     serializedVersion: 2
     m_Bits: 1024
-  lifebar: {fileID: 4472312906989893671}
   frontImage: {fileID: 7103103663961123280}
 --- !u!114 &5722372861423768897
 MonoBehaviour:
@@ -373,6 +371,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: daa3f180fe96a7c478f4df2dee6a9904, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  citizenData: {fileID: 11400000, guid: 8058d5862a039dc40bab5b6462b191d6, type: 2}
 --- !u!114 &666924112840997681
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -385,6 +384,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e70228a996b37684e96b61335bc10226, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  citizenData: {fileID: 11400000, guid: 8058d5862a039dc40bab5b6462b191d6, type: 2}
 --- !u!114 &1524320758948297620
 MonoBehaviour:
   m_ObjectHideFlags: 0

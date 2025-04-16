@@ -19,6 +19,10 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+        // The singletons needs to be initialized in this order
+        EventManager.Instance.Init();
+        UIManager.Instance.Init();
+        EnemyManager.Instance.Init();
     }
 
     public void AlienHasSpawn()

@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
+    public static UIManager Instance;
     [SerializeField] private TextMeshProUGUI aliensAlive;
     [SerializeField] private TextMeshProUGUI score;
     [SerializeField] private TextMeshProUGUI citizensKilled;
@@ -12,14 +13,23 @@ public class UIManager : MonoBehaviour
 
     private void Awake()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
+    }
+
+    public void Init()
+    {
         aliensAlive.text = "Aliens Alive: 0";
         score.text = "Score: 0";
         citizensKilled.text = "Citizens killed: 0";
         aliensKilled.text = "Aliens killed: 0";
-    }
-
-    private void Start()
-    {
         EventManager.Instance.onAlienAliveChange.AddListener(OnAliensAliveChange);
         EventManager.Instance.onScoreChange.AddListener(OnScoreChange);
         EventManager.Instance.onCitizensKilledChange.AddListener(OnCitizensKilledChange);

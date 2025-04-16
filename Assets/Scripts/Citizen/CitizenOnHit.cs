@@ -3,6 +3,7 @@ using UnityEngine.UI;
 
 public class CitizenOnHit : MonoBehaviour
 {
+    [SerializeField] private CitizenData citizenData;
     [SerializeField] private LayerMask hitLayer;
     [SerializeField] private Image frontImage;
 
@@ -20,13 +21,7 @@ public class CitizenOnHit : MonoBehaviour
             {
                 if(citizen.IsDetected())
                 {
-                    citizen.Life--;
-                    frontImage.fillAmount = (float)citizen.Life / (float)citizen.MaxLife;
-                    if(citizen.Life <= 0)
-                    {
-                        GameManager.Instance.AlienKill();
-                        EventManager.Instance.onCitizenRelease.Invoke(citizen);
-                    }
+                    HitAlien();
                 }
                 else
                 {
@@ -35,14 +30,31 @@ public class CitizenOnHit : MonoBehaviour
             }
             else
             {
-                citizen.Life--;
-                frontImage.fillAmount = (float)citizen.Life / (float)citizen.MaxLife;
-                if(citizen.Life <= 0)
-                {
-                    GameManager.Instance.CitizenKill();
-                    EventManager.Instance.onCitizenRelease.Invoke(citizen);
-                }
+                HitCitizen();
             }
         }
     }
+
+    private void HitCitizen()
+    {
+        citizen.ApplayDamage(1);
+        frontImage.fillAmount = (float)citizen.Life / (float)citizenData.MaxLife;
+        if(citizen.Life <= 0)
+        {
+            GameManager.Instance.CitizenKill();
+            EventManager.Instance.onCitizenRelease.Invoke(citizen);
+        }
+    }
+
+    private void HitAlien()
+    {
+        citizen.ApplayDamage(1);
+        frontImage.fillAmount = (float)citizen.Life / (float)citizenData.MaxLife;
+        if(citizen.Life <= 0)
+        {
+            GameManager.Instance.AlienKill();
+            EventManager.Instance.onCitizenRelease.Invoke(citizen);
+        }
+    }
 }
+

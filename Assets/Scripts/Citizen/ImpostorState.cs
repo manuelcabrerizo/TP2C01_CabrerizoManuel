@@ -20,6 +20,7 @@ public class ImpostorState : MonoBehaviour, IState
 
     public void OnUpdate(float dt)
     {
+        // TODO: attack the player ...
     }
 
     public void OnFixedUpdate(float dt)

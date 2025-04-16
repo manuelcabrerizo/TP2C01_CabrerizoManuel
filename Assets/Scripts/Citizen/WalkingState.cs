@@ -3,9 +3,9 @@ using UnityEngine;
 
 public class WalkingState : MonoBehaviour, IState
 {
+    [SerializeField] private CitizenData citizenData;
     private Citizen citizen;
-
-     private Vector3 target;
+    private Vector3 target;
 
     private void Awake()
     {
@@ -33,10 +33,10 @@ public class WalkingState : MonoBehaviour, IState
     {
         Vector3 toTarget = target - transform.position;
         float distToTarget = toTarget.magnitude;
-        if(distToTarget > citizen.ReachRadio)
+        if(distToTarget > citizenData.ReachRadio)
         {
             toTarget.y = 0;
-            citizen.Body.AddForce(toTarget.normalized * 15.0f, ForceMode.Acceleration);
+            citizen.Body.AddForce(toTarget.normalized * citizenData.walkSpeed, ForceMode.Acceleration);
             citizen.transform.rotation = Quaternion.LookRotation(toTarget.normalized);
         }
         else

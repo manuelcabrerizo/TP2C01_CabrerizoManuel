@@ -21,13 +21,12 @@ public class EnemyManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-
-        pool = GetComponent<EnemyPool>();
-        enemies = new List<PoolEnemy>();
     }
 
-    private void Start()
+    public void Init()
     {
+        pool = GetComponent<EnemyPool>();
+        enemies = new List<PoolEnemy>();
         EventManager.Instance.onEnemyHit.AddListener(OnEnemyHit);
     }
    

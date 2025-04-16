@@ -186,7 +186,7 @@ GameObject:
   - component: {fileID: -3337980280806594493}
   - component: {fileID: 4169080877152281110}
   - component: {fileID: 8684119742493116247}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Drone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -271,9 +271,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 7973679299891028384, guid: 2298e1d651e637c4f8e6da1ec05bb53c, type: 3}
-  collectionCheck: 1
-  defaultCapacity: 20
-  maxSize: 100
 --- !u!114 &3112525820893603368
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -7,7 +7,6 @@ public class EventManager : MonoBehaviour
     public static EventManager Instance;
 
     public UnityEvent<RaycastHit, Ray> onEnemyHit;
-
     private void Awake()
     {
         if (Instance == null)

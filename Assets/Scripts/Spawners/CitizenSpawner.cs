@@ -4,6 +4,7 @@ using UnityEngine;
 public class CitizenSpawner : MonoBehaviour
 {
     [SerializeField] Citizen citizenPrefab;
+    [SerializeField] GameObject parent;
     private PoolAllocator<Citizen> citizenPool;
     private List<Citizen> spawnedCitizens;
 
@@ -13,7 +14,7 @@ public class CitizenSpawner : MonoBehaviour
             OnDestroyPooledObject, OnGetFromPool, OnReleaseToPool);
 
         spawnedCitizens = new List<Citizen>();
-        for(int i = 0; i < 250; ++i)
+        for(int i = 0; i < 100; ++i)
         {
             spawnedCitizens.Add(citizenPool.Get());
         }
@@ -21,7 +22,9 @@ public class CitizenSpawner : MonoBehaviour
 
     private Citizen OnCreatePooledObject()
     {
-        return Instantiate(citizenPrefab);
+        Citizen citizen = Instantiate(citizenPrefab);
+        citizen.transform.SetParent(parent.transform);
+        return citizen;
     }
 
     private void OnReleaseToPool(Citizen citizen)

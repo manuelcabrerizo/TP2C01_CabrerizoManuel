@@ -2019,6 +2019,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1513969885792798158, guid: 9c3809ef7ad385447bb50b76e6254786, type: 3}
+      propertyPath: parent
+      value: 
+      objectReference: {fileID: 2049754532}
     - target: {fileID: 7424096617473642977, guid: 9c3809ef7ad385447bb50b76e6254786, type: 3}
       propertyPath: m_Name
       value: CitizenSpawner
@@ -3865,7 +3869,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &949763098
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6947,6 +6951,37 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1176425587551714507, guid: bb3e6bbac75fae748b0794c654655d50, type: 3}
   m_PrefabInstance: {fileID: 2038637234}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2049754532
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2049754533}
+  m_Layer: 0
+  m_Name: Citizens
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2049754533
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2049754532}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &2053568106 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5915684024625638432, guid: 6fa6fb7871801f645a4240c8a4d8de2f, type: 3}
@@ -7099,8 +7134,8 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 963194229}
     - target: {fileID: 5967584548522947803, guid: 3d80202c07beb004895e32ef68e8a16f, type: 3}
-      propertyPath: bulletSpeed
-      value: 1
+      propertyPath: timeBetweenPoints
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 9123519681762293765, guid: 3d80202c07beb004895e32ef68e8a16f, type: 3}
       propertyPath: m_Name
@@ -7181,3 +7216,4 @@ SceneRoots:
   - {fileID: 1881861565}
   - {fileID: 1562829464}
   - {fileID: 4982801994913088124}
+  - {fileID: 2049754533}

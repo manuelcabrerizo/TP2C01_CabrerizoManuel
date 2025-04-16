@@ -8,12 +8,17 @@ public class DroneShoot : MonoBehaviour
     [SerializeField] private LayerMask enemyMask;
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private ParticleSystem hitParticles;
-
     [SerializeField] GameObject gun;
 
-    BulletSpawner spawner;
+    // Line renderer
+    private LineRenderer lineRenderer;
+    private int linePoints = 64;
+    private float timeBetweenPoints = 0.05f;
+    private BulletSpawner spawner;
 
+    bool isPredictionActive = true;
 
+    private Rigidbody body;
     private void Awake()
     {
 	    if(cam == null)
@@ -22,6 +27,10 @@ public class DroneShoot : MonoBehaviour
 	    }
 
         spawner = GetComponent<BulletSpawner>();
+        lineRenderer = GetComponent<LineRenderer>();
+        body = GetComponent<Rigidbody>();
+
+        lineRenderer.positionCount = linePoints;
     }
 
     private void OnDestroy()
@@ -31,34 +40,57 @@ public class DroneShoot : MonoBehaviour
 
     private void Update()
     {
+        if(Input.GetKeyDown(KeyCode.P))
+        {
+            isPredictionActive = !isPredictionActive;
+            lineRenderer.enabled = isPredictionActive;
+        }
+
+        if(isPredictionActive)
+        {
+            PredictProjectile();
+        }
+
         if (Input.GetMouseButtonDown(0))
         {
             SpawnedBullet bullet = spawner.SpawnBullet();
-            bullet.go.transform.position = transform.position;
+            bullet.go.transform.position = gun.transform.position;
+            bullet.body.position = gun.transform.position;
             bullet.go.transform.rotation = Quaternion.LookRotation(transform.forward, transform.up);
-
-            Vector3 shootPosition = cam.transform.position + cam.transform.forward * playerData.ShootDistance;
-            StartCoroutine(BulletUpdate(bullet, gun.transform.position, shootPosition));
-
-            Ray cameraRay = new Ray(cam.transform.position, cam.transform.forward);
-            RaycastHit hit;
-            if (Physics.Raycast(cameraRay, out hit, playerData.ShootDistance, enemyMask))
-            {
-                hitParticles.transform.position = hit.point;
-                hitParticles.Play();
-                EventManager.Instance.onEnemyHit.Invoke(hit, cameraRay);
-            }
+            StartCoroutine(BulletUpdate(bullet));
         }
     }
 
-    private IEnumerator BulletUpdate(SpawnedBullet bullet, Vector3 startPosition, Vector3 endPosition)
+    public void PredictProjectile()
     {
-        float t = 0.0f;
-        while (t <= 1.0f && bullet.active)
+        Vector3 position = gun.transform.position;
+        Vector3 velocity = playerData.BulletSpeed * transform.forward / spawner.GetBulletMass();
+        Vector3 acceleration = Physics.gravity;
+
+        int i = 0;
+        lineRenderer.SetPosition(i, position);
+        float time = timeBetweenPoints;
+        for(i = 1; i < linePoints; i++)
         {
-            bullet.go.transform.position = Vector3.Lerp(startPosition, endPosition, t);
+            position += velocity * time + (acceleration * time * time);
+            velocity += acceleration * time;
+            lineRenderer.SetPosition(i, position);
+        }
+    }
+
+    private IEnumerator BulletUpdate(SpawnedBullet bullet)
+    {
+        Vector3 velocity = playerData.BulletSpeed * transform.forward / spawner.GetBulletMass();
+        Vector3 acceleration = Physics.gravity;
+
+        float timer = 5.0f;
+        while (bullet.active && timer > 0.0f)
+        {
+            float time = Time.deltaTime;
+            bullet.body.position += velocity * time + (acceleration * time * time); 
+            velocity += acceleration * time;
             yield return new WaitForEndOfFrame();
-            t += playerData.BulletSpeed * Time.deltaTime;
+            timer -= time;
         }
 
         if (bullet.active)

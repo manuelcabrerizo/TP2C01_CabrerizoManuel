@@ -4,34 +4,29 @@ public class Citizen : MonoBehaviour
 {
     [SerializeField] private MovementGraph movementGraph;
     public MovementGraph MovementGraph => movementGraph;
-
     public MovementGraphNode CurrentNode {get; set; }
     public MovementGraphNode TargetNode { get; set; }
-
     public float ReachRadio = 3.0f;
     public float YPosition = 1.0f;
-
     private StateMachine fsm;
-
     private IdleState idleState;
     private WalkingState walkingState;
     private RunningState runningState;
-
     private ImpostorState impostorState;
     private IState[] states;
-
     private bool impostor = false;
-
+    private bool detected = false;
     private Rigidbody body;
-
     public Rigidbody Body => body;
-
     [SerializeField] private GameObject male;
     [SerializeField] private GameObject female;
     [SerializeField] private GameObject alien;
     private Animator animator;
-
     public Animator Animator => animator;
+    private ParticleSystem particles;
+
+    public int MaxLife = 3;
+    public int Life;
 
     private void Awake()
     {
@@ -40,8 +35,10 @@ public class Citizen : MonoBehaviour
         walkingState = GetComponent<WalkingState>();
         runningState = GetComponent<RunningState>();
         impostorState = GetComponent<ImpostorState>();
-
+        particles = GetComponent<ParticleSystem>();
         animator = GetComponentInChildren<Animator>();
+
+        particles.Stop();
 
         states = new IState[3];
         states[0] = idleState;
@@ -77,7 +74,10 @@ public class Citizen : MonoBehaviour
         fsm.PushState(states[Random.Range(0, states.Length)]);
         impostor = Random.Range(0, 100) < 5;
         if(impostor)
-            fsm.ChangeState(impostorState);
+        {
+            particles.Play();
+        }
+        Life = MaxLife;        
     }
 
     private void Update()
@@ -101,5 +101,21 @@ public class Citizen : MonoBehaviour
         female.SetActive(false);
         alien.SetActive(true);
         animator = alien.GetComponentInChildren<Animator>();
+    }
+
+    public bool IsImpostor()
+    {
+        return impostor;
+    }
+
+    public bool IsDetected()
+    {
+        return detected;
+    }
+
+    public void ImpostorDetected()
+    {
+        detected = true;
+        fsm.ChangeState(impostorState);
     }
 }

@@ -1,11 +1,9 @@
-using JetBrains.Annotations;
 using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
     [SerializeField] private GameObject player;
     private int score = 0;
-
     private int alienAlive = 0;
     private int citzensKill = 0;
     private int aliensKill = 0;
@@ -29,9 +27,13 @@ public class GameManager : MonoBehaviour
         EventManager.Instance.onAlienAliveChange.Invoke(alienAlive);
     }
 
-    public void AddToScore(int value)
+    private void AddToScore(int value)
     {
         score += value;
+        if(score < 0)
+        {
+            score = 0;
+        }
         EventManager.Instance.onScoreChange.Invoke(score);
     }
 

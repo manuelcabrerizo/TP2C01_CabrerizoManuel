@@ -7,6 +7,7 @@ public class CameraMovement : MonoBehaviour
     [SerializeField] private LayerMask wallLayer;
 
     private bool isFirstPerson = false;
+    [SerializeField] private GameObject gun;
 
     private float _yaw = 0;
     private float _pitch = 0;
@@ -79,7 +80,7 @@ public class CameraMovement : MonoBehaviour
             }
             else
             {
-                transform.position = target.transform.position - Vector3.up * 0.05f;
+                transform.position = gun.transform.position;
                 transform.LookAt(transform.position - direction, Vector3.up);
             }
 	    }

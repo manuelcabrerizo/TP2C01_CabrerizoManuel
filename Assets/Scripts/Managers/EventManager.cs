@@ -13,6 +13,8 @@ public class EventManager : MonoBehaviour
     public UnityEvent<int> onScoreChange;
     public UnityEvent<int> onCitizensKilledChange;
     public UnityEvent<int> onAliensKilledChange;
+
+    public UnityEvent<float> onTakeDamage;
     private void Awake()
     {
         if (Instance == null)
@@ -30,6 +32,7 @@ public class EventManager : MonoBehaviour
         onScoreChange = new UnityEvent<int>();
         onCitizensKilledChange = new UnityEvent<int>();
         onAliensKilledChange = new UnityEvent<int>();
+        onTakeDamage = new UnityEvent<float>();
     }
 
     private void OnDestroy()
@@ -40,5 +43,6 @@ public class EventManager : MonoBehaviour
         onScoreChange.RemoveAllListeners();
         onCitizensKilledChange.RemoveAllListeners();
         onAliensKilledChange.RemoveAllListeners();
+        onTakeDamage.RemoveAllListeners();
     }
 }

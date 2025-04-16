@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
@@ -7,6 +8,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI score;
     [SerializeField] private TextMeshProUGUI citizensKilled;
     [SerializeField] private TextMeshProUGUI aliensKilled;
+    [SerializeField] private Image lifebar;
 
     private void Awake()
     {
@@ -22,6 +24,7 @@ public class UIManager : MonoBehaviour
         EventManager.Instance.onScoreChange.AddListener(OnScoreChange);
         EventManager.Instance.onCitizensKilledChange.AddListener(OnCitizensKilledChange);
         EventManager.Instance.onAliensKilledChange.AddListener(OnAliensKilledChange);
+        EventManager.Instance.onTakeDamage.AddListener(OnTakeDamage);
     }
 
     void OnAliensAliveChange(int value)
@@ -42,5 +45,10 @@ public class UIManager : MonoBehaviour
     void OnAliensKilledChange(int value)
     {
         aliensKilled.text = "Aliens killed: " + value;
+    }
+
+    void OnTakeDamage(float fillAmoun)
+    {
+        lifebar.fillAmount = fillAmoun;
     }
 }

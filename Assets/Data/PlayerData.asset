@@ -15,7 +15,7 @@ MonoBehaviour:
   MaxLife: 100
   MaxSpeed: 40
   Speed: 20
-  MaxDamageRecived: 20
+  MaxDamageRecived: 40
   RotationSpeed: 3
   ShootDistance: 100
   BulletSpeed: 80

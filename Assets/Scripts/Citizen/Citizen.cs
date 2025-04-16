@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Citizen : MonoBehaviour
 {
+    // TODO: refactor this ...
     [SerializeField] private MovementGraph movementGraph;
     [SerializeField] private Canvas lifebar;
     public MovementGraph MovementGraph => movementGraph;
@@ -85,7 +86,7 @@ public class Citizen : MonoBehaviour
 
         fsm.Clear();
         fsm.PushState(states[Random.Range(0, states.Length)]);
-        impostor = Random.Range(0, 100) < 5;
+        impostor = Random.Range(0, 100) < 10;
         if(impostor)
         {
             GameManager.Instance.AlienHasSpawn();

@@ -4,7 +4,6 @@ using UnityEngine.UI;
 public class DroneState : MonoBehaviour
 {
     // TODO: use playerData
-    [SerializeField] private Image lifebar;
     [SerializeField] private PlayerData playerData;
     private float life;
 
@@ -36,6 +35,6 @@ public class DroneState : MonoBehaviour
             transform.position = playerData.SpawPosition;
             movement.Body.velocity = Vector3.zero;
         }
-        lifebar.fillAmount = life / playerData.MaxLife;
+        EventManager.Instance.onTakeDamage.Invoke(life / playerData.MaxLife);
     }
 }

@@ -15,8 +15,8 @@ MonoBehaviour:
   MaxLife: 100
   MaxSpeed: 40
   Speed: 20
-  MaxDamageRecived: 40
+  MaxDamageRecived: 80
   RotationSpeed: 3
   ShootDistance: 100
   BulletSpeed: 80
-  SpawPosition: {x: 24, y: 10, z: 10}
+  SpawPosition: {x: 21, y: 17.5, z: -66}

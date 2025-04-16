@@ -3,6 +3,7 @@ using UnityEngine;
 public class Citizen : MonoBehaviour
 {
     [SerializeField] private MovementGraph movementGraph;
+    [SerializeField] private Canvas lifebar;
     public MovementGraph MovementGraph => movementGraph;
     public MovementGraphNode CurrentNode {get; set; }
     public MovementGraphNode TargetNode { get; set; }
@@ -37,14 +38,30 @@ public class Citizen : MonoBehaviour
         impostorState = GetComponent<ImpostorState>();
         particles = GetComponent<ParticleSystem>();
         animator = GetComponentInChildren<Animator>();
-
-        particles.Stop();
-
         states = new IState[3];
         states[0] = idleState;
         states[1] = walkingState;
         states[2] = runningState;
+        fsm = new StateMachine();
+    }
 
+    private void Update()
+    {
+        fsm.Update(Time.deltaTime);
+    }
+
+    private void FixedUpdate()
+    {
+        fsm.FixedUpdate(Time.fixedDeltaTime);
+    }
+
+    public void OnAquire()
+    {
+        lifebar.gameObject.SetActive(false);
+        male.SetActive(false);
+        female.SetActive(false);
+        alien.SetActive(false);
+        particles.Stop();
         int type = Random.Range(0, 2);
         switch(type)
         {
@@ -59,10 +76,6 @@ public class Citizen : MonoBehaviour
                 animator = female.GetComponentInChildren<Animator>();
             }break;
         }
-    }
-
-    private void Start()
-    {
         // set to start in a random node of the graph
         CurrentNode = movementGraph.GetRandomNode();
         Vector2 offset = Random.insideUnitCircle * 3.0f;
@@ -70,24 +83,20 @@ public class Citizen : MonoBehaviour
         position.y = YPosition;
         transform.position = position;
 
-        fsm = new StateMachine();
+        fsm.Clear();
         fsm.PushState(states[Random.Range(0, states.Length)]);
         impostor = Random.Range(0, 100) < 5;
         if(impostor)
         {
+            GameManager.Instance.AlienHasSpawn();
             particles.Play();
         }
-        Life = MaxLife;        
+        Life = MaxLife; 
     }
 
-    private void Update()
+    public void OnRelease()
     {
-        fsm.Update(Time.deltaTime);
-    }
-
-    private void FixedUpdate()
-    {
-        fsm.FixedUpdate(Time.fixedDeltaTime);
+        
     }
 
     public void SetRandomState()
@@ -105,6 +114,7 @@ public class Citizen : MonoBehaviour
 
     public bool IsImpostor()
     {
+        lifebar.gameObject.SetActive(true);
         return impostor;
     }
 

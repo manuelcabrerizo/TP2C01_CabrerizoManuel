@@ -4,7 +4,6 @@ using UnityEngine.UI;
 public class CitizenOnHit : MonoBehaviour
 {
     [SerializeField] private LayerMask hitLayer;
-    [SerializeField] private Canvas lifebar;
     [SerializeField] private Image frontImage;
 
     Citizen citizen;
@@ -15,9 +14,8 @@ public class CitizenOnHit : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-                if(Utils.CheckCollisionLayer(other.gameObject, hitLayer))
+        if(Utils.CheckCollisionLayer(other.gameObject, hitLayer))
         {
-            lifebar.gameObject.SetActive(true);
             if(citizen.IsImpostor())
             {
                 if(citizen.IsDetected())
@@ -26,7 +24,8 @@ public class CitizenOnHit : MonoBehaviour
                     frontImage.fillAmount = (float)citizen.Life / (float)citizen.MaxLife;
                     if(citizen.Life <= 0)
                     {
-                        citizen.gameObject.SetActive(false);
+                        GameManager.Instance.AlienKill();
+                        EventManager.Instance.onCitizenRelease.Invoke(citizen);
                     }
                 }
                 else
@@ -40,7 +39,8 @@ public class CitizenOnHit : MonoBehaviour
                 frontImage.fillAmount = (float)citizen.Life / (float)citizen.MaxLife;
                 if(citizen.Life <= 0)
                 {
-                    citizen.gameObject.SetActive(false);
+                    GameManager.Instance.CitizenKill();
+                    EventManager.Instance.onCitizenRelease.Invoke(citizen);
                 }
             }
         }

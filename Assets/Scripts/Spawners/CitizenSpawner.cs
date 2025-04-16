@@ -8,7 +8,7 @@ public class CitizenSpawner : MonoBehaviour
     private PoolAllocator<Citizen> citizenPool;
     private List<Citizen> spawnedCitizens;
 
-    private void Awake()
+    private void Start()
     {
         citizenPool = new PoolAllocator<Citizen>(OnCreatePooledObject,
             OnDestroyPooledObject, OnGetFromPool, OnReleaseToPool);
@@ -18,6 +18,13 @@ public class CitizenSpawner : MonoBehaviour
         {
             spawnedCitizens.Add(citizenPool.Get());
         }
+        EventManager.Instance.onCitizenRelease.AddListener(OnCitizenRelease);
+    }
+
+    private void OnCitizenRelease(Citizen citizen)
+    {
+        spawnedCitizens.Remove(citizen);
+        citizenPool.Release(citizen);
     }
 
     private Citizen OnCreatePooledObject()
@@ -29,12 +36,14 @@ public class CitizenSpawner : MonoBehaviour
 
     private void OnReleaseToPool(Citizen citizen)
     {
+        citizen.OnRelease();
         citizen.gameObject.SetActive(false);
     }
 
     private void OnGetFromPool(Citizen citizen)
     {
         citizen.gameObject.SetActive(true);
+        citizen.OnAquire();
     }
 
     private void OnDestroyPooledObject(Citizen citizen)

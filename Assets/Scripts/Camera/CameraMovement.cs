@@ -6,6 +6,8 @@ public class CameraMovement : MonoBehaviour
     [SerializeField] private GameObject target;
     [SerializeField] private LayerMask wallLayer;
 
+    private bool isFirstPerson = false;
+
     private float _yaw = 0;
     private float _pitch = 0;
     
@@ -36,6 +38,10 @@ public class CameraMovement : MonoBehaviour
 	    {
                 Cursor.lockState = CursorLockMode.None;
 	    }
+        if(Input.GetKeyDown(KeyCode.Alpha1))
+	    {
+                isFirstPerson = !isFirstPerson;
+	    }
 
 	    if(Cursor.lockState == CursorLockMode.Locked)
 	    {	
@@ -45,29 +51,37 @@ public class CameraMovement : MonoBehaviour
 	        _yaw += mouseX * cameraData.MouseSpeed;
 	        _pitch = Mathf.Clamp(_pitch + mouseY * cameraData.MouseSpeed, -89.0f, 89.0f);
              
-	        Vector3 targetPosition = target.transform.position + Vector3.up * 0.5f;
-	        Vector3 direction = new Vector3(0.0f, 0.0f, -1.0f);
-	        direction = Quaternion.AngleAxis(_pitch, Vector3.right) * direction;
-	        direction = Quaternion.AngleAxis(_yaw, Vector3.up) * direction;
-	        direction.Normalize();
+            Vector3 targetPosition = target.transform.position + Vector3.up * 0.5f;
+            Vector3 direction = new Vector3(0.0f, 0.0f, -1.0f);
+            direction = Quaternion.AngleAxis(_pitch, Vector3.right) * direction;
+            direction = Quaternion.AngleAxis(_yaw, Vector3.up) * direction;
+            direction.Normalize();
 
-            Vector3 cameraPosition = targetPosition + direction * cameraData.MaxDistance;
-            RaycastHit hitInfo;
-            if (Physics.SphereCast(targetPosition, cameraData.CameraRadius, direction, out hitInfo, cameraData.MaxDistance, wallLayer))
+            if(!isFirstPerson)
             {
-                cameraPosition = targetPosition + direction * hitInfo.distance;
-            }
-            else
-            {
-                // TODO: test if this realy help
-                if (Physics.Raycast(targetPosition, direction, out hitInfo, cameraData.MaxDistance, wallLayer))
+                Vector3 cameraPosition = targetPosition + direction * cameraData.MaxDistance;
+                RaycastHit hitInfo;
+                if (Physics.SphereCast(targetPosition, cameraData.CameraRadius, direction, out hitInfo, cameraData.MaxDistance, wallLayer))
                 {
                     cameraPosition = targetPosition + direction * hitInfo.distance;
                 }
-            }
+                else
+                {
+                    // TODO: test if this realy help
+                    if (Physics.Raycast(targetPosition, direction, out hitInfo, cameraData.MaxDistance, wallLayer))
+                    {
+                        cameraPosition = targetPosition + direction * hitInfo.distance;
+                    }
+                }
 
-            transform.position = cameraPosition;
-	        transform.LookAt(targetPosition, Vector3.up);
+                transform.position = cameraPosition;
+                transform.LookAt(targetPosition, Vector3.up);
+            }
+            else
+            {
+                transform.position = target.transform.position - Vector3.up * 0.05f;
+                transform.LookAt(transform.position - direction, Vector3.up);
+            }
 	    }
     }
 

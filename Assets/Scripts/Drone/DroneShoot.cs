@@ -9,12 +9,11 @@ public class DroneShoot : MonoBehaviour
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private ParticleSystem hitParticles;
     [SerializeField] GameObject gun;
-
+    [SerializeField] private BulletSpawner spawner;
     // Line renderer
     private LineRenderer lineRenderer;
     private int linePoints = 64;
     private float timeBetweenPoints = 0.05f;
-    private BulletSpawner spawner;
 
     bool isPredictionActive = true;
 
@@ -26,7 +25,6 @@ public class DroneShoot : MonoBehaviour
 	        cam = Camera.main;
 	    }
 
-        spawner = GetComponent<BulletSpawner>();
         lineRenderer = GetComponent<LineRenderer>();
         body = GetComponent<Rigidbody>();
 
@@ -54,6 +52,7 @@ public class DroneShoot : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             SpawnedBullet bullet = spawner.SpawnBullet();
+            bullet.go.transform.SetParent(spawner.transform);
             bullet.go.transform.position = gun.transform.position;
             bullet.body.position = gun.transform.position;
             bullet.go.transform.rotation = Quaternion.LookRotation(transform.forward, transform.up);

@@ -94,7 +94,7 @@ public class Citizen : MonoBehaviour
 
     public void OnRelease()
     {
-        
+        fsm.Clear();
     }
 
     public void SetRandomState()

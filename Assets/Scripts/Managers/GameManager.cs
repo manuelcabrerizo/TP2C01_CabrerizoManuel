@@ -3,6 +3,9 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
     [SerializeField] private GameObject player;
+    private Rigidbody playerBody;
+
+    public BulletSpawner alienBulletSpawner;
     private int score = 0;
     private int alienAlive = 0;
     private int citzensKill = 0;
@@ -23,6 +26,8 @@ public class GameManager : MonoBehaviour
         EventManager.Instance.Init();
         UIManager.Instance.Init();
         EnemyManager.Instance.Init();
+
+        playerBody = player.GetComponent<Rigidbody>();
     }
 
     public void AlienHasSpawn()
@@ -61,5 +66,10 @@ public class GameManager : MonoBehaviour
     public Vector3 GetPlayerPosition()
     {
         return player.transform.position;
+    }
+
+    public Vector3 GetPlayerVelocity()
+    {
+        return playerBody.velocity;        
     }
 }

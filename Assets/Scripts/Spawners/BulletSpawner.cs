@@ -34,6 +34,12 @@ public class BulletSpawner : MonoBehaviour
     public void ReleaseBullet(SpawnedBullet bullet)
     {
         bulletPool.Release(bullet);
+        goToBullet.Clear();
+    }
+
+    public void Clear()
+    {
+        bulletPool.Clear();
     }
 
     public SpawnedBullet GetSpawnBullet(GameObject go)

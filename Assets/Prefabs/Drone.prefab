@@ -259,6 +259,7 @@ MonoBehaviour:
   bulletPrefab: {fileID: 7973679299891028384, guid: 2298e1d651e637c4f8e6da1ec05bb53c, type: 3}
   hitParticles: {fileID: 5943586763197580156}
   gun: {fileID: 6446926419480522422}
+  bulletsContainer: {fileID: 0}
 --- !u!114 &8866006079100103131
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -284,7 +285,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c3fd455f34456f4991e940be28c1c30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lifebar: {fileID: 0}
   playerData: {fileID: 11400000, guid: 65d314145c96ea244a7889c6f12f0cbb, type: 2}
 --- !u!114 &-3337980280806594493
 MonoBehaviour:

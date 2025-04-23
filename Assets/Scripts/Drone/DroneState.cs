@@ -32,6 +32,17 @@ public class DroneState : MonoBehaviour
         body.velocity = Vector3.zero;
     }
 
+    public void TakeDamage()
+    {
+        float damage = 10;
+        life -= damage;   
+        if (life <= 0)
+        {
+            GameManager.Instance.PlayerKill();
+        }
+        EventManager.Instance.onTakeDamage.Invoke(life / playerData.MaxLife);
+    }
+
     public void TakeDamageBaseOnVelocity()
     {
         float magnitude = lastFrameVelocity.magnitude / playerData.MaxSpeed;

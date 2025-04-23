@@ -84,7 +84,7 @@ public class Citizen : MonoBehaviour
         // if its an impostor make it an alien
         fsm.Clear();
         fsm.PushState(states[Random.Range(0, states.Length)]);
-        impostor = Random.Range(0, 100) < 10;
+        impostor = GameManager.Instance.ShouldSpawnAlien();
         detected = false;
         if(impostor)
         {

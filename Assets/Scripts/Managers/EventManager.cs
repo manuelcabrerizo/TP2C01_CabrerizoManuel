@@ -23,6 +23,8 @@ public class EventManager : MonoBehaviour
     public UnityEvent onShowGameOverUI;
     public UnityEvent onHideGameOverUI;
 
+    public UnityEvent<int> onCountDownChange;
+
     private void Awake()
     {
         if (Instance == null)
@@ -55,6 +57,7 @@ public class EventManager : MonoBehaviour
         onHideWinUI = new UnityEvent();
         onShowGameOverUI = new UnityEvent();
         onHideGameOverUI = new UnityEvent();
+        onCountDownChange = new UnityEvent<int>();
     }
 
     private void OnDestroy()
@@ -76,5 +79,6 @@ public class EventManager : MonoBehaviour
         onHideWinUI.RemoveAllListeners();
         onShowGameOverUI.RemoveAllListeners();
         onHideGameOverUI.RemoveAllListeners();
+        onCountDownChange.RemoveAllListeners();
     }
 }

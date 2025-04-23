@@ -3,9 +3,24 @@ using UnityEngine;
 
 public class LevelManager : MonoBehaviour
 {
-    [SerializeField] LevelsData levelsData;
+    public static LevelManager Instance;
+
+    [SerializeField] private LevelsData levelsData;
 
     private int currentLevel = 0;
+
+        private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
+    }
 
     private void Start()
     {
@@ -38,5 +53,10 @@ public class LevelManager : MonoBehaviour
             currentLevel = Math.Min(levelsData.levels.Count - 1, currentLevel  + 1);
             GameManager.Instance.StartNewGame(levelsData.levels[currentLevel]);
         }
+    }
+
+    public LevelData GetCurrentLevelData()
+    {
+        return levelsData.levels[currentLevel];
     }
 }

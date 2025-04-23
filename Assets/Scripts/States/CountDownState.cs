@@ -3,18 +3,23 @@ using UnityEngine;
 class CountDownState : IState
 {
     private float timer = 0;
-    private float timeToWait = 3;
+
+    private int secondCount = 0;
+    private int timeToWait = 3;
 
     public void OnEnter()
     {
         Cursor.lockState = CursorLockMode.Locked;
         EventManager.Instance.onShowCountDownUI.Invoke();
-        timer = timeToWait;
+        EventManager.Instance.onCountDownChange.Invoke(timeToWait);
+        timer = 0;
+        secondCount = 0;
     }
 
     public void OnExit()
     {
         timer = 0;
+        secondCount = 0;
         EventManager.Instance.onHideCountDownUI.Invoke();
     }
 
@@ -24,10 +29,17 @@ class CountDownState : IState
 
     public void OnUpdate(float dt)
     {
-        if(timer < 0.0f)
+        if(timer >= 1.0f)
+        {
+            secondCount++;
+            EventManager.Instance.onCountDownChange.Invoke(timeToWait - secondCount);
+            timer -= 1.0f;
+        }
+        timer += Time.deltaTime;
+
+        if(secondCount == timeToWait)
         {
             GameManager.Instance.SetPlayingState();
         }
-        timer -= Time.deltaTime;
     }
 }

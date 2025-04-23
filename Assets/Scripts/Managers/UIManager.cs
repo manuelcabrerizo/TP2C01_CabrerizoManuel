@@ -24,6 +24,8 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] private Button winMenuButton;
     [SerializeField] private Button gameOverMenuButton;
+
+    [SerializeField] private TextMeshProUGUI countDownText;
     
 
     private void Awake()
@@ -49,6 +51,7 @@ public class UIManager : MonoBehaviour
         EventManager.Instance.onHideWinUI.AddListener(OnHideWinUI);
         EventManager.Instance.onShowGameOverUI.AddListener(OnShowGameOverUI);
         EventManager.Instance.onHideGameOverUI.AddListener(OnHideGameOverUI);
+        EventManager.Instance.onCountDownChange.AddListener(OnCountDownChange);
 
         aliensAlive.text = "Aliens Alive: 0";
         score.text = "Score: 0";
@@ -146,5 +149,10 @@ public class UIManager : MonoBehaviour
     void OnTakeDamage(float fillAmoun)
     {
         lifebar.fillAmount = fillAmoun;
+    }
+
+    void OnCountDownChange(int countDown)
+    {   
+        countDownText.text = countDown.ToString();
     }
 }

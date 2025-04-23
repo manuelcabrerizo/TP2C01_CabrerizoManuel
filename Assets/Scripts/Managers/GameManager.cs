@@ -2,6 +2,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
+    
     [SerializeField] private DroneState drone;
     DroneMovement droneMovement;
     DroneShoot droneShoot;
@@ -112,6 +113,13 @@ public class GameManager : MonoBehaviour
     {
         alienAlive++;
         EventManager.Instance.onAlienAliveChange.Invoke(alienAlive);
+    }
+
+    public bool ShouldSpawnAlien()
+    {
+        LevelData levelData = LevelManager.Instance.GetCurrentLevelData();
+        int alienCount = (int)(levelData.citizenCount * levelData.alienPercentage);
+        return alienAlive  < alienCount;
     }
 
     private void AddToScore(int value)

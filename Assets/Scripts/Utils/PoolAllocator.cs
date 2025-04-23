@@ -7,15 +7,11 @@ public class PoolAllocator<T>
     public class PoolObject
     {
         public T obj;
-        public PoolObject prev;
         public PoolObject next;
-
         public bool isFree;
     }
 
-    private PoolObject first = null;
     private PoolObject free = null;
-
     private Func<T> onCreate = null;
     private Action<T> onDestroy = null;
     private Action<T> onGet = null;
@@ -25,10 +21,11 @@ public class PoolAllocator<T>
     // use for quick look up on the release
     private Dictionary<T, PoolObject> toPoolObject;
 
+    private int spawCount = 0;
+
     public PoolAllocator(Func<T> onCreate, Action<T> onDestroy, Action<T> onGet, Action<T> onRelease)
     {
         toPoolObject = new Dictionary<T, PoolObject>();
-        first = null;
         free = null;
         this.onCreate = onCreate;
         this.onDestroy = onDestroy;
@@ -36,20 +33,9 @@ public class PoolAllocator<T>
         this.onRelease = onRelease;
     }
 
-    public void Clear()
+    public int GetSpawnCount()
     {
-        PoolObject po = first;
-        while(po != null)
-        {
-            onRelease(po.obj);
-            onDestroy(po.obj);
-            toPoolObject.Remove(po.obj);
-            po.obj = default;
-            po = po.next;
-        }
-        toPoolObject.Clear();
-        first = null;
-        free = null;
+        return spawCount;
     }
 
     public T Get()
@@ -71,20 +57,9 @@ public class PoolAllocator<T>
         }
         // se to default values
         po.next = null;
-        po.prev = null;
         po.isFree = false;
         onGet(po.obj);
-        // add the object to the allocated pool
-        if(first == null)
-        {
-            first = po;
-        }
-        else
-        {
-            first.prev = po;
-            po.next = first;
-            first = po;
-        }
+        spawCount++;
         return po.obj;
     }
 
@@ -95,25 +70,11 @@ public class PoolAllocator<T>
         Debug.Assert(po.isFree == false, "object has already been released");
         po.isFree = true;
         onRelease(po.obj);
-        // update the first element if necesary 
-        if(first == po)
-        {
-            first = po.next;
-        }
-        // remove it from the double linklist
-        if(po.prev != null)
-        {
-            po.prev.next = po.next;
-        }
-        if(po.next != null)
-        {
-            po.next.prev = po.prev; 
-        }
+
         // add the object to the free linklist
-        if(free != null)
-        {
-            po.next = free;
-        }
+        po.next = free;
         free = po; 
+
+        spawCount--;
     }
 }

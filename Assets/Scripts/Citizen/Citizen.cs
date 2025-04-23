@@ -80,10 +80,12 @@ public class Citizen : MonoBehaviour
         Vector3 position = CurrentNode.transform.position + new Vector3(offset.x, 0.0f, offset.y);
         position.y = 1.0f;
         transform.position = position;
+        body.velocity = Vector3.zero;
         // if its an impostor make it an alien
         fsm.Clear();
         fsm.PushState(states[Random.Range(0, states.Length)]);
         impostor = Random.Range(0, 100) < 10;
+        detected = false;
         if(impostor)
         {
             GameManager.Instance.AlienHasSpawn();

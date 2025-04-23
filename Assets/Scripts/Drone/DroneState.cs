@@ -24,6 +24,14 @@ public class DroneState : MonoBehaviour
         lastFrameVelocity = movement.Body.velocity;
     }
 
+    public void Reset()
+    {
+        life = playerData.MaxLife;
+        EventManager.Instance.onTakeDamage.Invoke(life / playerData.MaxLife);
+        transform.position = playerData.SpawPosition;
+        movement.Body.velocity = Vector3.zero;
+    }
+
     public void TakeDamageBaseOnVelocity()
     {
         float magnitude = lastFrameVelocity.magnitude / playerData.MaxSpeed;
@@ -31,9 +39,7 @@ public class DroneState : MonoBehaviour
         life -= damage;   
         if (life <= 0)
         {
-            life = playerData.MaxLife;
-            transform.position = playerData.SpawPosition;
-            movement.Body.velocity = Vector3.zero;
+            GameManager.Instance.PlayerKill();
         }
         EventManager.Instance.onTakeDamage.Invoke(life / playerData.MaxLife);
     }

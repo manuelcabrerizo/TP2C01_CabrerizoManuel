@@ -2,10 +2,12 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
-    [SerializeField] private GameObject player;
-    private Rigidbody playerBody;
+    [SerializeField] private DroneState drone;
 
+    public CitizenSpawner citizenSpawner;
+    public BulletSpawner playerBulletSpawner;
     public BulletSpawner alienBulletSpawner;
+
     private int score = 0;
     private int alienAlive = 0;
     private int citzensKill = 0;
@@ -26,8 +28,24 @@ public class GameManager : MonoBehaviour
         EventManager.Instance.Init();
         UIManager.Instance.Init();
         EnemyManager.Instance.Init();
+    }
 
-        playerBody = player.GetComponent<Rigidbody>();
+    public void StartNewGame(LevelData data)
+    {
+        score = 0;
+        EventManager.Instance.onScoreChange.Invoke(score);
+        alienAlive = 0;
+        EventManager.Instance.onAlienAliveChange.Invoke(alienAlive);
+        citzensKill = 0;
+        EventManager.Instance.onCitizensKilledChange.Invoke(citzensKill);
+        aliensKill = 0;
+        EventManager.Instance.onAliensKilledChange.Invoke(aliensKill);
+
+        drone.Reset();
+        playerBulletSpawner.Clear();
+        alienBulletSpawner.Clear();
+        citizenSpawner.Clear();
+        citizenSpawner.SpawnEnemies(data.citizenCount);
     }
 
     public void AlienHasSpawn()
@@ -46,6 +64,11 @@ public class GameManager : MonoBehaviour
         EventManager.Instance.onScoreChange.Invoke(score);
     }
 
+    public void PlayerKill()
+    {
+        EventManager.Instance.onGameOver.Invoke();
+    }
+
     public void CitizenKill()
     {
         citzensKill++;
@@ -61,15 +84,15 @@ public class GameManager : MonoBehaviour
         aliensKill++;
         AddToScore(5);
         EventManager.Instance.onAliensKilledChange.Invoke(aliensKill);
+
+        if(alienAlive == 0)
+        {
+            EventManager.Instance.onWin.Invoke();
+        }
     }
 
     public Vector3 GetPlayerPosition()
     {
-        return player.transform.position;
-    }
-
-    public Vector3 GetPlayerVelocity()
-    {
-        return playerBody.velocity;        
+        return drone.transform.position;
     }
 }

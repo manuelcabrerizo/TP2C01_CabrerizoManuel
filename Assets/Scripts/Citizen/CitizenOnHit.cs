@@ -41,8 +41,8 @@ public class CitizenOnHit : MonoBehaviour
         frontImage.fillAmount = (float)citizen.Life / (float)citizenData.MaxLife;
         if(citizen.Life <= 0)
         {
-            GameManager.Instance.CitizenKill();
             EventManager.Instance.onCitizenRelease.Invoke(citizen);
+            GameManager.Instance.CitizenKill();
         }
     }
 
@@ -52,8 +52,8 @@ public class CitizenOnHit : MonoBehaviour
         frontImage.fillAmount = (float)citizen.Life / (float)citizenData.MaxLife;
         if(citizen.Life <= 0)
         {
-            GameManager.Instance.AlienKill();
             EventManager.Instance.onCitizenRelease.Invoke(citizen);
+            GameManager.Instance.AlienKill();
         }
     }
 }

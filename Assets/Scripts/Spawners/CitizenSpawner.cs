@@ -12,13 +12,28 @@ public class CitizenSpawner : MonoBehaviour
     {
         citizenPool = new PoolAllocator<Citizen>(OnCreatePooledObject,
             OnDestroyPooledObject, OnGetFromPool, OnReleaseToPool);
-
         spawnedCitizens = new List<Citizen>();
-        for(int i = 0; i < 100; ++i)
+        EventManager.Instance.onCitizenRelease.AddListener(OnCitizenRelease);
+    }
+
+    public void Clear()
+    {
+        for(int i = 0; i < spawnedCitizens.Count; ++i)
+        {
+            citizenPool.Release(spawnedCitizens[i]);
+        }
+        spawnedCitizens.Clear();
+    }
+
+    public void SpawnEnemies(int count)
+    {
+        Debug.Log("Count to Spawn " + count);
+        Debug.Log("Count Before Spawn " + citizenPool.GetSpawnCount());
+        for(int i = 0; i < count; ++i)
         {
             spawnedCitizens.Add(citizenPool.Get());
         }
-        EventManager.Instance.onCitizenRelease.AddListener(OnCitizenRelease);
+        Debug.Log("Count Affter Spawn " + citizenPool.GetSpawnCount());
     }
 
     private void OnCitizenRelease(Citizen citizen)

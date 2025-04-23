@@ -16,30 +16,38 @@ public class BulletSpawner : MonoBehaviour
     private PoolAllocator<SpawnedBullet> bulletPool;
     private Dictionary<GameObject, SpawnedBullet> goToBullet;
 
+    private List<SpawnedBullet> spawnedBullets;
+
     Rigidbody prefabBody;
 
     private void Awake()
     {
+        spawnedBullets = new List<SpawnedBullet>();
         bulletPool = new PoolAllocator<SpawnedBullet>(OnCreatePooledObject, OnDestroyPooledObject, OnGetFromPool, OnReleaseToPool);
         goToBullet = new Dictionary<GameObject, SpawnedBullet>();
         prefabBody = bulletPrefab.GetComponent<Rigidbody>();
     }
 
+    public void Clear()
+    {
+        for(int i = 0; i < spawnedBullets.Count; ++i)
+        {
+            bulletPool.Release(spawnedBullets[i]);
+        }
+        spawnedBullets.Clear();
+    }
+
     public SpawnedBullet SpawnBullet()
     {
         SpawnedBullet bullet = bulletPool.Get();
+        spawnedBullets.Add(bullet);
         return bullet;
     }
 
     public void ReleaseBullet(SpawnedBullet bullet)
     {
+        spawnedBullets.Remove(bullet);
         bulletPool.Release(bullet);
-        goToBullet.Clear();
-    }
-
-    public void Clear()
-    {
-        bulletPool.Clear();
     }
 
     public SpawnedBullet GetSpawnBullet(GameObject go)

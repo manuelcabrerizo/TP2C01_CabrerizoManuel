@@ -8,13 +8,13 @@ public class EventManager : MonoBehaviour
 
     public UnityEvent<RaycastHit, Ray> onEnemyHit;
     public UnityEvent<Citizen> onCitizenRelease;
-
     public UnityEvent<int> onAlienAliveChange;
     public UnityEvent<int> onScoreChange;
     public UnityEvent<int> onCitizensKilledChange;
     public UnityEvent<int> onAliensKilledChange;
-
     public UnityEvent<float> onTakeDamage;
+    public UnityEvent onWin;
+    public UnityEvent onGameOver;
 
     private void Awake()
     {
@@ -38,6 +38,8 @@ public class EventManager : MonoBehaviour
         onCitizensKilledChange = new UnityEvent<int>();
         onAliensKilledChange = new UnityEvent<int>();
         onTakeDamage = new UnityEvent<float>();
+        onWin = new UnityEvent();
+        onGameOver = new UnityEvent();
     }
 
     private void OnDestroy()
@@ -49,5 +51,7 @@ public class EventManager : MonoBehaviour
         onCitizensKilledChange.RemoveAllListeners();
         onAliensKilledChange.RemoveAllListeners();
         onTakeDamage.RemoveAllListeners();
+        onWin.RemoveAllListeners();
+        onGameOver.RemoveAllListeners();
     }
 }

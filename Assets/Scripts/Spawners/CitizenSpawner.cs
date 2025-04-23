@@ -27,13 +27,10 @@ public class CitizenSpawner : MonoBehaviour
 
     public void SpawnEnemies(int count)
     {
-        Debug.Log("Count to Spawn " + count);
-        Debug.Log("Count Before Spawn " + citizenPool.GetSpawnCount());
         for(int i = 0; i < count; ++i)
         {
             spawnedCitizens.Add(citizenPool.Get());
         }
-        Debug.Log("Count Affter Spawn " + citizenPool.GetSpawnCount());
     }
 
     private void OnCitizenRelease(Citizen citizen)

@@ -3,6 +3,9 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
     [SerializeField] private DroneState drone;
+    DroneMovement droneMovement;
+    DroneShoot droneShoot;
+    [SerializeField] CameraMovement cameraMovement;
 
     public CitizenSpawner citizenSpawner;
     public BulletSpawner playerBulletSpawner;
@@ -12,6 +15,12 @@ public class GameManager : MonoBehaviour
     private int alienAlive = 0;
     private int citzensKill = 0;
     private int aliensKill = 0;
+
+    private StateMachine fsm;
+    private CountDownState countDownState;
+    private PlayingState playingState;
+    private GameOverState gameOverState;
+    private WinState winState;
     
     private void Awake()
     {
@@ -30,6 +39,23 @@ public class GameManager : MonoBehaviour
         EnemyManager.Instance.Init();
     }
 
+    private void Start()
+    {
+        fsm = new StateMachine();
+        countDownState = new CountDownState();
+        playingState = new PlayingState();
+        gameOverState = new GameOverState();
+        winState = new WinState();
+
+        droneMovement = drone.GetComponent<DroneMovement>();
+        droneShoot = drone.GetComponent<DroneShoot>();
+    }
+
+    public void Update()
+    {
+        fsm.Update(Time.deltaTime);
+    }
+
     public void StartNewGame(LevelData data)
     {
         score = 0;
@@ -46,6 +72,40 @@ public class GameManager : MonoBehaviour
         alienBulletSpawner.Clear();
         citizenSpawner.Clear();
         citizenSpawner.SpawnEnemies(data.citizenCount);
+
+        SetCountDownState();
+    }
+
+    public void SetCountDownState()
+    {
+        droneMovement.enabled = false;
+        droneShoot.enabled = false;
+        cameraMovement.enabled = true;
+        fsm.ChangeState(countDownState);
+    }
+
+    public void SetPlayingState()
+    {
+        droneMovement.enabled = true;
+        droneShoot.enabled = true;
+        cameraMovement.enabled = true;
+        fsm.ChangeState(playingState);
+    }
+
+    public void SetWinState()
+    {
+        droneMovement.enabled = false;
+        droneShoot.enabled = false;
+        cameraMovement.enabled = false;
+        fsm.ChangeState(winState);
+    }
+
+    public void SetGameOverState()
+    {
+        droneMovement.enabled = false;
+        droneShoot.enabled = false;
+        cameraMovement.enabled = false;
+        fsm.ChangeState(gameOverState);
     }
 
     public void AlienHasSpawn()
@@ -66,7 +126,7 @@ public class GameManager : MonoBehaviour
 
     public void PlayerKill()
     {
-        EventManager.Instance.onGameOver.Invoke();
+        SetGameOverState();
     }
 
     public void CitizenKill()
@@ -87,7 +147,7 @@ public class GameManager : MonoBehaviour
 
         if(alienAlive == 0)
         {
-            EventManager.Instance.onWin.Invoke();
+            SetWinState();
         }
     }
 

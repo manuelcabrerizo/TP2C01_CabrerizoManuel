@@ -15,6 +15,14 @@ public class EventManager : MonoBehaviour
     public UnityEvent<float> onTakeDamage;
     public UnityEvent onWin;
     public UnityEvent onGameOver;
+    public UnityEvent onShowCountDownUI;
+    public UnityEvent onHideCountDownUI;
+    public UnityEvent onShowPlayingUI;
+    public UnityEvent onHidePlayingUI;
+    public UnityEvent onShowWinUI;
+    public UnityEvent onHideWinUI;
+    public UnityEvent onShowGameOverUI;
+    public UnityEvent onHideGameOverUI;
 
     private void Awake()
     {
@@ -40,6 +48,14 @@ public class EventManager : MonoBehaviour
         onTakeDamage = new UnityEvent<float>();
         onWin = new UnityEvent();
         onGameOver = new UnityEvent();
+        onShowCountDownUI = new UnityEvent();
+        onHideCountDownUI = new UnityEvent();
+        onShowPlayingUI = new UnityEvent();
+        onHidePlayingUI = new UnityEvent();
+        onShowWinUI = new UnityEvent();
+        onHideWinUI = new UnityEvent();
+        onShowGameOverUI = new UnityEvent();
+        onHideGameOverUI = new UnityEvent();
     }
 
     private void OnDestroy()
@@ -53,5 +69,13 @@ public class EventManager : MonoBehaviour
         onTakeDamage.RemoveAllListeners();
         onWin.RemoveAllListeners();
         onGameOver.RemoveAllListeners();
+        onShowCountDownUI.RemoveAllListeners();
+        onHideCountDownUI.RemoveAllListeners();
+        onShowPlayingUI.RemoveAllListeners();
+        onHidePlayingUI.RemoveAllListeners();
+        onShowWinUI.RemoveAllListeners();
+        onHideWinUI.RemoveAllListeners();
+        onShowGameOverUI.RemoveAllListeners();
+        onHideGameOverUI.RemoveAllListeners();
     }
 }

@@ -30,7 +30,7 @@ public class LevelManager : MonoBehaviour
 
     private void OnWin()
     {
-        currentLevel++;
+        currentLevel = Math.Min(levelsData.levels.Count - 1, currentLevel  + 1);
         GameManager.Instance.StartNewGame(levelsData.levels[currentLevel]);
     }
 

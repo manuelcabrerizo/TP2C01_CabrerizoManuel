@@ -8,11 +8,15 @@ public class CitizenSpawner : MonoBehaviour
     private PoolAllocator<Citizen> citizenPool;
     private List<Citizen> spawnedCitizens;
 
-    private void Start()
+    private void Awake()
     {
         citizenPool = new PoolAllocator<Citizen>(OnCreatePooledObject,
             OnDestroyPooledObject, OnGetFromPool, OnReleaseToPool);
-        spawnedCitizens = new List<Citizen>();
+        spawnedCitizens = new List<Citizen>();   
+    }
+
+    private void Start()
+    {
         EventManager.Instance.onCitizenRelease.AddListener(OnCitizenRelease);
     }
 

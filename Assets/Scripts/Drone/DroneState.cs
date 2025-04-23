@@ -9,19 +9,19 @@ public class DroneState : MonoBehaviour
 
     private Vector3 lastFrameVelocity;
 
-    private DroneMovement movement;
+    private Rigidbody body;
 
-    private void Start()
+    private void Awake()
     {
-        movement = GetComponent<DroneMovement>();
+        body = GetComponent<Rigidbody>();
         life = playerData.MaxLife;
 
-        lastFrameVelocity = movement.Body.velocity;
+        lastFrameVelocity = body.velocity;
     }
 
     private void Update()
     {
-        lastFrameVelocity = movement.Body.velocity;
+        lastFrameVelocity = body.velocity;
     }
 
     public void Reset()
@@ -29,7 +29,7 @@ public class DroneState : MonoBehaviour
         life = playerData.MaxLife;
         EventManager.Instance.onTakeDamage.Invoke(life / playerData.MaxLife);
         transform.position = playerData.SpawPosition;
-        movement.Body.velocity = Vector3.zero;
+        body.velocity = Vector3.zero;
     }
 
     public void TakeDamageBaseOnVelocity()

@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
@@ -20,6 +21,9 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] private Button nextButton;
     [SerializeField] private Button restartButton;
+
+    [SerializeField] private Button winMenuButton;
+    [SerializeField] private Button gameOverMenuButton;
     
 
     private void Awake()
@@ -58,12 +62,16 @@ public class UIManager : MonoBehaviour
 
         nextButton.onClick.AddListener(OnNextAndRestartButtonClick);
         restartButton.onClick.AddListener(OnNextAndRestartButtonClick);
+        winMenuButton.onClick.AddListener(OnMenuButtonClick);
+        gameOverMenuButton.onClick.AddListener(OnMenuButtonClick);
     }
 
     void Oestroy()
     {
         nextButton.onClick.RemoveAllListeners();
         restartButton.onClick.RemoveAllListeners();
+        winMenuButton.onClick.RemoveAllListeners();
+        gameOverMenuButton.onClick.RemoveAllListeners();
     }
     void OnShowCountDownUI()
     {
@@ -105,9 +113,14 @@ public class UIManager : MonoBehaviour
         gameOverUI.SetActive(false);
     }
 
-    void OnNextAndRestartButtonClick()
+    private void OnNextAndRestartButtonClick()
     {
         GameManager.Instance.SetCountDownState();
+    }
+
+    private void OnMenuButtonClick()
+    {
+        SceneManager.LoadScene("MainMenu");
     }
 
     void OnAliensAliveChange(int value)

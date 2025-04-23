@@ -14,6 +14,18 @@ public class LevelManager : MonoBehaviour
         GameManager.Instance.StartNewGame(levelsData.levels[currentLevel]);
     }
 
+    private void OnWin()
+    {
+        currentLevel = Math.Min(levelsData.levels.Count - 1, currentLevel  + 1);
+        GameManager.Instance.StartNewGame(levelsData.levels[currentLevel]);
+    }
+
+    private void OnGameOver()
+    {
+        GameManager.Instance.StartNewGame(levelsData.levels[currentLevel]);
+    }
+
+        // TODO: remove this 
     private void Update()
     {
         if(Input.GetKeyDown(KeyCode.Alpha9))
@@ -26,16 +38,5 @@ public class LevelManager : MonoBehaviour
             currentLevel = Math.Min(levelsData.levels.Count - 1, currentLevel  + 1);
             GameManager.Instance.StartNewGame(levelsData.levels[currentLevel]);
         }
-    }
-
-    private void OnWin()
-    {
-        currentLevel = Math.Min(levelsData.levels.Count - 1, currentLevel  + 1);
-        GameManager.Instance.StartNewGame(levelsData.levels[currentLevel]);
-    }
-
-    private void OnGameOver()
-    {
-        GameManager.Instance.StartNewGame(levelsData.levels[currentLevel]);
     }
 }

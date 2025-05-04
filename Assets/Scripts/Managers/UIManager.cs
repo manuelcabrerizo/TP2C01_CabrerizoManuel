@@ -3,10 +3,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class UIManager : MonoBehaviour
+public class UIManager : MonoBehaviourSingleton<UIManager>
 {
-    public static UIManager Instance;
-
     [SerializeField] GameObject countDownUI;
     [SerializeField] GameObject playingUI;
 
@@ -27,20 +25,6 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI countDownText;
     
-
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-            return;
-        }
-    }
-
     public void Init()
     {
         EventManager.Instance.onShowCountDownUI.AddListener(OnShowCountDownUI);
@@ -69,49 +53,49 @@ public class UIManager : MonoBehaviour
         gameOverMenuButton.onClick.AddListener(OnMenuButtonClick);
     }
 
-    void Oestroy()
+    protected override void OnDestroyed()
     {
         nextButton.onClick.RemoveAllListeners();
         restartButton.onClick.RemoveAllListeners();
         winMenuButton.onClick.RemoveAllListeners();
         gameOverMenuButton.onClick.RemoveAllListeners();
     }
-    void OnShowCountDownUI()
+    private void OnShowCountDownUI()
     {
         countDownUI.SetActive(true);
     }
 
-    void OnHideCountDownUI()
+    private void OnHideCountDownUI()
     {
         countDownUI.SetActive(false);
     }
 
-    void OnShowPlayingUI()
+    private void OnShowPlayingUI()
     {
         playingUI.SetActive(true);
     }
 
-    void OnHidePlayingUI()
+    private void OnHidePlayingUI()
     {
         playingUI.SetActive(false);
     }
 
-    void OnShowWinUI()
+    private void OnShowWinUI()
     {
         winUI.SetActive(true);
     }
 
-    void OnHideWinUI()
+    private void OnHideWinUI()
     {
         winUI.SetActive(false);
     }
 
-    void OnShowGameOverUI()
+    private void OnShowGameOverUI()
     {
         gameOverUI.SetActive(true);
     }
 
-    void OnHideGameOverUI()
+    private void OnHideGameOverUI()
     {
         gameOverUI.SetActive(false);
     }
@@ -126,32 +110,32 @@ public class UIManager : MonoBehaviour
         SceneManager.LoadScene("MainMenu");
     }
 
-    void OnAliensAliveChange(int value)
+    private void OnAliensAliveChange(int value)
     {
         aliensAlive.text = "Aliens Alive: " + value;
     }
 
-    void OnScoreChange(int value)
+    private void OnScoreChange(int value)
     {
         score.text = "Score: " + value;
     }
 
-    void OnCitizensKilledChange(int value)
+    private void OnCitizensKilledChange(int value)
     {
         citizensKilled.text = "Citizens killed: " + value;
     }
 
-    void OnAliensKilledChange(int value)
+    private void OnAliensKilledChange(int value)
     {
         aliensKilled.text = "Aliens killed: " + value;
     }
 
-    void OnTakeDamage(float fillAmoun)
+    private void OnTakeDamage(float fillAmoun)
     {
         lifebar.fillAmount = fillAmoun;
     }
 
-    void OnCountDownChange(int countDown)
+    private void OnCountDownChange(int countDown)
     {   
         countDownText.text = countDown.ToString();
     }

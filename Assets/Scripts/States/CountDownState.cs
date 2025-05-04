@@ -3,7 +3,6 @@ using UnityEngine;
 class CountDownState : IState
 {
     private float timer = 0;
-
     private int secondCount = 0;
     private int timeToWait = 3;
 

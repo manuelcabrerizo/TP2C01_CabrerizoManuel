@@ -4839,12 +4839,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4449111645816785168}
+  - component: {fileID: 2535465557307683795}
   - component: {fileID: -6742006945740110405}
   - component: {fileID: -3604511144732029244}
   - component: {fileID: 4259163399629241815}
   - component: {fileID: 5457686212467680979}
   m_Layer: 10
-  m_Name: Bullet
+  m_Name: DroneBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4866,6 +4867,18 @@ Transform:
   - {fileID: 8985068350059356670}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2535465557307683795
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7973679299891028384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5ba9812d344b484694aa26fcc2c258a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!23 &-6742006945740110405
 MeshRenderer:
   m_ObjectHideFlags: 0

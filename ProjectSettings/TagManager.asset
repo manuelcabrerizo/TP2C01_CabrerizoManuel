@@ -16,7 +16,7 @@ TagManager:
   - Enemy
   - Citizen
   - Player
-  - Bullet
+  - DroneBullet
   - AlienBullet
   - 
   - 

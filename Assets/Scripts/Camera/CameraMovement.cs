@@ -5,10 +5,8 @@ public class CameraMovement : MonoBehaviour
     [SerializeField] private CameraData cameraData;
     [SerializeField] private GameObject target;
     [SerializeField] private LayerMask wallLayer;
-
-    private bool isFirstPerson = false;
     [SerializeField] private GameObject gun;
-
+    private bool isFirstPerson = false;
     private float _yaw = 0;
     private float _pitch = 0;
     

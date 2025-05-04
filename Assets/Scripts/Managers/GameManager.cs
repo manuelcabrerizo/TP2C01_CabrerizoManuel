@@ -1,16 +1,10 @@
 using UnityEngine;
-public class GameManager : MonoBehaviour
-{
-    public static GameManager Instance;
-    
+public class GameManager : MonoBehaviourSingleton<GameManager>
+{    
     [SerializeField] private DroneState drone;
     DroneMovement droneMovement;
     DroneShoot droneShoot;
     [SerializeField] CameraMovement cameraMovement;
-
-    public CitizenSpawner citizenSpawner;
-    public BulletSpawner playerBulletSpawner;
-    public BulletSpawner alienBulletSpawner;
 
     private int score = 0;
     private int alienAlive = 0;
@@ -23,21 +17,11 @@ public class GameManager : MonoBehaviour
     private GameOverState gameOverState;
     private WinState winState;
     
-    private void Awake()
+    protected override void OnAwaken()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-            return;
-        }
         // The singletons needs to be initialized in this order
         EventManager.Instance.Init();
         UIManager.Instance.Init();
-        EnemyManager.Instance.Init();
     }
 
     private void Start()
@@ -69,10 +53,10 @@ public class GameManager : MonoBehaviour
         EventManager.Instance.onAliensKilledChange.Invoke(aliensKill);
 
         drone.Reset();
-        playerBulletSpawner.Clear();
-        alienBulletSpawner.Clear();
-        citizenSpawner.Clear();
-        citizenSpawner.SpawnEnemies(data.citizenCount);
+        BulletSpawner.Instance.Clear<DroneBullet>();
+        BulletSpawner.Instance.Clear<AlienBullet>();
+        CitizenSpawner.Instance.Clear();
+        CitizenSpawner.Instance.SpawnAll(data.citizenCount);
 
         SetCountDownState();
     }

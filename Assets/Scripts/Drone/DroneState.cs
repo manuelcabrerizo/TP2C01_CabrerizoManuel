@@ -3,7 +3,6 @@ using UnityEngine.UI;
 
 public class DroneState : MonoBehaviour
 {
-    // TODO: use playerData
     [SerializeField] private PlayerData playerData;
     private float life;
 

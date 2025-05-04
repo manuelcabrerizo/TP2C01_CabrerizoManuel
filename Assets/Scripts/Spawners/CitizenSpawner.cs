@@ -1,69 +1,32 @@
-using System.Collections.Generic;
 using UnityEngine;
 
-public class CitizenSpawner : MonoBehaviour
+public class CitizenSpawner : MonoBehaviourSingleton<CitizenSpawner>
 {
-    [SerializeField] Citizen citizenPrefab;
-    [SerializeField] GameObject parent;
-    private PoolAllocator<Citizen> citizenPool;
-    private List<Citizen> spawnedCitizens;
+    [SerializeField] private PoolManager poolManager;
 
-    private void Awake()
-    {
-        citizenPool = new PoolAllocator<Citizen>(OnCreatePooledObject,
-            OnDestroyPooledObject, OnGetFromPool, OnReleaseToPool);
-        spawnedCitizens = new List<Citizen>();   
-    }
+    [SerializeField] Citizen citizenPrefab;
 
     private void Start()
     {
+        poolManager.InitPool(citizenPrefab, transform, 200);
         EventManager.Instance.onCitizenRelease.AddListener(OnCitizenRelease);
     }
 
     public void Clear()
     {
-        for(int i = 0; i < spawnedCitizens.Count; ++i)
-        {
-            citizenPool.Release(spawnedCitizens[i]);
-        }
-        spawnedCitizens.Clear();
+        poolManager.Clear<Citizen>();
     }
 
-    public void SpawnEnemies(int count)
+    public void SpawnAll(int count)
     {
         for(int i = 0; i < count; ++i)
         {
-            spawnedCitizens.Add(citizenPool.Get());
+            poolManager.Get<Citizen>(transform);
         }
     }
 
     private void OnCitizenRelease(Citizen citizen)
     {
-        spawnedCitizens.Remove(citizen);
-        citizenPool.Release(citizen);
-    }
-
-    private Citizen OnCreatePooledObject()
-    {
-        Citizen citizen = Instantiate(citizenPrefab);
-        citizen.transform.SetParent(parent.transform);
-        return citizen;
-    }
-
-    private void OnReleaseToPool(Citizen citizen)
-    {
-        citizen.OnRelease();
-        citizen.gameObject.SetActive(false);
-    }
-
-    private void OnGetFromPool(Citizen citizen)
-    {
-        citizen.gameObject.SetActive(true);
-        citizen.OnAquire();
-    }
-
-    private void OnDestroyPooledObject(Citizen citizen)
-    {
-        Destroy(citizen);
+        poolManager.Release(citizen);
     }
 }

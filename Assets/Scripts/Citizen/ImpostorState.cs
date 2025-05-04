@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,22 +6,17 @@ public class ImpostorState : MonoBehaviour, IState
 {
     [SerializeField] private Transform target;
     [SerializeField] private Transform shoot;
+
+    private List<AlienBullet> spawnedBullets;
+
     private Citizen citizen;
     private float timeToShoot = 1.0f;
     private float shootTimer = 0;
-    private BulletSpawner spawner;
-
-    private List<SpawnedBullet> bullets;
 
     private void Awake()
     {
         citizen = GetComponent<Citizen>();
-        bullets = new List<SpawnedBullet>();
-    }
-
-    private void Start()
-    {
-        spawner = GameManager.Instance.alienBulletSpawner;
+        spawnedBullets = new List<AlienBullet>();
     }
 
     public void OnEnter()
@@ -33,16 +27,15 @@ public class ImpostorState : MonoBehaviour, IState
 
     public void OnExit()
     {
-        for(int i = 0; i < bullets.Count; ++i)
+        foreach(AlienBullet bullet in spawnedBullets)
         {
-            spawner.ReleaseBullet(bullets[i]);
+            BulletSpawner.Instance.Release(bullet);
         }
-        bullets.Clear();
+        spawnedBullets.Clear();
     }
 
     public void OnUpdate(float dt)
     {
-        
         Vector3 playerPosition = GameManager.Instance.GetPlayerPosition();
         Vector3 toPlayer = playerPosition - transform.position;
         toPlayer.y = 0;
@@ -52,21 +45,20 @@ public class ImpostorState : MonoBehaviour, IState
         target.position = GameManager.Instance.GetPlayerPosition();;
         if(shootTimer <= 0.0f)
         {
-            SpawnedBullet bullet = spawner.SpawnBullet();
-            bullet.go.transform.SetParent(spawner.transform);
-            bullet.go.transform.position = shoot.transform.position;
-            bullets.Add(bullet);
+            AlienBullet bullet = BulletSpawner.Instance.Spawn<AlienBullet>();
+            bullet.transform.position = shoot.transform.position;
+            spawnedBullets.Add(bullet);
             StartCoroutine(BulletUpdate(bullet));
             shootTimer = timeToShoot;
         }
         shootTimer -= dt;
-    }
+    }  
 
     public void OnFixedUpdate(float dt)
     {
-    }
-
-    private IEnumerator BulletUpdate(SpawnedBullet bullet)
+    }  
+    
+    private IEnumerator BulletUpdate(AlienBullet bullet)
     {
         Vector3 pos = shoot.transform.position;
         Vector3 shootPosition = GameManager.Instance.GetPlayerPosition();;
@@ -74,17 +66,17 @@ public class ImpostorState : MonoBehaviour, IState
         Vector3 velocity  = shootDirection * 10.0f;
 
         float timer = 5.0f;
-        while (bullet.active && timer > 0.0f)
+        while (bullet.isActiveAndEnabled && timer > 0.0f)
         {
-            bullet.go.transform.position += velocity * Time.deltaTime;   
+            bullet.transform.position += velocity * Time.deltaTime;   
             yield return new WaitForEndOfFrame();
             timer -= Time.deltaTime;
         }
         
-        bullets.Remove(bullet);
-        if (bullet.active)
+        if (bullet.isActiveAndEnabled)
         {
-            spawner.ReleaseBullet(bullet);
+            spawnedBullets.Remove(bullet);
+            BulletSpawner.Instance.Release(bullet);
         }
     }
 }

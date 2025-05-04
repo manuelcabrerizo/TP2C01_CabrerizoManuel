@@ -1,10 +1,8 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-public class EventManager : MonoBehaviour
+public class EventManager : MonoBehaviourSingleton<EventManager>
 {
-    public static EventManager Instance;
-
     public UnityEvent<RaycastHit, Ray> onEnemyHit;
     public UnityEvent<Citizen> onCitizenRelease;
     public UnityEvent<int> onAlienAliveChange;
@@ -22,21 +20,7 @@ public class EventManager : MonoBehaviour
     public UnityEvent onHideWinUI;
     public UnityEvent onShowGameOverUI;
     public UnityEvent onHideGameOverUI;
-
     public UnityEvent<int> onCountDownChange;
-
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-            return;
-        }
-    }
 
     public void Init()
     {
@@ -60,7 +44,7 @@ public class EventManager : MonoBehaviour
         onCountDownChange = new UnityEvent<int>();
     }
 
-    private void OnDestroy()
+    protected override void OnDestroyed()
     {
         onEnemyHit.RemoveAllListeners();
         onCitizenRelease.RemoveAllListeners();

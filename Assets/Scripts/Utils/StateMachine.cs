@@ -1,13 +1,5 @@
 using System.Collections.Generic;
 
-public interface IState
-{
-    public void OnEnter();
-    public void OnUpdate(float dt);
-    public void OnFixedUpdate(float dt);
-    public void OnExit();
-}
-
 public class StateMachine
 {
     private Stack<IState> states;

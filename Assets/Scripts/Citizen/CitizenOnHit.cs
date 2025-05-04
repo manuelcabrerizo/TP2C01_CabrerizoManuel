@@ -17,16 +17,9 @@ public class CitizenOnHit : MonoBehaviour
     {
         if(Utils.CheckCollisionLayer(other.gameObject, hitLayer))
         {
-            if(citizen.IsImpostor())
+            if(citizen.IsImpostor() && !citizen.IsDetected())
             {
-                if(citizen.IsDetected())
-                {
-                    HitAlien();
-                }
-                else
-                {
-                    citizen.ImpostorDetected();
-                }
+                citizen.ImpostorDetected();
             }
             else
             {
@@ -37,23 +30,19 @@ public class CitizenOnHit : MonoBehaviour
 
     private void HitCitizen()
     {
-        citizen.ApplayDamage(1);
+        citizen.TakeDamage(1);
         frontImage.fillAmount = (float)citizen.Life / (float)citizenData.MaxLife;
         if(citizen.Life <= 0)
         {
+            if(citizen.IsImpostor())
+            {
+                GameManager.Instance.AlienKill();
+            }
+            else
+            {
+                GameManager.Instance.CitizenKill();
+            }
             EventManager.Instance.onCitizenRelease.Invoke(citizen);
-            GameManager.Instance.CitizenKill();
-        }
-    }
-
-    private void HitAlien()
-    {
-        citizen.ApplayDamage(1);
-        frontImage.fillAmount = (float)citizen.Life / (float)citizenData.MaxLife;
-        if(citizen.Life <= 0)
-        {
-            EventManager.Instance.onCitizenRelease.Invoke(citizen);
-            GameManager.Instance.AlienKill();
         }
     }
 }

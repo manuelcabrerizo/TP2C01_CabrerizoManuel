@@ -281,7 +281,6 @@ GameObject:
   - component: {fileID: 4647913608017784132}
   - component: {fileID: 666924112840997681}
   - component: {fileID: 1524320758948297620}
-  - component: {fileID: 1144723239847454815}
   - component: {fileID: -504276804091325965}
   - component: {fileID: 3151204412271531699}
   - component: {fileID: 7963390706433656211}
@@ -400,19 +399,6 @@ MonoBehaviour:
   target: {fileID: 5196504615863110670}
   shoot: {fileID: 987125638779567432}
   spawner: {fileID: 0}
---- !u!114 &1144723239847454815
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8832563721834669827}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7cba3c834e0837c448d77fa80ebf3487, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bulletPrefab: {fileID: 7973679299891028384, guid: 0fb9840a6328be946b76b5d6ac40fe56, type: 3}
 --- !u!136 &-504276804091325965
 CapsuleCollider:
   m_ObjectHideFlags: 0

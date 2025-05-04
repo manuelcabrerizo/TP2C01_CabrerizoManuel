@@ -1,93 +1,41 @@
-using System.Collections.Generic;
 using UnityEngine;
 
-public class SpawnedBullet
+public class BulletSpawner : MonoBehaviourSingleton<BulletSpawner>
 {
-    public GameObject go;
-    public ParticleSystem particleSystem;
-    public Rigidbody body;
-    public bool active;
-}
+    [SerializeField] private PoolManager poolManager;
+    [SerializeField] private DroneBullet droneBulletPrefab;
+    [SerializeField] private AlienBullet alienBulletPrefab;
+    private Rigidbody prefabBody;
 
-public class BulletSpawner : MonoBehaviour
-{
-    [SerializeField] private GameObject bulletPrefab;
-
-    private PoolAllocator<SpawnedBullet> bulletPool;
-    private Dictionary<GameObject, SpawnedBullet> goToBullet;
-
-    private List<SpawnedBullet> spawnedBullets;
-
-    Rigidbody prefabBody;
-
-    private void Awake()
+    protected override void OnAwaken () 
     {
-        spawnedBullets = new List<SpawnedBullet>();
-        bulletPool = new PoolAllocator<SpawnedBullet>(OnCreatePooledObject, OnDestroyPooledObject, OnGetFromPool, OnReleaseToPool);
-        goToBullet = new Dictionary<GameObject, SpawnedBullet>();
-        prefabBody = bulletPrefab.GetComponent<Rigidbody>();
+        prefabBody = droneBulletPrefab.GetComponent<Rigidbody>();
     }
 
-    public void Clear()
+    private void Start()
     {
-        for(int i = 0; i < spawnedBullets.Count; ++i)
-        {
-            bulletPool.Release(spawnedBullets[i]);
-        }
-        spawnedBullets.Clear();
+        poolManager.InitPool(droneBulletPrefab, transform, 10);
+        poolManager.InitPool(alienBulletPrefab, transform, 100);
     }
 
-    public SpawnedBullet SpawnBullet()
+    public T Spawn<T>() where T : Bullet
     {
-        SpawnedBullet bullet = bulletPool.Get();
-        spawnedBullets.Add(bullet);
+        T bullet = poolManager.Get<T>(transform);
         return bullet;
     }
 
-    public void ReleaseBullet(SpawnedBullet bullet)
+    public void Release<T>(T bullet) where T : Bullet
     {
-        spawnedBullets.Remove(bullet);
-        bulletPool.Release(bullet);
+        poolManager.Release(bullet);
     }
 
-    public SpawnedBullet GetSpawnBullet(GameObject go)
+    public void Clear<T>() where T : Bullet
     {
-        return goToBullet[go];
+        poolManager.Clear<T>();
     }
 
     public float GetBulletMass()
-    {   
+    {
         return prefabBody.mass;
-    }
-
-    private SpawnedBullet OnCreatePooledObject()
-    {
-        SpawnedBullet bullet = new SpawnedBullet();
-        bullet.go = Instantiate(bulletPrefab);
-        bullet.go.SetActive(false);
-        bullet.particleSystem = bullet.go.GetComponentInChildren<ParticleSystem>();
-        bullet.body = bullet.go.GetComponent<Rigidbody>();
-        bullet.active = false;
-        goToBullet.Add(bullet.go, bullet);
-        return bullet;
-    }
-
-    private void OnReleaseToPool(SpawnedBullet bullet)
-    {
-        bullet.particleSystem.Stop();
-        bullet.active = false;
-        bullet.go.SetActive(bullet.active);
-    }
-
-    private void OnGetFromPool(SpawnedBullet bullet)
-    {
-        bullet.particleSystem.Play();
-        bullet.active = true;
-        bullet.go.SetActive(bullet.active);
-    }
-
-    private void OnDestroyPooledObject(SpawnedBullet bullet)
-    {
-        Destroy(bullet.go);
     }
 }

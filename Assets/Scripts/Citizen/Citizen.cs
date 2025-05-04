@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Citizen : MonoBehaviour
+public class Citizen : MonoBehaviour, IPooleable, IDamagable
 {
     [SerializeField] private CitizenData citizenData;
     [SerializeField] private MovementGraph movementGraph;
@@ -53,8 +53,9 @@ public class Citizen : MonoBehaviour
         fsm.FixedUpdate(Time.fixedDeltaTime);
     }
 
-    public void OnAquire()
+    public void OnGet()
     {
+        gameObject.SetActive(true);
         lifebar.gameObject.SetActive(false);
         male.SetActive(false);
         female.SetActive(false);
@@ -97,6 +98,7 @@ public class Citizen : MonoBehaviour
     public void OnRelease()
     {
         fsm.Clear();
+        gameObject.SetActive(false);
     }
 
     public void SetRandomState()
@@ -129,9 +131,8 @@ public class Citizen : MonoBehaviour
         fsm.ChangeState(impostorState);
     }
 
-    public void ApplayDamage(int damage)
+    public void TakeDamage(int damage)
     {
         life -= damage;
     }
-
 }

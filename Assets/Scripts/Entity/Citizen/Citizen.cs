@@ -1,10 +1,9 @@
 using UnityEngine;
 
-public class Citizen : MonoBehaviour, IPooleable, IDamagable
+public class Citizen : Entity
 {
     [SerializeField] private CitizenData citizenData;
     [SerializeField] private MovementGraph movementGraph;
-    [SerializeField] private Canvas lifebar;
     [SerializeField] private GameObject male;
     [SerializeField] private GameObject female;
     [SerializeField] private GameObject alien;
@@ -22,8 +21,6 @@ public class Citizen : MonoBehaviour, IPooleable, IDamagable
     private Animator animator;
     public Animator Animator => animator;
     private ParticleSystem particles;
-    private int life;
-    public int Life => life;
     private bool impostor = false;
     private bool detected = false;
 
@@ -53,10 +50,9 @@ public class Citizen : MonoBehaviour, IPooleable, IDamagable
         fsm.FixedUpdate(Time.fixedDeltaTime);
     }
 
-    public void OnGet()
+    public override void OnGet()
     {
-        gameObject.SetActive(true);
-        lifebar.gameObject.SetActive(false);
+        base.OnGet();
         male.SetActive(false);
         female.SetActive(false);
         alien.SetActive(false);
@@ -95,10 +91,10 @@ public class Citizen : MonoBehaviour, IPooleable, IDamagable
         life = citizenData.MaxLife; 
     }
 
-    public void OnRelease()
+    public override void OnRelease()
     {
         fsm.Clear();
-        gameObject.SetActive(false);
+        base.OnRelease();
     }
 
     public void SetRandomState()
@@ -116,7 +112,6 @@ public class Citizen : MonoBehaviour, IPooleable, IDamagable
 
     public bool IsImpostor()
     {
-        lifebar.gameObject.SetActive(true);
         return impostor;
     }
 
@@ -131,8 +126,16 @@ public class Citizen : MonoBehaviour, IPooleable, IDamagable
         fsm.ChangeState(impostorState);
     }
 
-    public void TakeDamage(int damage)
+    public override void Heal(int healAmount)
     {
-        life -= damage;
+        if(impostor && detected)
+        {
+            life += healAmount;
+            if(life > citizenData.MaxLife)
+            {
+                life = citizenData.MaxLife;
+            }
+            frontImage.fillAmount = (float)life / (float)citizenData.MaxLife;
+        }
     }
 }

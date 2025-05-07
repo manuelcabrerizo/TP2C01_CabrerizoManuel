@@ -82,7 +82,7 @@ public class DroneShoot : MonoBehaviour
         while (bullet.isActiveAndEnabled && timer > 0.0f)
         {
             float time = Time.deltaTime;
-            bullet.Move(velocity * time + (acceleration * time * time));
+            bullet.Move(velocity * time + (acceleration * (time * time)));
             velocity += acceleration * time;
             yield return new WaitForEndOfFrame();
             timer -= time;

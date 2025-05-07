@@ -8,6 +8,11 @@ public class PoolManager : MonoBehaviour
     private Dictionary<Type, Stack<IPooleable>> freePools = new Dictionary<Type, Stack<IPooleable>>();
     private Dictionary<Type, List<IPooleable>> inUsePools = new Dictionary<Type, List<IPooleable>>();
 
+    private void Awake()
+    {
+        DontDestroyOnLoad(gameObject);
+    }
+
     public void InitPool<T>(T prefab, Transform parent = null, int count = 0) where T : MonoBehaviour, IPooleable
     {
         Debug.Assert(!prefabs.ContainsKey(typeof(T)), "Pool Already Initialized!");

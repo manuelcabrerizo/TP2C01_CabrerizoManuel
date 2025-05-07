@@ -25,7 +25,7 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
 
     [SerializeField] private TextMeshProUGUI countDownText;
     
-    public void Init()
+    protected override void OnAwaken()
     {
         EventManager.Instance.onShowCountDownUI.AddListener(OnShowCountDownUI);
         EventManager.Instance.onHideCountDownUI.AddListener(OnHideCountDownUI);

@@ -17,13 +17,6 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
     private GameOverState gameOverState;
     private WinState winState;
     
-    protected override void OnAwaken()
-    {
-        // The singletons needs to be initialized in this order
-        EventManager.Instance.Init();
-        UIManager.Instance.Init();
-    }
-
     private void Start()
     {
         fsm = new StateMachine();
@@ -55,8 +48,18 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
         drone.Reset();
         BulletSpawner.Instance.Clear<DroneBullet>();
         BulletSpawner.Instance.Clear<AlienBullet>();
-        CitizenSpawner.Instance.Clear();
-        CitizenSpawner.Instance.SpawnAll(data.citizenCount);
+        EntitySpawner.Instance.Clear<Citizen>();
+        EntitySpawner.Instance.Clear<AssaultEnemy>();
+        EntitySpawner.Instance.Clear<ReconEnemy>();
+        for(int i = 0; i < data.citizenCount; ++i)
+        {
+            EntitySpawner.Instance.Spawn<Citizen>();
+        }
+
+        EntitySpawner.Instance.Spawn<AssaultEnemy>();
+        EntitySpawner.Instance.Spawn<AssaultEnemy>();
+        EntitySpawner.Instance.Spawn<ReconEnemy>();
+        EntitySpawner.Instance.Spawn<ReconEnemy>();
 
         SetCountDownState();
     }
@@ -146,5 +149,10 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
     public Vector3 GetPlayerPosition()
     {
         return drone.transform.position;
+    }
+
+    public Rigidbody GetPlayerBody()
+    {
+        return drone.GetComponent<Rigidbody>();
     }
 }

@@ -831,6 +831,58 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playButton: {fileID: 1130855360}
   exitButton: {fileID: 1342901638}
+--- !u!1 &1085621222
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1085621223}
+  - component: {fileID: 1085621224}
+  m_Layer: 0
+  m_Name: BulletSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1085621223
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1085621222}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1085621224
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1085621222}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cba3c834e0837c448d77fa80ebf3487, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dontDestroyOnLoad: 1
+  poolManager: {fileID: 1351038654}
+  droneBulletPrefab: {fileID: 2535465557307683795, guid: 2298e1d651e637c4f8e6da1ec05bb53c, type: 3}
+  alienBulletPrefab: {fileID: 5438741439835846343, guid: 0fb9840a6328be946b76b5d6ac40fe56, type: 3}
+  smallBulletPrefab: {fileID: 8526091984862877930, guid: 7691e5fba401e2a428a9fc739607bba2, type: 3}
+  initialDroneBulletCount: 10
+  initialAlienBulletCount: 50
+  initialSmallBulletCount: 50
 --- !u!1 &1130855358
 GameObject:
   m_ObjectHideFlags: 0
@@ -952,6 +1004,105 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1130855358}
   m_CullTransparentMesh: 1
+--- !u!1 &1170204659
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1170204661}
+  - component: {fileID: 1170204660}
+  m_Layer: 0
+  m_Name: EventManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1170204660
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1170204659}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab29b3a322e80f74aa16b3ae57a3b6ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dontDestroyOnLoad: 1
+  onEnemyHit:
+    m_PersistentCalls:
+      m_Calls: []
+  onEntityRelease:
+    m_PersistentCalls:
+      m_Calls: []
+  onAlienAliveChange:
+    m_PersistentCalls:
+      m_Calls: []
+  onScoreChange:
+    m_PersistentCalls:
+      m_Calls: []
+  onCitizensKilledChange:
+    m_PersistentCalls:
+      m_Calls: []
+  onAliensKilledChange:
+    m_PersistentCalls:
+      m_Calls: []
+  onTakeDamage:
+    m_PersistentCalls:
+      m_Calls: []
+  onWin:
+    m_PersistentCalls:
+      m_Calls: []
+  onGameOver:
+    m_PersistentCalls:
+      m_Calls: []
+  onShowCountDownUI:
+    m_PersistentCalls:
+      m_Calls: []
+  onHideCountDownUI:
+    m_PersistentCalls:
+      m_Calls: []
+  onShowPlayingUI:
+    m_PersistentCalls:
+      m_Calls: []
+  onHidePlayingUI:
+    m_PersistentCalls:
+      m_Calls: []
+  onShowWinUI:
+    m_PersistentCalls:
+      m_Calls: []
+  onHideWinUI:
+    m_PersistentCalls:
+      m_Calls: []
+  onShowGameOverUI:
+    m_PersistentCalls:
+      m_Calls: []
+  onHideGameOverUI:
+    m_PersistentCalls:
+      m_Calls: []
+  onCountDownChange:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!4 &1170204661
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1170204659}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1259349344
 GameObject:
   m_ObjectHideFlags: 0
@@ -1244,6 +1395,50 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1342901636}
   m_CullTransparentMesh: 1
+--- !u!1 &1351038652
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1351038653}
+  - component: {fileID: 1351038654}
+  m_Layer: 0
+  m_Name: PoolManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1351038653
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1351038652}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1351038654
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1351038652}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3e6ac9541555724dbcdd15797e6710f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1747255083
 GameObject:
   m_ObjectHideFlags: 0
@@ -1336,6 +1531,58 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1851330656
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1851330657}
+  - component: {fileID: 1851330658}
+  m_Layer: 0
+  m_Name: EntitySpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1851330657
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1851330656}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1851330658
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1851330656}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d0e17e0341b2f94ba9940ebe7abfeb9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dontDestroyOnLoad: 1
+  poolManager: {fileID: 1351038654}
+  citizenPrefab: {fileID: -7730603471056293447, guid: 2e6787243c25af44abd27bd504a93fde, type: 3}
+  assaultEnemyPrefab: {fileID: 3213858654103622194, guid: 8ba128cea1d9b2c4285079f3f770b369, type: 3}
+  reconEnemyPrefab: {fileID: 5314306075060291520, guid: e4dec457a2723d64eb626354a6e884c3, type: 3}
+  initialCitizenCount: 200
+  initialAssaultEnemyCount: 2
+  initialReconEnemyCount: 2
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -1345,3 +1592,7 @@ SceneRoots:
   - {fileID: 968976465}
   - {fileID: 236821792}
   - {fileID: 1317077968}
+  - {fileID: 1085621223}
+  - {fileID: 1851330657}
+  - {fileID: 1351038653}
+  - {fileID: 1170204661}

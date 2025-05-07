@@ -323,6 +323,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dece153f6fd87854d87d6130ef0fb0e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  frontImage: {fileID: 7103103663961123280}
   citizenData: {fileID: 11400000, guid: 8058d5862a039dc40bab5b6462b191d6, type: 2}
   movementGraph: {fileID: 4946348931718968220, guid: 715405f7a9a69744fb328be904f000fa, type: 3}
   lifebar: {fileID: 4472312906989893671}
@@ -345,7 +346,6 @@ MonoBehaviour:
   hitLayer:
     serializedVersion: 2
     m_Bits: 1024
-  frontImage: {fileID: 7103103663961123280}
 --- !u!114 &5722372861423768897
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -398,7 +398,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 5196504615863110670}
   shoot: {fileID: 987125638779567432}
-  spawner: {fileID: 0}
 --- !u!136 &-504276804091325965
 CapsuleCollider:
   m_ObjectHideFlags: 0

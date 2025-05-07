@@ -1,10 +1,14 @@
 using UnityEngine;
 
-public class BulletSpawner : MonoBehaviourSingleton<BulletSpawner>
+public class BulletSpawner :  Spawner<BulletSpawner, Bullet>
 {
-    [SerializeField] private PoolManager poolManager;
+    // TODO: move this to a scriptable object
     [SerializeField] private DroneBullet droneBulletPrefab;
     [SerializeField] private AlienBullet alienBulletPrefab;
+    [SerializeField] private SmallBullet smallBulletPrefab;
+    [SerializeField] private int initialDroneBulletCount = 10;
+    [SerializeField] private int initialAlienBulletCount = 50;
+    [SerializeField] private int initialSmallBulletCount = 50;
     private Rigidbody prefabBody;
 
     protected override void OnAwaken () 
@@ -14,24 +18,9 @@ public class BulletSpawner : MonoBehaviourSingleton<BulletSpawner>
 
     private void Start()
     {
-        poolManager.InitPool(droneBulletPrefab, transform, 10);
-        poolManager.InitPool(alienBulletPrefab, transform, 100);
-    }
-
-    public T Spawn<T>() where T : Bullet
-    {
-        T bullet = poolManager.Get<T>(transform);
-        return bullet;
-    }
-
-    public void Release<T>(T bullet) where T : Bullet
-    {
-        poolManager.Release(bullet);
-    }
-
-    public void Clear<T>() where T : Bullet
-    {
-        poolManager.Clear<T>();
+        poolManager.InitPool(droneBulletPrefab, transform, initialDroneBulletCount);
+        poolManager.InitPool(alienBulletPrefab, transform, initialAlienBulletCount);
+        poolManager.InitPool(smallBulletPrefab, transform, initialSmallBulletCount);
     }
 
     public float GetBulletMass()

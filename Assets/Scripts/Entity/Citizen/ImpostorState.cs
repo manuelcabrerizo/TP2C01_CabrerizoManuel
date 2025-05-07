@@ -42,7 +42,7 @@ public class ImpostorState : MonoBehaviour, IState
         toPlayer.Normalize();
         transform.rotation = Quaternion.LookRotation(toPlayer, transform.up);
         
-        target.position = GameManager.Instance.GetPlayerPosition();;
+        target.position = GameManager.Instance.GetPlayerPosition();
         if(shootTimer <= 0.0f)
         {
             AlienBullet bullet = BulletSpawner.Instance.Spawn<AlienBullet>();
@@ -58,6 +58,7 @@ public class ImpostorState : MonoBehaviour, IState
     {
     }  
     
+    // TODO: move this to AlienBullet class
     private IEnumerator BulletUpdate(AlienBullet bullet)
     {
         Vector3 pos = shoot.transform.position;

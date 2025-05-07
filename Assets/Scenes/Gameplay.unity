@@ -3431,6 +3431,12 @@ MonoBehaviour:
   onLoadingBarChange:
     m_PersistentCalls:
       m_Calls: []
+  onEnemyDamage:
+    m_PersistentCalls:
+      m_Calls: []
+  onCitizenDamage:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1987553400
 GameObject:
   m_ObjectHideFlags: 0
@@ -3935,6 +3941,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1314758496247218134, guid: 3d80202c07beb004895e32ef68e8a16f, type: 3}
+      propertyPath: m_Parameters.textureScale.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1314758496247218134, guid: 3d80202c07beb004895e32ef68e8a16f, type: 3}
+      propertyPath: m_Parameters.textureScale.y
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 3288209660310731445, guid: 3d80202c07beb004895e32ef68e8a16f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 21
@@ -3986,6 +4000,14 @@ PrefabInstance:
     - target: {fileID: 5967584548522947803, guid: 3d80202c07beb004895e32ef68e8a16f, type: 3}
       propertyPath: hitParticles
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5967584548522947803, guid: 3d80202c07beb004895e32ef68e8a16f, type: 3}
+      propertyPath: enemyMask.m_Bits
+      value: 128
+      objectReference: {fileID: 0}
+    - target: {fileID: 5967584548522947803, guid: 3d80202c07beb004895e32ef68e8a16f, type: 3}
+      propertyPath: citizenMask.m_Bits
+      value: 256
       objectReference: {fileID: 0}
     - target: {fileID: 9123519681762293765, guid: 3d80202c07beb004895e32ef68e8a16f, type: 3}
       propertyPath: m_Name

@@ -20,8 +20,9 @@ public class EventManager : MonoBehaviourSingleton<EventManager>
     public UnityEvent onShowGameOverUI;
     public UnityEvent onHideGameOverUI;
     public UnityEvent<int> onCountDownChange;
-
     public UnityEvent<float> onLoadingBarChange;
+    public UnityEvent<GameObject> onEnemyDamage;
+    public UnityEvent<GameObject> onCitizenDamage;
 
     protected override void OnAwaken()
     {
@@ -43,6 +44,8 @@ public class EventManager : MonoBehaviourSingleton<EventManager>
         onHideGameOverUI = new UnityEvent();
         onCountDownChange = new UnityEvent<int>();
         onLoadingBarChange = new UnityEvent<float>();
+        onEnemyDamage = new UnityEvent<GameObject>();
+        onCitizenDamage = new UnityEvent<GameObject>();
     }
 
     protected override void OnDestroyed()
@@ -65,5 +68,7 @@ public class EventManager : MonoBehaviourSingleton<EventManager>
         onHideGameOverUI.RemoveAllListeners();
         onCountDownChange.RemoveAllListeners();
         onLoadingBarChange.RemoveAllListeners();
+        onEnemyDamage.RemoveAllListeners();
+        onCitizenDamage.RemoveAllListeners();
     }
 }

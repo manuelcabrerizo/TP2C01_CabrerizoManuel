@@ -12,8 +12,8 @@ public class DroneShoot : MonoBehaviour
     [SerializeField] private PlayerData playerData;
     [SerializeField] private Camera cam;
     [SerializeField] private LayerMask enemyMask;
-    [SerializeField] private GameObject bulletPrefab;
-    [SerializeField] private ParticleSystem hitParticles;
+    [SerializeField] private LayerMask citizenMask;
+
     [SerializeField] GameObject gun;
     // Line renderer
     private LineRenderer lineRenderer;
@@ -105,6 +105,21 @@ public class DroneShoot : MonoBehaviour
             bullet.transform.position = gun.transform.position;
             bullet.transform.rotation = Quaternion.LookRotation(transform.forward, transform.up);
             StartCoroutine(SmallBulletUpdate(bullet));
+
+            Vector3 startPosition = bullet.transform.position;
+            Vector3 finalPosition = cam.transform.position + cam.transform.forward * playerData.ShootDistance;
+            finalPosition += Vector3.up * 1.0f;
+            Vector3 direction = (finalPosition - startPosition).normalized;
+            Ray cameraRay = new Ray(startPosition, direction);
+            RaycastHit hit;
+            if (Physics.Raycast(cameraRay, out hit, playerData.ShootDistance, enemyMask))
+            {
+                EventManager.Instance.onEnemyDamage.Invoke(hit.collider.gameObject);
+            }
+            if (Physics.Raycast(cameraRay, out hit, playerData.ShootDistance, citizenMask))
+            {
+                EventManager.Instance.onCitizenDamage.Invoke(hit.collider.gameObject);
+            }
         }
     }
 
@@ -128,12 +143,15 @@ public class DroneShoot : MonoBehaviour
     public void PredictBlasterCannon()
     {
         Vector3 position = gun.transform.position;
+        Vector3 finalPosition = cam.transform.position + cam.transform.forward * playerData.ShootDistance;
+        finalPosition += Vector3.up * 1.0f;
+        Vector3 direction = (finalPosition - position).normalized;
         int i = 0;
         lineRenderer.SetPosition(i, position);
         float increment = playerData.ShootDistance / linePoints;
         for(i = 1; i < linePoints; i++)
         {
-            position += cam.transform.forward * increment;
+            position += direction * increment;
             lineRenderer.SetPosition(i, position);
         }
     }
@@ -160,19 +178,18 @@ public class DroneShoot : MonoBehaviour
     private IEnumerator SmallBulletUpdate(DroneSmallBullet bullet)
     {
         Vector3 startPosition = bullet.transform.position;
-        Vector3 endPosition = cam.transform.position + cam.transform.forward * playerData.ShootDistance;
+        Vector3 finalPosition = cam.transform.position + cam.transform.forward * playerData.ShootDistance;
+        finalPosition += Vector3.up * 1.0f;
         float t = 0.0f;
         while (t <= 1.0f && bullet.isActiveAndEnabled)
         {
-            bullet.transform.position = Vector3.Lerp(startPosition, endPosition, t);
+            bullet.transform.position = Vector3.Lerp(startPosition, finalPosition, t);
             yield return new WaitForEndOfFrame();
             t += 100.0f*(Time.deltaTime/playerData.ShootDistance);
         }
-
         if (bullet.isActiveAndEnabled)
         {
             BulletSpawner.Instance.Release(bullet);
         }
     }
-
 }

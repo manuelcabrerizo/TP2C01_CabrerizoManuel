@@ -10,19 +10,27 @@ public class CitizenOnHit : MonoBehaviour
     private void Awake()
     {
         citizen = GetComponent<Citizen>();
+        EventManager.Instance.onCitizenDamage.AddListener(OnCitizenDamage);
     }
     private void OnTriggerEnter(Collider other)
     {
         if(Utils.CheckCollisionLayer(other.gameObject, hitLayer))
         {
-            if(citizen.IsImpostor() && !citizen.IsDetected())
-            {
-                citizen.ImpostorDetected();
-            }
-            else
-            {
-                HitCitizen();
-            }
+            OnCitizenDamage(this.gameObject);
+        }
+    }
+
+    private void OnCitizenDamage(GameObject gameObject)
+    {
+        if(gameObject != this.gameObject) return;
+
+        if(citizen.IsImpostor() && !citizen.IsDetected())
+        {
+            citizen.ImpostorDetected();
+        }
+        else
+        {
+            HitCitizen();
         }
     }
 

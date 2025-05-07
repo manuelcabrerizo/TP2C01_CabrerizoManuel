@@ -26,6 +26,7 @@ public class StateMachine
 
     public void PopState()
     {
+        if(states.Count == 0) return;
         IState state = states.Pop();
         if (state != null)
         {
@@ -59,6 +60,7 @@ public class StateMachine
 
     public void Update(float dt)
     {
+        if(states.Count == 0) return;
         IState currentState = states.Peek();
         if (currentState != null)
         {
@@ -68,6 +70,7 @@ public class StateMachine
 
     public void FixedUpdate(float dt)
     {
+        if(states.Count == 0) return;
         IState currentState = states.Peek();
         if (currentState != null)
         {

@@ -8,7 +8,6 @@ public class LevelData
     public int citizenCount;
     [Range(0, 1)]
     public float alienPercentage;
-    public float alienShootRate;
 }
 
 [CreateAssetMenu(fileName = "LevelsData", menuName = "Levels/Data", order = 1)]

@@ -44,6 +44,5 @@ public class GameSceneManager : MonoBehaviourSingleton<GameSceneManager>
 
         operation.allowSceneActivation = true;
         loadingScene = null;
-        gameObject.SetActive(false);
     }
 }

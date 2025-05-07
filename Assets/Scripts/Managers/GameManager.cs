@@ -45,12 +45,7 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
         aliensKill = 0;
         EventManager.Instance.onAliensKilledChange.Invoke(aliensKill);
 
-        drone.Reset();
-        BulletSpawner.Instance.Clear<DroneBullet>();
-        BulletSpawner.Instance.Clear<AlienBullet>();
-        EntitySpawner.Instance.Clear<Citizen>();
-        EntitySpawner.Instance.Clear<AssaultEnemy>();
-        EntitySpawner.Instance.Clear<ReconEnemy>();
+        Reset();
         for(int i = 0; i < data.citizenCount; ++i)
         {
             EntitySpawner.Instance.Spawn<Citizen>();
@@ -62,6 +57,19 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
         EntitySpawner.Instance.Spawn<ReconEnemy>();
 
         SetCountDownState();
+    }
+
+    public void Reset()
+    {
+        fsm.Clear();
+        drone.Reset();
+        BulletSpawner.Instance.Clear<DroneBullet>();
+        BulletSpawner.Instance.Clear<AlienBullet>();
+        BulletSpawner.Instance.Clear<SmallBullet>();
+        BulletSpawner.Instance.Clear<DroneSmallBullet>();
+        EntitySpawner.Instance.Clear<Citizen>();
+        EntitySpawner.Instance.Clear<AssaultEnemy>();
+        EntitySpawner.Instance.Clear<ReconEnemy>();
     }
 
     public void SetCountDownState()

@@ -185,7 +185,7 @@ public class DroneShoot : MonoBehaviour
         {
             bullet.transform.position = Vector3.Lerp(startPosition, finalPosition, t);
             yield return new WaitForEndOfFrame();
-            t += 100.0f*(Time.deltaTime/playerData.ShootDistance);
+            t += 200.0f*(Time.deltaTime/playerData.ShootDistance);
         }
         if (bullet.isActiveAndEnabled)
         {

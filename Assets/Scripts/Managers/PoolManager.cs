@@ -2,16 +2,11 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PoolManager : MonoBehaviour
+public class PoolManager : MonoBehaviourSingleton<PoolManager>
 {
     private Dictionary<Type, IPooleable> prefabs = new Dictionary<Type, IPooleable>();
     private Dictionary<Type, Stack<IPooleable>> freePools = new Dictionary<Type, Stack<IPooleable>>();
     private Dictionary<Type, List<IPooleable>> inUsePools = new Dictionary<Type, List<IPooleable>>();
-
-    private void Awake()
-    {
-        DontDestroyOnLoad(gameObject);
-    }
 
     public void InitPool<T>(T prefab, Transform parent = null, int count = 0) where T : MonoBehaviour, IPooleable
     {

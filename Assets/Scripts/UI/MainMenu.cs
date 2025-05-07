@@ -6,11 +6,18 @@ public class MainMenu : MonoBehaviour
 {
     [SerializeField] private Button playButton;
     [SerializeField] private Button exitButton;
+    [SerializeField] private GameObject loadingBar;
+    [SerializeField] private Image lodingBarImage;
 
     private void Awake()
     {
         playButton.onClick.AddListener(OnPlayButtonClick);
         exitButton.onClick.AddListener(OnExitButtonClick);
+    }
+
+    private void Start()
+    {
+        EventManager.Instance.onLoadingBarChange.AddListener(OnLoadingBarChange);
     }
 
     private void Oestroy()
@@ -22,7 +29,8 @@ public class MainMenu : MonoBehaviour
 
     private void OnPlayButtonClick()
     {
-        SceneManager.LoadScene("Gameplay");
+        loadingBar.SetActive(true);
+        GameSceneManager.Instance.ChangeSceneTo("Gameplay");
     }
 
     private void OnExitButtonClick()
@@ -31,5 +39,10 @@ public class MainMenu : MonoBehaviour
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #endif
+    }
+
+    private void OnLoadingBarChange(float value)
+    {
+        lodingBarImage.fillAmount = value;
     }
 }

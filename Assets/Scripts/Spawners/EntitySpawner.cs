@@ -10,29 +10,28 @@ public class EntitySpawner : Spawner<EntitySpawner, Entity>
     [SerializeField] private int initialAssaultEnemyCount = 5;
     [SerializeField] private int initialReconEnemyCount = 5;
 
-    private void Start()
+    protected override void OnAwaken () 
     {
-        poolManager.InitPool(citizenPrefab, transform, initialCitizenCount);
-        poolManager.InitPool(assaultEnemyPrefab, transform, initialAssaultEnemyCount);
-        poolManager.InitPool(reconEnemyPrefab, transform, initialReconEnemyCount);
+        PoolManager.Instance.InitPool(citizenPrefab, transform, initialCitizenCount);
+        PoolManager.Instance.InitPool(assaultEnemyPrefab, transform, initialAssaultEnemyCount);
+        PoolManager.Instance.InitPool(reconEnemyPrefab, transform, initialReconEnemyCount);
         EventManager.Instance.onEntityRelease.AddListener(OnEntityRelease);
     }
 
-    // TODO: mabye this is no necesary 
     private void OnEntityRelease(Entity entity)
     {
         Entity test = null;
         if(test = entity as Citizen)
         {
-            poolManager.Release<Citizen>((Citizen)entity);
+            PoolManager.Instance.Release<Citizen>((Citizen)entity);
         }
         else if(test = entity as AssaultEnemy)
         {
-            poolManager.Release<AssaultEnemy>((AssaultEnemy)entity);
+            PoolManager.Instance.Release<AssaultEnemy>((AssaultEnemy)entity);
         }
         else if(test = entity as ReconEnemy)
         {
-            poolManager.Release<ReconEnemy>((ReconEnemy)entity);
+            PoolManager.Instance.Release<ReconEnemy>((ReconEnemy)entity);
         }
     }
 }

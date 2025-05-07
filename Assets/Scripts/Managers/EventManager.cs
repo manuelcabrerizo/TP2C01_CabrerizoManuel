@@ -3,7 +3,6 @@ using UnityEngine.Events;
 
 public class EventManager : MonoBehaviourSingleton<EventManager>
 {
-    public UnityEvent<RaycastHit, Ray> onEnemyHit;
     public UnityEvent<Entity> onEntityRelease;
     public UnityEvent<int> onAlienAliveChange;
     public UnityEvent<int> onScoreChange;
@@ -22,9 +21,10 @@ public class EventManager : MonoBehaviourSingleton<EventManager>
     public UnityEvent onHideGameOverUI;
     public UnityEvent<int> onCountDownChange;
 
+    public UnityEvent<float> onLoadingBarChange;
+
     protected override void OnAwaken()
     {
-        onEnemyHit = new UnityEvent<RaycastHit, Ray>();
         onEntityRelease = new UnityEvent<Entity>();
         onAlienAliveChange = new UnityEvent<int>();
         onScoreChange = new UnityEvent<int>();
@@ -42,11 +42,11 @@ public class EventManager : MonoBehaviourSingleton<EventManager>
         onShowGameOverUI = new UnityEvent();
         onHideGameOverUI = new UnityEvent();
         onCountDownChange = new UnityEvent<int>();
+        onLoadingBarChange = new UnityEvent<float>();
     }
 
     protected override void OnDestroyed()
     {
-        onEnemyHit.RemoveAllListeners();
         onEntityRelease.RemoveAllListeners();
         onAlienAliveChange.RemoveAllListeners();
         onScoreChange.RemoveAllListeners();
@@ -64,5 +64,6 @@ public class EventManager : MonoBehaviourSingleton<EventManager>
         onShowGameOverUI.RemoveAllListeners();
         onHideGameOverUI.RemoveAllListeners();
         onCountDownChange.RemoveAllListeners();
+        onLoadingBarChange.RemoveAllListeners();
     }
 }

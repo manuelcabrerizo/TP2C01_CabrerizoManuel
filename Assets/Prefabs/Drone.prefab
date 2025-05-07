@@ -253,11 +253,10 @@ MonoBehaviour:
   cam: {fileID: 0}
   enemyMask:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 384
   bulletPrefab: {fileID: 7973679299891028384, guid: 2298e1d651e637c4f8e6da1ec05bb53c, type: 3}
   hitParticles: {fileID: 0}
   gun: {fileID: 6446926419480522422}
-  spawner: {fileID: 0}
 --- !u!114 &3112525820893603368
 MonoBehaviour:
   m_ObjectHideFlags: 0

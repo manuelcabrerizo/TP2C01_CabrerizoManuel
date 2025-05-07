@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SmallBullet : Bullet
+public class DroneSmallBullet : Bullet
 {
     private TrailRenderer trailRenderer;
     private void Awake()

@@ -4,9 +4,11 @@ public class BulletSpawner :  Spawner<BulletSpawner, Bullet>
 {
     // TODO: move this to a scriptable object
     [SerializeField] private DroneBullet droneBulletPrefab;
+    [SerializeField] private DroneSmallBullet droneSmallBullet;
     [SerializeField] private AlienBullet alienBulletPrefab;
     [SerializeField] private SmallBullet smallBulletPrefab;
-    [SerializeField] private int initialDroneBulletCount = 10;
+    [SerializeField] private int initialDroneBulletCount = 15;
+    [SerializeField] private int initialDroneSmallBulletCount = 15;
     [SerializeField] private int initialAlienBulletCount = 50;
     [SerializeField] private int initialSmallBulletCount = 50;
     private Rigidbody prefabBody;
@@ -14,13 +16,10 @@ public class BulletSpawner :  Spawner<BulletSpawner, Bullet>
     protected override void OnAwaken () 
     {
         prefabBody = droneBulletPrefab.GetComponent<Rigidbody>();
-    }
-
-    private void Start()
-    {
-        poolManager.InitPool(droneBulletPrefab, transform, initialDroneBulletCount);
-        poolManager.InitPool(alienBulletPrefab, transform, initialAlienBulletCount);
-        poolManager.InitPool(smallBulletPrefab, transform, initialSmallBulletCount);
+        PoolManager.Instance.InitPool(droneBulletPrefab, transform, initialDroneBulletCount);
+        PoolManager.Instance.InitPool(droneSmallBullet, transform, initialDroneSmallBulletCount);
+        PoolManager.Instance.InitPool(alienBulletPrefab, transform, initialAlienBulletCount);
+        PoolManager.Instance.InitPool(smallBulletPrefab, transform, initialSmallBulletCount);
     }
 
     public float GetBulletMass()

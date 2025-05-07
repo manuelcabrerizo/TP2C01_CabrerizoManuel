@@ -1,6 +1,12 @@
 using System.Collections;
 using UnityEngine;
 
+public enum WeaponType
+{
+    RocketLauncher,
+    BlasterCannon
+}
+
 public class DroneShoot : MonoBehaviour
 {
     [SerializeField] private PlayerData playerData;
@@ -14,7 +20,9 @@ public class DroneShoot : MonoBehaviour
     private int linePoints = 64;
     private float timeBetweenPoints = 0.05f;
 
+    WeaponType weaponType;
     bool isPredictionActive = true;
+    
 
     private Rigidbody body;
     private void Awake()
@@ -28,6 +36,7 @@ public class DroneShoot : MonoBehaviour
         body = GetComponent<Rigidbody>();
 
         lineRenderer.positionCount = linePoints;
+        weaponType = WeaponType.RocketLauncher;
     }
 
     private void OnDestroy()
@@ -37,17 +46,44 @@ public class DroneShoot : MonoBehaviour
 
     private void Update()
     {
+        SelectWeapon();
+        switch(weaponType)
+        {
+            case WeaponType.RocketLauncher:
+            {
+                UpdateRocketLauncher();
+            } break;
+            case WeaponType.BlasterCannon:
+            {
+                UpdateBlasterCannon();
+            } break;
+        }
+
         if(Input.GetKeyDown(KeyCode.P))
         {
             isPredictionActive = !isPredictionActive;
             lineRenderer.enabled = isPredictionActive;
         }
+    }
 
+    public void SelectWeapon()
+    {
+        if(Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            weaponType = WeaponType.RocketLauncher;
+        }
+        if(Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            weaponType = WeaponType.BlasterCannon;
+        }
+    }
+
+    public void UpdateRocketLauncher()
+    {
         if(isPredictionActive)
         {
-            PredictProjectile();
+            PredictRocketLauncher();
         }
-
         if (Input.GetMouseButtonDown(0))
         {
             DroneBullet bullet = BulletSpawner.Instance.Spawn<DroneBullet>();
@@ -57,7 +93,22 @@ public class DroneShoot : MonoBehaviour
         }
     }
 
-    public void PredictProjectile()
+    public void UpdateBlasterCannon()
+    {
+        if(isPredictionActive)
+        {
+            PredictBlasterCannon();
+        }
+        if (Input.GetMouseButtonDown(0))
+        {
+            DroneSmallBullet bullet = BulletSpawner.Instance.Spawn<DroneSmallBullet>();
+            bullet.transform.position = gun.transform.position;
+            bullet.transform.rotation = Quaternion.LookRotation(transform.forward, transform.up);
+            StartCoroutine(SmallBulletUpdate(bullet));
+        }
+    }
+
+    public void PredictRocketLauncher()
     {
         Vector3 position = gun.transform.position;
         Vector3 velocity = playerData.BulletSpeed * transform.forward / BulletSpawner.Instance.GetBulletMass();
@@ -70,6 +121,19 @@ public class DroneShoot : MonoBehaviour
         {
             position += velocity * time + (acceleration * time * time);
             velocity += acceleration * time;
+            lineRenderer.SetPosition(i, position);
+        }
+    }
+
+    public void PredictBlasterCannon()
+    {
+        Vector3 position = gun.transform.position;
+        int i = 0;
+        lineRenderer.SetPosition(i, position);
+        float increment = playerData.ShootDistance / linePoints;
+        for(i = 1; i < linePoints; i++)
+        {
+            position += cam.transform.forward * increment;
             lineRenderer.SetPosition(i, position);
         }
     }
@@ -92,4 +156,23 @@ public class DroneShoot : MonoBehaviour
             BulletSpawner.Instance.Release(bullet);
         }
     }
+
+    private IEnumerator SmallBulletUpdate(DroneSmallBullet bullet)
+    {
+        Vector3 startPosition = bullet.transform.position;
+        Vector3 endPosition = cam.transform.position + cam.transform.forward * playerData.ShootDistance;
+        float t = 0.0f;
+        while (t <= 1.0f && bullet.isActiveAndEnabled)
+        {
+            bullet.transform.position = Vector3.Lerp(startPosition, endPosition, t);
+            yield return new WaitForEndOfFrame();
+            t += 100.0f*(Time.deltaTime/playerData.ShootDistance);
+        }
+
+        if (bullet.isActiveAndEnabled)
+        {
+            BulletSpawner.Instance.Release(bullet);
+        }
+    }
+
 }

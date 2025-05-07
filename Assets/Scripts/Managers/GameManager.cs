@@ -62,7 +62,7 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
     public void ResetGm()
     {
         fsm.Clear();
-        drone.Reset();
+        drone.ResetDrone();
         BulletSpawner.Instance.Clear<DroneBullet>();
         BulletSpawner.Instance.Clear<AlienBullet>();
         BulletSpawner.Instance.Clear<SmallBullet>();

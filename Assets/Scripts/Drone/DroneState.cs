@@ -22,7 +22,7 @@ public class DroneState : MonoBehaviour
         lastFrameVelocity = body.velocity;
     }
 
-    public void Reset()
+    public void ResetDrone()
     {
         life = playerData.MaxLife;
         EventManager.Instance.onTakeDamage.Invoke(life / playerData.MaxLife);

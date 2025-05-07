@@ -45,7 +45,7 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
         aliensKill = 0;
         EventManager.Instance.onAliensKilledChange.Invoke(aliensKill);
 
-        Reset();
+        ResetGm();
         for(int i = 0; i < data.citizenCount; ++i)
         {
             EntitySpawner.Instance.Spawn<Citizen>();
@@ -59,7 +59,7 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
         SetCountDownState();
     }
 
-    public void Reset()
+    public void ResetGm()
     {
         fsm.Clear();
         drone.Reset();

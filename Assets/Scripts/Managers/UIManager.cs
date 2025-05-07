@@ -107,7 +107,7 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
 
     private void OnMenuButtonClick()
     {
-        GameManager.Instance.Reset();
+        GameManager.Instance.ResetGm();
         Cursor.lockState = CursorLockMode.None;
         SceneManager.LoadScene("MainMenu");
     }

@@ -41,7 +41,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6806433366588902551}
   - component: {fileID: 3213858654103622194}
-  - component: {fileID: 4963504965501574811}
   - component: {fileID: 4579894452589999281}
   - component: {fileID: 8720513458875535393}
   - component: {fileID: 7498125792475983514}
@@ -86,25 +85,13 @@ MonoBehaviour:
   lifebar: {fileID: 7247072651168786177}
   frontImage: {fileID: 1929643083914927829}
   enemyData: {fileID: 11400000, guid: b4db2de574982a246bf60e9ad8da3f3a, type: 2}
+  hitLayer:
+    serializedVersion: 2
+    m_Bits: 1024
   assaultEnemyData: {fileID: 11400000, guid: 58f5a4ae69381c64ead4264aadfcf40a, type: 2}
   spawnPoints: {fileID: 6162444296803765524, guid: 2175856626fd32949a8f61b7b67b3580, type: 3}
   cannonLeft: {fileID: 4550522799586011089}
   cannonRight: {fileID: 3241380125607522791}
---- !u!114 &4963504965501574811
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2964277962021797794}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62fb2833e314f114b9f4f7b6425b4c88, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hitLayer:
-    serializedVersion: 2
-    m_Bits: 1024
 --- !u!114 &4579894452589999281
 MonoBehaviour:
   m_ObjectHideFlags: 0

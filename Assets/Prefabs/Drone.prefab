@@ -178,10 +178,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3288209660310731445}
+  - component: {fileID: 2065714602055130164}
   - component: {fileID: 3394589377212549065}
   - component: {fileID: 5064406766268866642}
   - component: {fileID: 5967584548522947803}
-  - component: {fileID: 3112525820893603368}
   - component: {fileID: -3337980280806594493}
   - component: {fileID: 4169080877152281110}
   - component: {fileID: 8684119742493116247}
@@ -210,6 +210,19 @@ Transform:
   - {fileID: 531933583524011819}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2065714602055130164
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9123519681762293765}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c923f575c2653304e98737fd26eef4da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerData: {fileID: 11400000, guid: 65d314145c96ea244a7889c6f12f0cbb, type: 2}
 --- !u!114 &3394589377212549065
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -253,23 +266,11 @@ MonoBehaviour:
   cam: {fileID: 0}
   enemyMask:
     serializedVersion: 2
-    m_Bits: 384
-  bulletPrefab: {fileID: 7973679299891028384, guid: 2298e1d651e637c4f8e6da1ec05bb53c, type: 3}
-  hitParticles: {fileID: 0}
+    m_Bits: 128
+  citizenMask:
+    serializedVersion: 2
+    m_Bits: 256
   gun: {fileID: 6446926419480522422}
---- !u!114 &3112525820893603368
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9123519681762293765}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c3fd455f34456f4991e940be28c1c30, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerData: {fileID: 11400000, guid: 65d314145c96ea244a7889c6f12f0cbb, type: 2}
 --- !u!114 &-3337980280806594493
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -288,6 +289,9 @@ MonoBehaviour:
   alienBulletLayer:
     serializedVersion: 2
     m_Bits: 2048
+  pickableLayer:
+    serializedVersion: 2
+    m_Bits: 12288
 --- !u!54 &4169080877152281110
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -431,7 +435,7 @@ LineRenderer:
     numCapVertices: 0
     alignment: 0
     textureMode: 0
-    textureScale: {x: 1, y: 1}
+    textureScale: {x: 2, y: 2}
     shadowBias: 0.5
     generateLightingData: 0
   m_MaskInteraction: 0

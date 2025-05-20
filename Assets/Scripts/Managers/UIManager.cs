@@ -49,7 +49,7 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
         GameManager.onScoreChange += OnScoreChange;
         GameManager.onCitizensKilledChange += OnCitizensKilledChange;
         GameManager.onAliensKilledChange += OnAliensKilledChange;
-        DroneState.onTakeDamage += OnTakeDamage;
+        Drone.onLifeChange += OnLifeChange;
 
         nextButton.onClick.AddListener(OnNextAndRestartButtonClick);
         restartButton.onClick.AddListener(OnNextAndRestartButtonClick);
@@ -73,7 +73,7 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
         GameManager.onScoreChange -= OnScoreChange;
         GameManager.onCitizensKilledChange -= OnCitizensKilledChange;
         GameManager.onAliensKilledChange -= OnAliensKilledChange;
-        DroneState.onTakeDamage -= OnTakeDamage;
+        Drone.onLifeChange -= OnLifeChange;
 
         nextButton.onClick.RemoveAllListeners();
         restartButton.onClick.RemoveAllListeners();
@@ -150,7 +150,7 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
         aliensKilled.text = "Aliens killed: " + value;
     }
 
-    private void OnTakeDamage(float fillAmoun)
+    private void OnLifeChange(float fillAmoun)
     {
         lifebar.fillAmount = fillAmoun;
     }

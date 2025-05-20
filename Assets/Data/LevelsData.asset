@@ -15,13 +15,17 @@ MonoBehaviour:
   levels:
   - citizenCount: 25
     alienPercentage: 0.2
-    alienShootRate: 1
+    assaultEnemyCount: 2
+    reconEnemyCount: 2
   - citizenCount: 50
     alienPercentage: 0.2
-    alienShootRate: 1
+    assaultEnemyCount: 4
+    reconEnemyCount: 4
   - citizenCount: 100
     alienPercentage: 0.2
-    alienShootRate: 1
+    assaultEnemyCount: 6
+    reconEnemyCount: 6
   - citizenCount: 200
     alienPercentage: 0.2
-    alienShootRate: 1
+    assaultEnemyCount: 8
+    reconEnemyCount: 8

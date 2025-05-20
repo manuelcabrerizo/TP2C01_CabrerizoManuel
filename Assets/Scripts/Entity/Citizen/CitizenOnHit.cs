@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class CitizenOnHit : MonoBehaviour
 {
-    public static event Action onAlienKill;
+    public static event Action<Vector3> onAlienKill;
     public static event Action onCitizenKill;
 
     [SerializeField] private CitizenData citizenData;
@@ -51,7 +51,7 @@ public class CitizenOnHit : MonoBehaviour
         {
             if(citizen.IsImpostor())
             {
-                onAlienKill?.Invoke();
+                onAlienKill?.Invoke(transform.position);
             }
             else
             {

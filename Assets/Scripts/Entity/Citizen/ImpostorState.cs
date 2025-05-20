@@ -36,20 +36,23 @@ public class ImpostorState : MonoBehaviour, IState
 
     public void OnUpdate(float dt)
     {
-        Vector3 toTarget = target.position - transform.position;
-        toTarget.y = 0;
-        toTarget.Normalize();
-        transform.rotation = Quaternion.LookRotation(toTarget, transform.up);
-        
-        if(shootTimer <= 0.0f)
+        if (target != null)
         {
-            AlienBullet bullet = BulletSpawner.Instance.Spawn<AlienBullet>();
-            bullet.transform.position = shoot.transform.position;
-            spawnedBullets.Add(bullet);
-            StartCoroutine(BulletUpdate(bullet));
-            shootTimer = timeToShoot;
+            Vector3 toTarget = target.position - transform.position;
+            toTarget.y = 0;
+            toTarget.Normalize();
+            transform.rotation = Quaternion.LookRotation(toTarget, transform.up);
+
+            if (shootTimer <= 0.0f)
+            {
+                AlienBullet bullet = BulletSpawner.Instance.Spawn<AlienBullet>();
+                bullet.transform.position = shoot.transform.position;
+                spawnedBullets.Add(bullet);
+                StartCoroutine(BulletUpdate(bullet));
+                shootTimer = timeToShoot;
+            }
+            shootTimer -= dt;
         }
-        shootTimer -= dt;
     }  
 
     public void OnFixedUpdate(float dt)

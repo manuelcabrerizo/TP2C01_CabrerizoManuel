@@ -1,9 +1,9 @@
 using System;
 using UnityEngine;
 
-public class DroneState : MonoBehaviour
+public class Drone : MonoBehaviour, IHelable
 {
-    public static event Action<float> onTakeDamage;
+    public static event Action<float> onLifeChange;
     public static event Action onPlayerKill;
 
     [SerializeField] private PlayerData playerData;
@@ -15,10 +15,17 @@ public class DroneState : MonoBehaviour
 
     private void Awake()
     {
+        Health.onHealPickup += Heal;
+
         body = GetComponent<Rigidbody>();
         life = playerData.MaxLife;
 
         lastFrameVelocity = body.velocity;
+    }
+
+    private void OnDestroy()
+    {
+        Health.onHealPickup -= Heal;
     }
 
     private void Update()
@@ -29,7 +36,7 @@ public class DroneState : MonoBehaviour
     public void ResetDrone()
     {
         life = playerData.MaxLife;
-        onTakeDamage?.Invoke(life / playerData.MaxLife);
+        onLifeChange?.Invoke(life / playerData.MaxLife);
         transform.position = playerData.SpawPosition;
         body.velocity = Vector3.zero;
     }
@@ -42,7 +49,7 @@ public class DroneState : MonoBehaviour
         {
             onPlayerKill?.Invoke();
         }
-        onTakeDamage?.Invoke(life / playerData.MaxLife);
+        onLifeChange?.Invoke(life / playerData.MaxLife);
     }
 
     public void TakeDamageBaseOnVelocity()
@@ -54,6 +61,12 @@ public class DroneState : MonoBehaviour
         {
             onPlayerKill?.Invoke();
         }
-        onTakeDamage?.Invoke(life / playerData.MaxLife);
+        onLifeChange?.Invoke(life / playerData.MaxLife);
+    }
+
+    public void Heal(int healAmount)
+    {
+        life = Mathf.Min(life + healAmount, playerData.MaxLife);
+        onLifeChange?.Invoke(life / playerData.MaxLife);
     }
 }

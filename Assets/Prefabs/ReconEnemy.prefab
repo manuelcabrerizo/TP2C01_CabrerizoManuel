@@ -263,7 +263,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8114356812848443857}
   - component: {fileID: 5314306075060291520}
-  - component: {fileID: 6880485453256247209}
   - component: {fileID: 4305846958812180852}
   - component: {fileID: 8238727738446359538}
   - component: {fileID: -2757938139462125902}
@@ -308,24 +307,12 @@ MonoBehaviour:
   lifebar: {fileID: 8718067447595614874}
   frontImage: {fileID: 1205932089181541125}
   enemyData: {fileID: 11400000, guid: b4db2de574982a246bf60e9ad8da3f3a, type: 2}
-  reconEnemyData: {fileID: 11400000, guid: f01410879e9bbde4f9cb985bca038872, type: 2}
-  movementGraph: {fileID: 4946348931718968220, guid: 715405f7a9a69744fb328be904f000fa, type: 3}
-  healRadio: 15
---- !u!114 &6880485453256247209
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6604204134933001178}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62fb2833e314f114b9f4f7b6425b4c88, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
   hitLayer:
     serializedVersion: 2
     m_Bits: 1024
+  reconEnemyData: {fileID: 11400000, guid: f01410879e9bbde4f9cb985bca038872, type: 2}
+  movementGraph: {fileID: 4946348931718968220, guid: 715405f7a9a69744fb328be904f000fa, type: 3}
+  healRadio: 15
 --- !u!114 &4305846958812180852
 MonoBehaviour:
   m_ObjectHideFlags: 0

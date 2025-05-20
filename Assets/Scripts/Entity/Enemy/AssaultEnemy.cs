@@ -1,9 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class AssaultEnemy : Enemy
 {
+    public static event Action<Vector3> onAssaultEnemyKill;
+
     [SerializeField] private AssaultEnemyData assaultEnemyData;
     [SerializeField] private SpawnPoints spawnPoints;
     [SerializeField] private Transform cannonLeft;
@@ -19,11 +22,18 @@ public class AssaultEnemy : Enemy
 
     protected override void OnAwaken() 
     {
+        DroneShoot.onEnemyDamage += OnDamage;
+
         body = GetComponent<Rigidbody>();
         arrive = new Arrive(body, null, 10, 20, 15, 40, 0.25f);
         face = new Face(body, null, 6.0f, 6.0f, Mathf.PI*0.1f, Mathf.PI*0.4f, 0.01f);
         spawnedBullets = new List<SmallBullet>();
         isTargetSet = false;
+    }
+
+    private void OnDestroy()
+    {
+        DroneShoot.onEnemyDamage -= OnDamage;
     }
 
     public override void OnGet()
@@ -77,6 +87,18 @@ public class AssaultEnemy : Enemy
             SteeringOutput faceSteering = face.GetSteering();
             body.AddForce(arriveSteering.linear, ForceMode.Acceleration);
             body.AddTorque(faceSteering.angular, ForceMode.Acceleration);
+        }
+    }
+
+
+
+    protected override void OnDamage(GameObject gameObject)
+    {
+        if (gameObject != this.gameObject) return;
+        base.OnDamage(gameObject);
+        if (life == 0)
+        {
+            onAssaultEnemyKill?.Invoke(transform.position);
         }
     }
 

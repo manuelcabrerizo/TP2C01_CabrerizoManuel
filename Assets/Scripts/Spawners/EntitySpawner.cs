@@ -28,15 +28,15 @@ public class EntitySpawner : Spawner<EntitySpawner, Entity>
         Entity test = null;
         if(test = entity as Citizen)
         {
-            PoolManager.Instance.Release<Citizen>((Citizen)entity);
+            PoolManager.Instance.Release((Citizen)entity);
         }
         else if(test = entity as AssaultEnemy)
         {
-            PoolManager.Instance.Release<AssaultEnemy>((AssaultEnemy)entity);
+            PoolManager.Instance.Release((AssaultEnemy)entity);
         }
         else if(test = entity as ReconEnemy)
         {
-            PoolManager.Instance.Release<ReconEnemy>((ReconEnemy)entity);
+            PoolManager.Instance.Release((ReconEnemy)entity);
         }
     }
 }

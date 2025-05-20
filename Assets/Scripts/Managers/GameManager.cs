@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -10,7 +11,9 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
     public static event Action<int> onCitizensKilledChange;
     public static event Action<int> onAliensKilledChange;
 
-    [SerializeField] private DroneState drone;
+    private LevelData levelData;
+
+    [SerializeField] private Drone drone;
     private Rigidbody droneBody;
     private DroneMovement droneMovement;
     private DroneShoot droneShoot;
@@ -22,8 +25,10 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
     private int aliensKill = 0;
 
     [SerializeField] private float timeToSpawnEnemies = 20.0f;
-    private List<AssaultEnemy> assaultEnemySpawned;
-    private List<ReconEnemy> reconEnemySpawned;
+    private float spawnAssaultEnemyTimer = 0;
+    private float spawnReconEnemyTimer = 0;
+    private int assaultEnemySpawnedCount = 0;
+    private int reconEnemySpawnedCount = 0;
 
     private StateMachine fsm;
     private CountDownState countDownState;
@@ -36,10 +41,13 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
         LevelManager.onStartNewGame += OnStartNewGame;
         UIManager.onNextOrResetButtonClick += SetCountDownState;
         UIManager.onMenuButtonClick += OnGoToMenu;
-        DroneState.onPlayerKill += OnPlayerKill;
+        Drone.onPlayerKill += OnPlayerKill;
         CitizenOnHit.onAlienKill += OnAlienKill;
         CitizenOnHit.onCitizenKill += OnCitizenKill;
         CountDownState.onCountDownEnd += SetPlayingState;
+        AssaultEnemy.onAssaultEnemyKill += OnAssaultEnemyKill;
+        ReconEnemy.onReconEnemyKill += OnReconEnemyKill;
+        Coin.onCoinPickup += OnCoinPickup;
     }
 
     protected override void OnDestroyed()
@@ -47,11 +55,13 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
         LevelManager.onStartNewGame -= OnStartNewGame;
         UIManager.onNextOrResetButtonClick -= SetCountDownState;
         UIManager.onMenuButtonClick -= OnGoToMenu;
-        DroneState.onPlayerKill -= OnPlayerKill;
+        Drone.onPlayerKill -= OnPlayerKill;
         CitizenOnHit.onAlienKill -= OnAlienKill;
         CitizenOnHit.onCitizenKill -= OnCitizenKill;
         CountDownState.onCountDownEnd -= SetPlayingState;
-
+        AssaultEnemy.onAssaultEnemyKill -= OnAssaultEnemyKill;
+        ReconEnemy.onReconEnemyKill -= OnReconEnemyKill;
+        Coin.onCoinPickup -= OnCoinPickup;
     }
 
     private void Start()
@@ -66,17 +76,42 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
         droneMovement = drone.GetComponent<DroneMovement>();
         droneShoot = drone.GetComponent<DroneShoot>();
 
-        assaultEnemySpawned = new List<AssaultEnemy>();
-        reconEnemySpawned = new List<ReconEnemy>();
+        assaultEnemySpawnedCount = 0;
+        reconEnemySpawnedCount = 0;
+        spawnAssaultEnemyTimer = timeToSpawnEnemies;
+        spawnReconEnemyTimer = timeToSpawnEnemies;
     }
 
     private void Update()
     {
         fsm.Update(Time.deltaTime);
+        if (assaultEnemySpawnedCount < levelData.assaultEnemyCount)
+        {
+            if (spawnAssaultEnemyTimer <= 0.0f)
+            {
+                AssaultEnemy enemy = EntitySpawner.Instance.Spawn<AssaultEnemy>();
+                enemy.SetTarget(droneBody);
+                assaultEnemySpawnedCount++;
+                spawnAssaultEnemyTimer = timeToSpawnEnemies;
+            }
+            
+            spawnAssaultEnemyTimer -= Time.deltaTime;
+        }
+        if (reconEnemySpawnedCount < levelData.reconEnemyCount)
+        {
+            if (spawnReconEnemyTimer <= 0.0f)
+            {
+                EntitySpawner.Instance.Spawn<ReconEnemy>();
+                reconEnemySpawnedCount++;   
+                spawnReconEnemyTimer = timeToSpawnEnemies;
+            }
+            spawnReconEnemyTimer -= Time.deltaTime;
+        }
     }
 
     private void OnStartNewGame(LevelData data)
     {
+        levelData = data;
         score = 0;
         onScoreChange?.Invoke(score);
         alienAlive = 0;
@@ -86,7 +121,9 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
         aliensKill = 0;
         onAliensKilledChange?.Invoke(aliensKill);
 
-        ResetGm();
+        ResetGame();
+
+        // Spawn all the citizen / aliens
         for(int i = 0; i < data.citizenCount; ++i)
         {
             Citizen citizen = EntitySpawner.Instance.Spawn<Citizen>();
@@ -99,25 +136,32 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
             }
         }
 
-        AssaultEnemy assaultEnemy0 = EntitySpawner.Instance.Spawn<AssaultEnemy>();
-        AssaultEnemy assaultEnemy1 = EntitySpawner.Instance.Spawn<AssaultEnemy>();
-        assaultEnemy0.SetTarget(droneBody);
-        assaultEnemy1.SetTarget(droneBody);
+        // Spawn all the assault enemies
+        for (int i = 0; i < data.assaultEnemyCount; ++i)
+        {
+            AssaultEnemy enemy = EntitySpawner.Instance.Spawn<AssaultEnemy>();
+            enemy.SetTarget(droneBody);
+            assaultEnemySpawnedCount++;
+        }
 
-        EntitySpawner.Instance.Spawn<ReconEnemy>();
-        EntitySpawner.Instance.Spawn<ReconEnemy>();
+        // Spawn all the recon enemies
+        for (int i = 0; i < data.reconEnemyCount; ++i)
+        {
+            EntitySpawner.Instance.Spawn<ReconEnemy>();
+            reconEnemySpawnedCount++;
+        }
 
         SetCountDownState();
     }
 
     private void OnGoToMenu()
     {
-        ResetGm();
+        ResetGame();
         Cursor.lockState = CursorLockMode.None;
         SceneManager.LoadScene("MainMenu");
     }
 
-    private void ResetGm()
+    private void ResetGame()
     {
         fsm.Clear();
         drone.ResetDrone();
@@ -128,6 +172,12 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
         EntitySpawner.Instance.Clear<Citizen>();
         EntitySpawner.Instance.Clear<AssaultEnemy>();
         EntitySpawner.Instance.Clear<ReconEnemy>();
+        PickableSpawner.Instance.Clear<Coin>();
+        PickableSpawner.Instance.Clear<Health>();
+        assaultEnemySpawnedCount = 0;
+        reconEnemySpawnedCount = 0;
+        spawnAssaultEnemyTimer = timeToSpawnEnemies;
+        spawnReconEnemyTimer = timeToSpawnEnemies;
     }
 
     private void SetCountDownState()
@@ -197,8 +247,15 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
         onCitizensKilledChange?.Invoke(citzensKill);
     }
 
-    private void OnAlienKill()
+    private void OnAlienKill(Vector3 position)
     {
+        int cointCount = UnityEngine.Random.Range(6, 12);
+        for (int i = 0; i < cointCount; ++i)
+        {
+            Coin coin = PickableSpawner.Instance.Spawn<Coin>();
+            coin.StartAnimation(position);
+        }
+
         alienAlive--;
         onAlienAliveChange?.Invoke(alienAlive);
 
@@ -210,5 +267,34 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
         {
             SetWinState();
         }
+    }
+
+    private void OnAssaultEnemyKill(Vector3 position)
+    {
+        int healthCount = UnityEngine.Random.Range(3, 6);
+        for (int i = 0; i < healthCount; ++i)
+        {
+            Health health = PickableSpawner.Instance.Spawn<Health>();
+            health.StartAnimation(position);
+        }
+
+        assaultEnemySpawnedCount--;
+    }
+
+    private void OnReconEnemyKill(Vector3 position)
+    {
+        int healthCount = UnityEngine.Random.Range(3, 6);
+        for (int i = 0; i < healthCount; ++i)
+        {
+            Health health = PickableSpawner.Instance.Spawn<Health>();
+            health.StartAnimation(position);
+        }
+
+        reconEnemySpawnedCount--;
+    }
+
+    private void OnCoinPickup()
+    {
+        AddToScore(1);
     }
 }

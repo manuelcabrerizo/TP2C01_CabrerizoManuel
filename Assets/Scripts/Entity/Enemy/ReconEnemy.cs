@@ -1,7 +1,9 @@
+using System;
 using UnityEngine;
 
 public class ReconEnemy : Enemy
 {
+    public static event Action<Vector3> onReconEnemyKill;
     [SerializeField] private ReconEnemyData reconEnemyData;
     [SerializeField] private MovementGraph movementGraph;
     private Rigidbody body;
@@ -14,13 +16,20 @@ public class ReconEnemy : Enemy
     private SteeringBehavior arrive;
     private SteeringBehavior face;
 
-    private void Awake()
+    protected override void OnAwaken()
     {
+        DroneShoot.onEnemyDamage += OnDamage;
+
         body = GetComponent<Rigidbody>();
         target = null;
         ps = GetComponent<ParticleSystem>();
         arrive = new Arrive(body, null, 10, 20, 5, 10, 0.25f);
         face = new Face(body, null, 2.0f, 4.0f, Mathf.PI*0.1f, Mathf.PI*0.4f, 0.01f);
+    }
+
+    private void OnDestroy()
+    {
+        DroneShoot.onEnemyDamage -= OnDamage;
     }
 
     public override void OnGet()
@@ -77,6 +86,16 @@ public class ReconEnemy : Enemy
             SteeringOutput steeringAngular = face.GetSteering();
             body.AddForce(steeringLinear.linear, ForceMode.Acceleration);
             body.AddTorque(steeringAngular.angular, ForceMode.Acceleration);
+        }
+    }
+
+    protected override void OnDamage(GameObject gameObject)
+    {
+        if (gameObject != this.gameObject) return;
+        base.OnDamage(gameObject);
+        if (life == 0)
+        {
+            onReconEnemyKill?.Invoke(transform.position);
         }
     }
 }

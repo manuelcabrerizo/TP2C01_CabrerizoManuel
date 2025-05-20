@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviourSingleton<GameManager>
 {
@@ -10,9 +11,10 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
     public static event Action<int> onAliensKilledChange;
 
     [SerializeField] private DroneState drone;
-    DroneMovement droneMovement;
-    DroneShoot droneShoot;
-    [SerializeField] CameraMovement cameraMovement;
+    private Rigidbody droneBody;
+    private DroneMovement droneMovement;
+    private DroneShoot droneShoot;
+    [SerializeField] private CameraMovement cameraMovement;
 
     private int score = 0;
     private int alienAlive = 0;
@@ -28,7 +30,30 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
     private PlayingState playingState;
     private GameOverState gameOverState;
     private WinState winState;
-    
+
+    protected override void OnAwaken()
+    {
+        LevelManager.onStartNewGame += OnStartNewGame;
+        UIManager.onNextOrResetButtonClick += SetCountDownState;
+        UIManager.onMenuButtonClick += OnGoToMenu;
+        DroneState.onPlayerKill += OnPlayerKill;
+        CitizenOnHit.onAlienKill += OnAlienKill;
+        CitizenOnHit.onCitizenKill += OnCitizenKill;
+        CountDownState.onCountDownEnd += SetPlayingState;
+    }
+
+    protected override void OnDestroyed()
+    {
+        LevelManager.onStartNewGame -= OnStartNewGame;
+        UIManager.onNextOrResetButtonClick -= SetCountDownState;
+        UIManager.onMenuButtonClick -= OnGoToMenu;
+        DroneState.onPlayerKill -= OnPlayerKill;
+        CitizenOnHit.onAlienKill -= OnAlienKill;
+        CitizenOnHit.onCitizenKill -= OnCitizenKill;
+        CountDownState.onCountDownEnd -= SetPlayingState;
+
+    }
+
     private void Start()
     {
         fsm = new StateMachine();
@@ -37,6 +62,7 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
         gameOverState = new GameOverState();
         winState = new WinState();
 
+        droneBody = drone.GetComponent<Rigidbody>();
         droneMovement = drone.GetComponent<DroneMovement>();
         droneShoot = drone.GetComponent<DroneShoot>();
 
@@ -44,12 +70,12 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
         reconEnemySpawned = new List<ReconEnemy>();
     }
 
-    public void Update()
+    private void Update()
     {
         fsm.Update(Time.deltaTime);
     }
 
-    public void StartNewGame(LevelData data)
+    private void OnStartNewGame(LevelData data)
     {
         score = 0;
         onScoreChange?.Invoke(score);
@@ -63,18 +89,35 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
         ResetGm();
         for(int i = 0; i < data.citizenCount; ++i)
         {
-            EntitySpawner.Instance.Spawn<Citizen>();
+            Citizen citizen = EntitySpawner.Instance.Spawn<Citizen>();
+            ImpostorState impostorState = citizen.GetComponent<ImpostorState>();
+            impostorState.SetTarget(drone.transform);
+            if(ShouldSpawnAlien())
+            {
+                citizen.MakeImpostor();
+                AlienHasSpawn();
+            }
         }
 
-        EntitySpawner.Instance.Spawn<AssaultEnemy>();
-        EntitySpawner.Instance.Spawn<AssaultEnemy>();
+        AssaultEnemy assaultEnemy0 = EntitySpawner.Instance.Spawn<AssaultEnemy>();
+        AssaultEnemy assaultEnemy1 = EntitySpawner.Instance.Spawn<AssaultEnemy>();
+        assaultEnemy0.SetTarget(droneBody);
+        assaultEnemy1.SetTarget(droneBody);
+
         EntitySpawner.Instance.Spawn<ReconEnemy>();
         EntitySpawner.Instance.Spawn<ReconEnemy>();
 
         SetCountDownState();
     }
 
-    public void ResetGm()
+    private void OnGoToMenu()
+    {
+        ResetGm();
+        Cursor.lockState = CursorLockMode.None;
+        SceneManager.LoadScene("MainMenu");
+    }
+
+    private void ResetGm()
     {
         fsm.Clear();
         drone.ResetDrone();
@@ -87,7 +130,7 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
         EntitySpawner.Instance.Clear<ReconEnemy>();
     }
 
-    public void SetCountDownState()
+    private void SetCountDownState()
     {
         droneMovement.enabled = false;
         droneShoot.enabled = false;
@@ -95,7 +138,7 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
         fsm.ChangeState(countDownState);
     }
 
-    public void SetPlayingState()
+    private void SetPlayingState()
     {
         droneMovement.enabled = true;
         droneShoot.enabled = true;
@@ -103,7 +146,7 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
         fsm.ChangeState(playingState);
     }
 
-    public void SetWinState()
+    private void SetWinState()
     {
         droneMovement.enabled = false;
         droneShoot.enabled = false;
@@ -111,7 +154,7 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
         fsm.ChangeState(winState);
     }
 
-    public void SetGameOverState()
+    private void SetGameOverState()
     {
         droneMovement.enabled = false;
         droneShoot.enabled = false;
@@ -119,13 +162,13 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
         fsm.ChangeState(gameOverState);
     }
 
-    public void AlienHasSpawn()
+    private void AlienHasSpawn()
     {
         alienAlive++;
         onAlienAliveChange?.Invoke(alienAlive);
     }
 
-    public bool ShouldSpawnAlien()
+    private bool ShouldSpawnAlien()
     {
         LevelData levelData = LevelManager.Instance.GetCurrentLevelData();
         int alienCount = (int)(levelData.citizenCount * levelData.alienPercentage);
@@ -142,19 +185,19 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
         onScoreChange?.Invoke(score);
     }
 
-    public void PlayerKill()
+    private void OnPlayerKill()
     {
         SetGameOverState();
     }
 
-    public void CitizenKill()
+    private void OnCitizenKill()
     {
         citzensKill++;
         AddToScore(-2);
         onCitizensKilledChange?.Invoke(citzensKill);
     }
 
-    public void AlienKill()
+    private void OnAlienKill()
     {
         alienAlive--;
         onAlienAliveChange?.Invoke(alienAlive);
@@ -167,15 +210,5 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
         {
             SetWinState();
         }
-    }
-
-    public Vector3 GetPlayerPosition()
-    {
-        return drone.transform.position;
-    }
-
-    public Rigidbody GetPlayerBody()
-    {
-        return drone.GetComponent<Rigidbody>();
     }
 }

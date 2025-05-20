@@ -4,6 +4,7 @@ using UnityEngine;
 public class DroneState : MonoBehaviour
 {
     public static event Action<float> onTakeDamage;
+    public static event Action onPlayerKill;
 
     [SerializeField] private PlayerData playerData;
     private float life;
@@ -39,7 +40,7 @@ public class DroneState : MonoBehaviour
         life -= damage;   
         if (life <= 0)
         {
-            GameManager.Instance.PlayerKill();
+            onPlayerKill?.Invoke();
         }
         onTakeDamage?.Invoke(life / playerData.MaxLife);
     }
@@ -51,7 +52,7 @@ public class DroneState : MonoBehaviour
         life -= damage;   
         if (life <= 0)
         {
-            GameManager.Instance.PlayerKill();
+            onPlayerKill?.Invoke();
         }
         onTakeDamage?.Invoke(life / playerData.MaxLife);
     }

@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class ImpostorState : MonoBehaviour, IState
 {
-    [SerializeField] private Transform target;
     [SerializeField] private Transform shoot;
+    private Transform target;
 
     private List<AlienBullet> spawnedBullets;
 
@@ -36,13 +36,11 @@ public class ImpostorState : MonoBehaviour, IState
 
     public void OnUpdate(float dt)
     {
-        Vector3 playerPosition = GameManager.Instance.GetPlayerPosition();
-        Vector3 toPlayer = playerPosition - transform.position;
-        toPlayer.y = 0;
-        toPlayer.Normalize();
-        transform.rotation = Quaternion.LookRotation(toPlayer, transform.up);
+        Vector3 toTarget = target.position - transform.position;
+        toTarget.y = 0;
+        toTarget.Normalize();
+        transform.rotation = Quaternion.LookRotation(toTarget, transform.up);
         
-        target.position = GameManager.Instance.GetPlayerPosition();
         if(shootTimer <= 0.0f)
         {
             AlienBullet bullet = BulletSpawner.Instance.Spawn<AlienBullet>();
@@ -62,7 +60,7 @@ public class ImpostorState : MonoBehaviour, IState
     private IEnumerator BulletUpdate(AlienBullet bullet)
     {
         Vector3 pos = shoot.transform.position;
-        Vector3 shootPosition = GameManager.Instance.GetPlayerPosition();;
+        Vector3 shootPosition = target.position;
         Vector3 shootDirection = (shootPosition - pos).normalized;
         Vector3 velocity  = shootDirection * 10.0f;
 
@@ -79,5 +77,10 @@ public class ImpostorState : MonoBehaviour, IState
             spawnedBullets.Remove(bullet);
             BulletSpawner.Instance.Release(bullet);
         }
+    }
+
+    public void SetTarget(Transform target)
+    {
+        this.target = target;
     }
 }

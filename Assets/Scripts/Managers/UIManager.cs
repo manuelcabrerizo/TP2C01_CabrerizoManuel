@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -5,6 +6,9 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviourSingleton<UIManager>
 {
+    public static event Action onNextOrResetButtonClick;
+    public static event Action onMenuButtonClick;
+
     [SerializeField] GameObject countDownUI;
     [SerializeField] GameObject playingUI;
 
@@ -118,14 +122,12 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
 
     private void OnNextAndRestartButtonClick()
     {
-        GameManager.Instance.SetCountDownState();
+        onNextOrResetButtonClick?.Invoke();
     }
 
     private void OnMenuButtonClick()
     {
-        GameManager.Instance.ResetGm();
-        Cursor.lockState = CursorLockMode.None;
-        SceneManager.LoadScene("MainMenu");
+        onMenuButtonClick?.Invoke();
     }
 
     private void OnAliensAliveChange(int value)

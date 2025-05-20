@@ -6,6 +6,7 @@ class CountDownState : IState
     public static event Action onShowCountDownUI;
     public static event Action onHideCountDownUI;
     public static event Action<int> onCountDownChange;
+    public static event Action onCountDownEnd;
 
     private float timer = 0;
     private int secondCount = 0;
@@ -43,7 +44,7 @@ class CountDownState : IState
 
         if(secondCount == timeToWait)
         {
-            GameManager.Instance.SetPlayingState();
+            onCountDownEnd?.Invoke();
         }
     }
 }

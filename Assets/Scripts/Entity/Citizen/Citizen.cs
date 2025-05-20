@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Citizen : Entity
@@ -57,7 +58,7 @@ public class Citizen : Entity
         female.SetActive(false);
         alien.SetActive(false);
         particles.Stop();
-        int type = Random.Range(0, 2);
+        int type = UnityEngine.Random.Range(0, 2);
         switch(type)
         {
             case 0:
@@ -73,22 +74,16 @@ public class Citizen : Entity
         }
         // set to start in a random node of the graph
         CurrentNode = movementGraph.GetRandomNode();
-        Vector2 offset = Random.insideUnitCircle * 3.0f;
+        Vector2 offset = UnityEngine.Random.insideUnitCircle * 3.0f;
         Vector3 position = CurrentNode.transform.position + new Vector3(offset.x, 0.0f, offset.y);
         position.y = 1.0f;
         transform.position = position;
         body.velocity = Vector3.zero;
         
-        // TODO: replace the GameManager.Instance by a static event Action
+        // TODO: replace the GameManager.Instance
         fsm.Clear();
-        fsm.PushState(states[Random.Range(0, states.Length)]);
-        impostor = GameManager.Instance.ShouldSpawnAlien();
+        fsm.PushState(states[UnityEngine.Random.Range(0, states.Length)]);
         detected = false;
-        if(impostor)
-        {
-            GameManager.Instance.AlienHasSpawn();
-            particles.Play();
-        }
         life = citizenData.MaxLife; 
     }
 
@@ -98,9 +93,15 @@ public class Citizen : Entity
         base.OnRelease();
     }
 
+    public void MakeImpostor()
+    {
+        impostor = true;
+        particles.Play();
+    }
+
     public void SetRandomState()
     {
-        fsm.ChangeState(states[Random.Range(0, states.Length)]);
+        fsm.ChangeState(states[UnityEngine.Random.Range(0, states.Length)]);
     }
 
     public void ConvertToAlien()

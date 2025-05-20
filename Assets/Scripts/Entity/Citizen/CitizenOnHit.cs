@@ -1,7 +1,11 @@
+using System;
 using UnityEngine;
 
 public class CitizenOnHit : MonoBehaviour
 {
+    public static event Action onAlienKill;
+    public static event Action onCitizenKill;
+
     [SerializeField] private CitizenData citizenData;
     [SerializeField] private LayerMask hitLayer;
 
@@ -47,11 +51,11 @@ public class CitizenOnHit : MonoBehaviour
         {
             if(citizen.IsImpostor())
             {
-                GameManager.Instance.AlienKill();
+                onAlienKill?.Invoke();
             }
             else
             {
-                GameManager.Instance.CitizenKill();
+                onCitizenKill?.Invoke();
             }
             citizen.SendReleaseEvent();
         }

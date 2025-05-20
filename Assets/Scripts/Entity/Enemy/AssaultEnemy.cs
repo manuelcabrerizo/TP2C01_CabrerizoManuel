@@ -8,12 +8,14 @@ public class AssaultEnemy : Enemy
     [SerializeField] private SpawnPoints spawnPoints;
     [SerializeField] private Transform cannonLeft;
     [SerializeField] private Transform cannonRight;
-    private Rigidbody body;
+    private Rigidbody body = null;
+    private Rigidbody target = null;
     private SteeringBehavior arrive;
     private SteeringBehavior face;
     private float timeToShoot = 2.0f;
     private float shootTimer = 0;
     private List<SmallBullet> spawnedBullets;
+    private bool isTargetSet = false;
 
     protected override void OnAwaken() 
     {
@@ -21,17 +23,14 @@ public class AssaultEnemy : Enemy
         arrive = new Arrive(body, null, 10, 20, 15, 40, 0.25f);
         face = new Face(body, null, 6.0f, 6.0f, Mathf.PI*0.1f, Mathf.PI*0.4f, 0.01f);
         spawnedBullets = new List<SmallBullet>();
+        isTargetSet = false;
     }
 
     public override void OnGet()
     {
         base.OnGet();
-        Rigidbody target = GameManager.Instance.GetPlayerBody();
-        arrive.SetTarget(target);
-        face.SetTarget(target);
         transform.position = spawnPoints.GetRandomPoint();
         shootTimer = timeToShoot;
-        
     }
 
     public override void OnRelease()
@@ -66,10 +65,19 @@ public class AssaultEnemy : Enemy
 
     private void FixedUpdate()
     {
-        SteeringOutput arriveSteering = arrive.GetSteering();
-        SteeringOutput faceSteering = face.GetSteering();
-        body.AddForce(arriveSteering.linear, ForceMode.Acceleration);
-        body.AddTorque(faceSteering.angular, ForceMode.Acceleration);
+        if (target != null)
+        {
+            if (!isTargetSet)
+            {
+                arrive.SetTarget(target);
+                face.SetTarget(target);
+                isTargetSet = true;
+            }
+            SteeringOutput arriveSteering = arrive.GetSteering();
+            SteeringOutput faceSteering = face.GetSteering();
+            body.AddForce(arriveSteering.linear, ForceMode.Acceleration);
+            body.AddTorque(faceSteering.angular, ForceMode.Acceleration);
+        }
     }
 
     private IEnumerator BulletUpdate(SmallBullet bullet)
@@ -89,4 +97,8 @@ public class AssaultEnemy : Enemy
         }
     }
 
+    public void SetTarget(Rigidbody target)
+    {
+        this.target = target;
+    }
 }

@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
@@ -13,15 +12,12 @@ public class MainMenu : MonoBehaviour
     {
         playButton.onClick.AddListener(OnPlayButtonClick);
         exitButton.onClick.AddListener(OnExitButtonClick);
+        GameSceneManager.onLoadingBarChange += OnLoadingBarChange;
     }
 
-    private void Start()
+    private void OnDestroy()
     {
-        EventManager.Instance.onLoadingBarChange.AddListener(OnLoadingBarChange);
-    }
-
-    private void Oestroy()
-    {
+        GameSceneManager.onLoadingBarChange -= OnLoadingBarChange;
         playButton.onClick.RemoveAllListeners();
         exitButton.onClick.RemoveAllListeners();        
     }

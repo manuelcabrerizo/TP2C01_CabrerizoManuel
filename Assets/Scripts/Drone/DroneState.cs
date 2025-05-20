@@ -1,7 +1,10 @@
+using System;
 using UnityEngine;
 
 public class DroneState : MonoBehaviour
 {
+    public static event Action<float> onTakeDamage;
+
     [SerializeField] private PlayerData playerData;
     private float life;
 
@@ -25,7 +28,7 @@ public class DroneState : MonoBehaviour
     public void ResetDrone()
     {
         life = playerData.MaxLife;
-        EventManager.Instance.onTakeDamage.Invoke(life / playerData.MaxLife);
+        onTakeDamage?.Invoke(life / playerData.MaxLife);
         transform.position = playerData.SpawPosition;
         body.velocity = Vector3.zero;
     }
@@ -38,7 +41,7 @@ public class DroneState : MonoBehaviour
         {
             GameManager.Instance.PlayerKill();
         }
-        EventManager.Instance.onTakeDamage.Invoke(life / playerData.MaxLife);
+        onTakeDamage?.Invoke(life / playerData.MaxLife);
     }
 
     public void TakeDamageBaseOnVelocity()
@@ -50,6 +53,6 @@ public class DroneState : MonoBehaviour
         {
             GameManager.Instance.PlayerKill();
         }
-        EventManager.Instance.onTakeDamage.Invoke(life / playerData.MaxLife);
+        onTakeDamage?.Invoke(life / playerData.MaxLife);
     }
 }

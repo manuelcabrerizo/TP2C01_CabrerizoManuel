@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 4472312906989893671}
   - component: {fileID: 292521728871422590}
   - component: {fileID: 5916032454005122440}
-  - component: {fileID: 4746573074149311830}
   m_Layer: 8
   m_Name: LifeBarCanvas
   m_TagString: Untagged
@@ -104,18 +103,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &4746573074149311830
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2067634949579290191}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 32652320ee28a574985cdc17d0725360, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &4352832761245979955
 GameObject:
   m_ObjectHideFlags: 0
@@ -281,6 +268,7 @@ GameObject:
   - component: {fileID: 4647913608017784132}
   - component: {fileID: 666924112840997681}
   - component: {fileID: 1524320758948297620}
+  - component: {fileID: 7136627963791033353}
   - component: {fileID: -504276804091325965}
   - component: {fileID: 3151204412271531699}
   - component: {fileID: 7963390706433656211}
@@ -323,10 +311,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dece153f6fd87854d87d6130ef0fb0e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lifebar: {fileID: 4472312906989893671}
   frontImage: {fileID: 7103103663961123280}
   citizenData: {fileID: 11400000, guid: 8058d5862a039dc40bab5b6462b191d6, type: 2}
   movementGraph: {fileID: 4946348931718968220, guid: 715405f7a9a69744fb328be904f000fa, type: 3}
-  lifebar: {fileID: 4472312906989893671}
   male: {fileID: 4049299956869066642}
   female: {fileID: 3979376337312507122}
   alien: {fileID: 8012120647895330395}
@@ -398,6 +386,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 5196504615863110670}
   shoot: {fileID: 987125638779567432}
+--- !u!114 &7136627963791033353
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8832563721834669827}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32652320ee28a574985cdc17d0725360, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lifebar: {fileID: 2067634949579290191}
+  offset: {x: 0, y: 2.5, z: 0}
 --- !u!136 &-504276804091325965
 CapsuleCollider:
   m_ObjectHideFlags: 0

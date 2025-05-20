@@ -10,8 +10,14 @@ public class CitizenOnHit : MonoBehaviour
     private void Awake()
     {
         citizen = GetComponent<Citizen>();
-        EventManager.Instance.onCitizenDamage.AddListener(OnCitizenDamage);
+        DroneShoot.onCitizenDamage += OnCitizenDamage;
     }
+
+    private void OnDestroy()
+    {
+        DroneShoot.onCitizenDamage -= OnCitizenDamage;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if(Utils.CheckCollisionLayer(other.gameObject, hitLayer))
@@ -47,7 +53,7 @@ public class CitizenOnHit : MonoBehaviour
             {
                 GameManager.Instance.CitizenKill();
             }
-            EventManager.Instance.onEntityRelease.Invoke(citizen);
+            citizen.SendReleaseEvent();
         }
     }
 }

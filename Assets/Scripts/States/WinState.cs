@@ -1,17 +1,21 @@
+using System;
 using UnityEngine;
 
 class WinState : IState
 {
+    public static event Action onWin;
+    public static event Action onShowWinUI;
+    public static event Action onHideWinUI;
     public void OnEnter()
     {
         Cursor.lockState = CursorLockMode.None;
-        EventManager.Instance.onShowWinUI.Invoke();
+        onShowWinUI?.Invoke();
     }
 
     public void OnExit()
     {
-        EventManager.Instance.onHideWinUI.Invoke();
-        EventManager.Instance.onWin.Invoke();
+        onHideWinUI?.Invoke();
+        onWin?.Invoke();
     }
 
     public void OnFixedUpdate(float dt)

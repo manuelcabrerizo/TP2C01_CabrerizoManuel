@@ -1,8 +1,11 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
 public abstract class Entity : MonoBehaviour, IPooleable, IDamagable, IHelable
 {
+    public static event Action<Entity> onEntityRelease;
+
     [SerializeField] private Canvas lifebar;
     [SerializeField] protected Image frontImage;
 
@@ -33,4 +36,9 @@ public abstract class Entity : MonoBehaviour, IPooleable, IDamagable, IHelable
     }
 
     public abstract void Heal(int healAmount);
+
+    public void SendReleaseEvent()
+    {
+        onEntityRelease?.Invoke(this);
+    }
 }

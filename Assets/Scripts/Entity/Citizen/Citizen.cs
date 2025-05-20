@@ -78,7 +78,8 @@ public class Citizen : Entity
         position.y = 1.0f;
         transform.position = position;
         body.velocity = Vector3.zero;
-        // if its an impostor make it an alien
+        
+        // TODO: replace the GameManager.Instance by a static event Action
         fsm.Clear();
         fsm.PushState(states[Random.Range(0, states.Length)]);
         impostor = GameManager.Instance.ShouldSpawnAlien();

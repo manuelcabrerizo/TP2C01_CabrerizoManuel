@@ -385,6 +385,7 @@ MonoBehaviour:
   dontDestroyOnLoad: 0
   drone: {fileID: 1722440420}
   cameraMovement: {fileID: 963194229}
+  timeToSpawnEnemies: 20
 --- !u!4 &221222390
 Transform:
   m_ObjectHideFlags: 0
@@ -398,7 +399,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1881861565}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &225741427
 GameObject:
@@ -1730,12 +1731,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 859200031}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1881861565}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &859200033
 MonoBehaviour:
@@ -2203,38 +2204,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1042592977}
   m_CullTransparentMesh: 1
---- !u!1 &1196899456
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1196899457}
-  m_Layer: 0
-  m_Name: UI
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1196899457
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1196899456}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1539287203}
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1205174130
 GameObject:
   m_ObjectHideFlags: 0
@@ -2800,7 +2769,7 @@ RectTransform:
   - {fileID: 363865864}
   - {fileID: 433151133}
   - {fileID: 1651359965}
-  m_Father: {fileID: 1196899457}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -3162,40 +3131,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1866379948}
   m_CullTransparentMesh: 1
---- !u!1 &1881861564
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1881861565}
-  m_Layer: 0
-  m_Name: Managers
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1881861565
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1881861564}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1979799651}
-  - {fileID: 221222390}
-  - {fileID: 859200032}
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1911491571
 GameObject:
   m_ObjectHideFlags: 0
@@ -3332,111 +3267,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1911491571}
   m_CullTransparentMesh: 1
---- !u!1 &1979799650
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1979799651}
-  - component: {fileID: 1979799652}
-  m_Layer: 0
-  m_Name: EventManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1979799651
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1979799650}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1881861565}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1979799652
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1979799650}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab29b3a322e80f74aa16b3ae57a3b6ec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dontDestroyOnLoad: 0
-  onEntityRelease:
-    m_PersistentCalls:
-      m_Calls: []
-  onAlienAliveChange:
-    m_PersistentCalls:
-      m_Calls: []
-  onScoreChange:
-    m_PersistentCalls:
-      m_Calls: []
-  onCitizensKilledChange:
-    m_PersistentCalls:
-      m_Calls: []
-  onAliensKilledChange:
-    m_PersistentCalls:
-      m_Calls: []
-  onTakeDamage:
-    m_PersistentCalls:
-      m_Calls: []
-  onWin:
-    m_PersistentCalls:
-      m_Calls: []
-  onGameOver:
-    m_PersistentCalls:
-      m_Calls: []
-  onShowCountDownUI:
-    m_PersistentCalls:
-      m_Calls: []
-  onHideCountDownUI:
-    m_PersistentCalls:
-      m_Calls: []
-  onShowPlayingUI:
-    m_PersistentCalls:
-      m_Calls: []
-  onHidePlayingUI:
-    m_PersistentCalls:
-      m_Calls: []
-  onShowWinUI:
-    m_PersistentCalls:
-      m_Calls: []
-  onHideWinUI:
-    m_PersistentCalls:
-      m_Calls: []
-  onShowGameOverUI:
-    m_PersistentCalls:
-      m_Calls: []
-  onHideGameOverUI:
-    m_PersistentCalls:
-      m_Calls: []
-  onCountDownChange:
-    m_PersistentCalls:
-      m_Calls: []
-  onLoadingBarChange:
-    m_PersistentCalls:
-      m_Calls: []
-  onEnemyDamage:
-    m_PersistentCalls:
-      m_Calls: []
-  onCitizenDamage:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &1987553400
 GameObject:
   m_ObjectHideFlags: 0
@@ -4149,8 +3979,9 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 455023598}
-  - {fileID: 1881861565}
-  - {fileID: 1196899457}
+  - {fileID: 221222390}
+  - {fileID: 859200032}
+  - {fileID: 1539287203}
   - {fileID: 137992663}
   - {fileID: 963194228}
   - {fileID: 137667062149814282}

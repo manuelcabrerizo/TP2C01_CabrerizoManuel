@@ -27,25 +27,25 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
     
     protected override void OnAwaken()
     {
-        EventManager.Instance.onShowCountDownUI.AddListener(OnShowCountDownUI);
-        EventManager.Instance.onHideCountDownUI.AddListener(OnHideCountDownUI);
-        EventManager.Instance.onShowPlayingUI.AddListener(OnShowPlayingUI);
-        EventManager.Instance.onHidePlayingUI.AddListener(OnHidePlayingUI);
-        EventManager.Instance.onShowWinUI.AddListener(OnShowWinUI);
-        EventManager.Instance.onHideWinUI.AddListener(OnHideWinUI);
-        EventManager.Instance.onShowGameOverUI.AddListener(OnShowGameOverUI);
-        EventManager.Instance.onHideGameOverUI.AddListener(OnHideGameOverUI);
-        EventManager.Instance.onCountDownChange.AddListener(OnCountDownChange);
+        CountDownState.onShowCountDownUI += OnShowCountDownUI;
+        CountDownState.onHideCountDownUI += OnHideCountDownUI;
+        CountDownState.onCountDownChange += OnCountDownChange;
+        PlayingState.onShowPlayingUI += OnShowPlayingUI;
+        PlayingState.onHidePlayingUI += OnHidePlayingUI;
+        WinState.onShowWinUI += OnShowWinUI;
+        WinState.onHideWinUI += OnHideWinUI;
+        GameOverState.onShowGameOverUI += OnShowGameOverUI;
+        GameOverState.onHideGameOverUI += OnHideGameOverUI;
 
         aliensAlive.text = "Aliens Alive: 0";
         score.text = "Score: 0";
         citizensKilled.text = "Citizens killed: 0";
         aliensKilled.text = "Aliens killed: 0";
-        EventManager.Instance.onAlienAliveChange.AddListener(OnAliensAliveChange);
-        EventManager.Instance.onScoreChange.AddListener(OnScoreChange);
-        EventManager.Instance.onCitizensKilledChange.AddListener(OnCitizensKilledChange);
-        EventManager.Instance.onAliensKilledChange.AddListener(OnAliensKilledChange);
-        EventManager.Instance.onTakeDamage.AddListener(OnTakeDamage);
+        GameManager.onAlienAliveChange += OnAliensAliveChange;
+        GameManager.onScoreChange += OnScoreChange;
+        GameManager.onCitizensKilledChange += OnCitizensKilledChange;
+        GameManager.onAliensKilledChange += OnAliensKilledChange;
+        DroneState.onTakeDamage += OnTakeDamage;
 
         nextButton.onClick.AddListener(OnNextAndRestartButtonClick);
         restartButton.onClick.AddListener(OnNextAndRestartButtonClick);
@@ -55,6 +55,22 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
 
     protected override void OnDestroyed()
     {
+        CountDownState.onShowCountDownUI -= OnShowCountDownUI;
+        CountDownState.onHideCountDownUI -= OnHideCountDownUI;
+        CountDownState.onCountDownChange -= OnCountDownChange;
+        PlayingState.onShowPlayingUI -= OnShowPlayingUI;
+        PlayingState.onHidePlayingUI -= OnHidePlayingUI;
+        WinState.onShowWinUI -= OnShowWinUI;
+        WinState.onHideWinUI -= OnHideWinUI;
+        GameOverState.onShowGameOverUI -= OnShowGameOverUI;
+        GameOverState.onHideGameOverUI -= OnHideGameOverUI;
+
+        GameManager.onAlienAliveChange -= OnAliensAliveChange;
+        GameManager.onScoreChange -= OnScoreChange;
+        GameManager.onCitizensKilledChange -= OnCitizensKilledChange;
+        GameManager.onAliensKilledChange -= OnAliensKilledChange;
+        DroneState.onTakeDamage -= OnTakeDamage;
+
         nextButton.onClick.RemoveAllListeners();
         restartButton.onClick.RemoveAllListeners();
         winMenuButton.onClick.RemoveAllListeners();

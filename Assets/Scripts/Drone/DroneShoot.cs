@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -9,6 +10,9 @@ public enum WeaponType
 
 public class DroneShoot : MonoBehaviour
 {
+    public static event Action<GameObject> onEnemyDamage;
+    public static event Action<GameObject> onCitizenDamage;
+
     [SerializeField] private PlayerData playerData;
     [SerializeField] private Camera cam;
     [SerializeField] private LayerMask enemyMask;
@@ -114,11 +118,11 @@ public class DroneShoot : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(cameraRay, out hit, playerData.ShootDistance, enemyMask))
             {
-                EventManager.Instance.onEnemyDamage.Invoke(hit.collider.gameObject);
+                onEnemyDamage?.Invoke(hit.collider.gameObject);
             }
             if (Physics.Raycast(cameraRay, out hit, playerData.ShootDistance, citizenMask))
             {
-                EventManager.Instance.onCitizenDamage.Invoke(hit.collider.gameObject);
+                onCitizenDamage?.Invoke(hit.collider.gameObject);
             }
         }
     }

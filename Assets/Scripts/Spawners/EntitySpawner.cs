@@ -15,7 +15,12 @@ public class EntitySpawner : Spawner<EntitySpawner, Entity>
         PoolManager.Instance.InitPool(citizenPrefab, transform, initialCitizenCount);
         PoolManager.Instance.InitPool(assaultEnemyPrefab, transform, initialAssaultEnemyCount);
         PoolManager.Instance.InitPool(reconEnemyPrefab, transform, initialReconEnemyCount);
-        EventManager.Instance.onEntityRelease.AddListener(OnEntityRelease);
+        Entity.onEntityRelease += OnEntityRelease;
+    }
+
+    protected override void OnDestroyed()
+    {
+        Entity.onEntityRelease -= OnEntityRelease;
     }
 
     private void OnEntityRelease(Entity entity)

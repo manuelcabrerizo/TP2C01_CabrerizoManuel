@@ -1,7 +1,12 @@
+using System;
 using UnityEngine;
 
 class CountDownState : IState
 {
+    public static event Action onShowCountDownUI;
+    public static event Action onHideCountDownUI;
+    public static event Action<int> onCountDownChange;
+
     private float timer = 0;
     private int secondCount = 0;
     private int timeToWait = 3;
@@ -9,8 +14,8 @@ class CountDownState : IState
     public void OnEnter()
     {
         Cursor.lockState = CursorLockMode.Locked;
-        EventManager.Instance.onShowCountDownUI.Invoke();
-        EventManager.Instance.onCountDownChange.Invoke(timeToWait);
+        onShowCountDownUI?.Invoke();
+        onCountDownChange?.Invoke(timeToWait);
         timer = 0;
         secondCount = 0;
     }
@@ -19,7 +24,7 @@ class CountDownState : IState
     {
         timer = 0;
         secondCount = 0;
-        EventManager.Instance.onHideCountDownUI.Invoke();
+        onHideCountDownUI?.Invoke();
     }
 
     public void OnFixedUpdate(float dt)
@@ -31,7 +36,7 @@ class CountDownState : IState
         if(timer >= 1.0f)
         {
             secondCount++;
-            EventManager.Instance.onCountDownChange.Invoke(timeToWait - secondCount);
+            onCountDownChange?.Invoke(timeToWait - secondCount);
             timer -= 1.0f;
         }
         timer += Time.deltaTime;

@@ -1,16 +1,19 @@
+using System;
 using UnityEngine;
 
 class PlayingState : IState
 {
+    public static event Action onShowPlayingUI;
+    public static event Action onHidePlayingUI;
     public void OnEnter()
     {
         Cursor.lockState = CursorLockMode.Locked;
-        EventManager.Instance.onShowPlayingUI.Invoke();
+        onShowPlayingUI?.Invoke();
     }
 
     public void OnExit()
     {
-        EventManager.Instance.onHidePlayingUI.Invoke();
+        onHidePlayingUI?.Invoke();
     }
 
     public void OnFixedUpdate(float dt)

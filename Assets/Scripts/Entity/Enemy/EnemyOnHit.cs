@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class EnemyOnHit : MonoBehaviour
@@ -9,7 +10,12 @@ public class EnemyOnHit : MonoBehaviour
     private void Awake()
     {
         enemy = GetComponent<Enemy>();
-        EventManager.Instance.onEnemyDamage.AddListener(OnEnemyDamage);
+        DroneShoot.onEnemyDamage += OnEnemyDamage;
+    }
+
+    private void OnDestroy()
+    {
+        DroneShoot.onEnemyDamage -= OnEnemyDamage;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -26,7 +32,7 @@ public class EnemyOnHit : MonoBehaviour
         enemy.TakeDamage(1, enemy.EnemyData.MaxLife);
         if(enemy.Life == 0)
         {
-            EventManager.Instance.onEntityRelease.Invoke(enemy);
+            enemy.SendReleaseEvent();
         }
     }
 }

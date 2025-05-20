@@ -1,9 +1,12 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameSceneManager : MonoBehaviourSingleton<GameSceneManager>
 {
+    public static event Action<float> onLoadingBarChange;
+
     [SerializeField] private float maxTime;
     private IEnumerator loadingScene = null;
 
@@ -26,7 +29,7 @@ public class GameSceneManager : MonoBehaviourSingleton<GameSceneManager>
         while(onTime < maxTime * 0.5f)
         {
             onTime += Time.deltaTime;
-            EventManager.Instance.onLoadingBarChange.Invoke(onTime/maxTime);
+            onLoadingBarChange?.Invoke(onTime/maxTime);
             yield return null;
         }
 
@@ -38,7 +41,7 @@ public class GameSceneManager : MonoBehaviourSingleton<GameSceneManager>
         while(onTime < maxTime)
         {
             onTime += Time.deltaTime;
-            EventManager.Instance.onLoadingBarChange.Invoke(onTime/maxTime);
+            onLoadingBarChange?.Invoke(onTime/maxTime);
             yield return null;
         }
 

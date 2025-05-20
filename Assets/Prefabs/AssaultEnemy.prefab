@@ -42,6 +42,7 @@ GameObject:
   - component: {fileID: 6806433366588902551}
   - component: {fileID: 3213858654103622194}
   - component: {fileID: 4963504965501574811}
+  - component: {fileID: 4579894452589999281}
   - component: {fileID: 8720513458875535393}
   - component: {fileID: 7498125792475983514}
   m_Layer: 7
@@ -104,6 +105,20 @@ MonoBehaviour:
   hitLayer:
     serializedVersion: 2
     m_Bits: 1024
+--- !u!114 &4579894452589999281
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2964277962021797794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32652320ee28a574985cdc17d0725360, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lifebar: {fileID: 3269646942207060994}
+  offset: {x: 0, y: 1.5, z: 0}
 --- !u!135 &8720513458875535393
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -164,7 +179,6 @@ GameObject:
   - component: {fileID: 7247072651168786177}
   - component: {fileID: 8492943110295819928}
   - component: {fileID: 1196135893647216511}
-  - component: {fileID: 1249479714747003850}
   m_Layer: 8
   m_Name: LifeBarCanvas
   m_TagString: Untagged
@@ -256,18 +270,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &1249479714747003850
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3269646942207060994}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 32652320ee28a574985cdc17d0725360, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &5166469559078971880
 GameObject:
   m_ObjectHideFlags: 0

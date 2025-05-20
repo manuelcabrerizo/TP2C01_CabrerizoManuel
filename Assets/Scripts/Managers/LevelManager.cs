@@ -8,9 +8,15 @@ public class LevelManager : MonoBehaviourSingleton<LevelManager>
 
     private void Start()
     {
-        EventManager.Instance.onWin.AddListener(OnWin);
-        EventManager.Instance.onGameOver.AddListener(OnGameOver);
+        WinState.onWin += OnWin;
+        GameOverState.onGameOver += OnGameOver;
         GameManager.Instance.StartNewGame(levelsData.levels[currentLevel]);
+    }
+
+    protected override void OnDestroyed()
+    {
+        WinState.onWin -= OnWin;
+        GameOverState.onGameOver -= OnGameOver;
     }
 
     private void OnWin()

@@ -1,6 +1,14 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
+
 public class GameManager : MonoBehaviourSingleton<GameManager>
-{    
+{
+    public static event Action<int> onAlienAliveChange;
+    public static event Action<int> onScoreChange;
+    public static event Action<int> onCitizensKilledChange;
+    public static event Action<int> onAliensKilledChange;
+
     [SerializeField] private DroneState drone;
     DroneMovement droneMovement;
     DroneShoot droneShoot;
@@ -10,6 +18,10 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
     private int alienAlive = 0;
     private int citzensKill = 0;
     private int aliensKill = 0;
+
+    [SerializeField] private float timeToSpawnEnemies = 20.0f;
+    private List<AssaultEnemy> assaultEnemySpawned;
+    private List<ReconEnemy> reconEnemySpawned;
 
     private StateMachine fsm;
     private CountDownState countDownState;
@@ -27,6 +39,9 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
 
         droneMovement = drone.GetComponent<DroneMovement>();
         droneShoot = drone.GetComponent<DroneShoot>();
+
+        assaultEnemySpawned = new List<AssaultEnemy>();
+        reconEnemySpawned = new List<ReconEnemy>();
     }
 
     public void Update()
@@ -37,13 +52,13 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
     public void StartNewGame(LevelData data)
     {
         score = 0;
-        EventManager.Instance.onScoreChange.Invoke(score);
+        onScoreChange?.Invoke(score);
         alienAlive = 0;
-        EventManager.Instance.onAlienAliveChange.Invoke(alienAlive);
+        onAlienAliveChange?.Invoke(alienAlive);
         citzensKill = 0;
-        EventManager.Instance.onCitizensKilledChange.Invoke(citzensKill);
+        onCitizensKilledChange?.Invoke(citzensKill);
         aliensKill = 0;
-        EventManager.Instance.onAliensKilledChange.Invoke(aliensKill);
+        onAliensKilledChange?.Invoke(aliensKill);
 
         ResetGm();
         for(int i = 0; i < data.citizenCount; ++i)
@@ -107,7 +122,7 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
     public void AlienHasSpawn()
     {
         alienAlive++;
-        EventManager.Instance.onAlienAliveChange.Invoke(alienAlive);
+        onAlienAliveChange?.Invoke(alienAlive);
     }
 
     public bool ShouldSpawnAlien()
@@ -124,7 +139,7 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
         {
             score = 0;
         }
-        EventManager.Instance.onScoreChange.Invoke(score);
+        onScoreChange?.Invoke(score);
     }
 
     public void PlayerKill()
@@ -136,17 +151,17 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
     {
         citzensKill++;
         AddToScore(-2);
-        EventManager.Instance.onCitizensKilledChange.Invoke(citzensKill);
+        onCitizensKilledChange?.Invoke(citzensKill);
     }
 
     public void AlienKill()
     {
         alienAlive--;
-        EventManager.Instance.onAlienAliveChange.Invoke(alienAlive);
+        onAlienAliveChange?.Invoke(alienAlive);
 
         aliensKill++;
         AddToScore(5);
-        EventManager.Instance.onAliensKilledChange.Invoke(aliensKill);
+        onAliensKilledChange?.Invoke(aliensKill);
 
         if(alienAlive == 0)
         {

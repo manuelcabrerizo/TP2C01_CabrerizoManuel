@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Threading;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -85,6 +83,7 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
     private void Update()
     {
         fsm.Update(Time.deltaTime);
+        // if there is space for a enemy, spawn one
         if (assaultEnemySpawnedCount < levelData.assaultEnemyCount)
         {
             if (spawnAssaultEnemyTimer <= 0.0f)
@@ -97,6 +96,7 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
             
             spawnAssaultEnemyTimer -= Time.deltaTime;
         }
+        // if there is space for a enemy, spawn one
         if (reconEnemySpawnedCount < levelData.reconEnemyCount)
         {
             if (spawnReconEnemyTimer <= 0.0f)

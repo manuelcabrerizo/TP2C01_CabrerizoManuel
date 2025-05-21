@@ -72,6 +72,7 @@ public class Citizen : Entity
                 animator = female.GetComponentInChildren<Animator>();
             }break;
         }
+
         // set to start in a random node of the graph
         CurrentNode = movementGraph.GetRandomNode();
         Vector2 offset = UnityEngine.Random.insideUnitCircle * 3.0f;
@@ -80,9 +81,9 @@ public class Citizen : Entity
         transform.position = position;
         body.velocity = Vector3.zero;
         
-        // TODO: replace the GameManager.Instance
         fsm.Clear();
         fsm.PushState(states[UnityEngine.Random.Range(0, states.Length)]);
+        impostor = false;
         detected = false;
         life = citizenData.MaxLife; 
     }

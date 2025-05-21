@@ -10,6 +10,11 @@ public class GameSceneManager : MonoBehaviourSingleton<GameSceneManager>
     [SerializeField] private float maxTime;
     private IEnumerator loadingScene = null;
 
+    private void Awake()
+    {
+        Application.targetFrameRate = 60;
+    }
+
     public void ChangeSceneTo(string sceneName)
     {
         if (loadingScene != null)

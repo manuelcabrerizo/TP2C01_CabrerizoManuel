@@ -29,16 +29,6 @@ public class CameraMovement : MonoBehaviour
     
     private void FollowTarget()
     {
-        /*
-	    if(Input.GetMouseButtonDown(0))
-	    {
-                Cursor.lockState = CursorLockMode.Locked;
-	    }
-	    if(Input.GetKeyDown(KeyCode.Escape))
-	    {
-                Cursor.lockState = CursorLockMode.None;
-	    }
-        */
         if(Input.GetKeyDown(KeyCode.Q))
 	    {
                 isFirstPerson = !isFirstPerson;

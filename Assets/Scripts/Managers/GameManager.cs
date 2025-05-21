@@ -8,11 +8,12 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
     public static event Action<int> onCitizensKilledChange;
     public static event Action<int> onAliensKilledChange;
 
+    [SerializeField] private CameraMovement cameraMovement;
     [SerializeField] private Drone drone;
     private Rigidbody droneBody;
     private DroneMovement droneMovement;
     private DroneShoot droneShoot;
-    [SerializeField] private CameraMovement cameraMovement;
+    private LineRenderer droneLineRenderer;
 
     private int score = 0;
     private int alienAlive = 0;
@@ -74,6 +75,7 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
         droneBody = drone.GetComponent<Rigidbody>();
         droneMovement = drone.GetComponent<DroneMovement>();
         droneShoot = drone.GetComponent<DroneShoot>();
+        droneLineRenderer = drone.GetComponent<LineRenderer>();
 
         assaultEnemySpawnedCount = 0;
         reconEnemySpawnedCount = 0;
@@ -218,6 +220,7 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
     {
         droneMovement.enabled = false;
         droneShoot.enabled = false;
+        droneLineRenderer.enabled = false;
         cameraMovement.enabled = true;
         fsm.ChangeState(countDownState);
     }
@@ -226,6 +229,7 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
     {
         droneMovement.enabled = true;
         droneShoot.enabled = true;
+        droneLineRenderer.enabled = true;
         cameraMovement.enabled = true;
         fsm.ChangeState(playingState);
     }
@@ -234,6 +238,7 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
     {
         droneMovement.enabled = false;
         droneShoot.enabled = false;
+        droneLineRenderer.enabled = false;
         cameraMovement.enabled = false;
         fsm.ChangeState(winState);
     }
@@ -242,6 +247,7 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
     {
         droneMovement.enabled = false;
         droneShoot.enabled = false;
+        droneLineRenderer.enabled = false;
         cameraMovement.enabled = false;
         fsm.ChangeState(gameOverState);
     }

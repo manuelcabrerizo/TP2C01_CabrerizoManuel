@@ -1,26 +1,30 @@
 using System;
 using UnityEngine;
 
-class PlayingState : IState
+class PlayingState : State
 {
     public static event Action onShowPlayingUI;
     public static event Action onHidePlayingUI;
-    public void OnEnter()
+
+    public PlayingState(GameManager gameManager) 
+        : base(gameManager) { }
+
+    public override void OnEnter()
     {
         Cursor.lockState = CursorLockMode.Locked;
         onShowPlayingUI?.Invoke();
     }
 
-    public void OnExit()
+    public override void OnExit()
     {
         onHidePlayingUI?.Invoke();
     }
 
-    public void OnFixedUpdate(float dt)
+    public override void OnUpdate()
     {
-    }
-
-    public void OnUpdate(float dt)
-    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            gameManager.PauseGame();
+        }
     }
 }

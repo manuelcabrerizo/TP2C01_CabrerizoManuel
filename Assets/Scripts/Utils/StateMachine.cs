@@ -10,6 +10,7 @@ public class StateMachine
 
     public IState PeekState()
     {
+        if (states.Count == 0) return null;
         return states.Peek();
     }
 
@@ -58,23 +59,23 @@ public class StateMachine
         }
     }
 
-    public void Update(float dt)
+    public void Update()
     {
         if(states.Count == 0) return;
         IState currentState = states.Peek();
         if (currentState != null)
         {
-            currentState.OnUpdate(dt);
+            currentState.OnUpdate();
         }
     }
 
-    public void FixedUpdate(float dt)
+    public void FixedUpdate()
     {
         if(states.Count == 0) return;
         IState currentState = states.Peek();
         if (currentState != null)
         {
-            currentState.OnFixedUpdate(dt);
+            currentState.OnFixedUpdate();
         }
     }
 }

@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class EntitySpawner : Spawner<EntitySpawner, Entity>
 {
-    // TODO: move this to a scriptable object
     [SerializeField] private Citizen citizenPrefab;
     [SerializeField] private AssaultEnemy assaultEnemyPrefab;
     [SerializeField] private ReconEnemy reconEnemyPrefab;

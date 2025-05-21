@@ -35,7 +35,7 @@ public class ImpostorState : MonoBehaviour, IState
         spawnedBullets.Clear();
     }
 
-    public void OnUpdate(float dt)
+    public void OnUpdate()
     {
         if (target != null)
         {
@@ -55,15 +55,14 @@ public class ImpostorState : MonoBehaviour, IState
                 StartCoroutine(BulletUpdate(bullet));
                 shootTimer = timeToShoot;
             }
-            shootTimer -= dt;
+            shootTimer -= Time.deltaTime;
         }
     }  
 
-    public void OnFixedUpdate(float dt)
+    public void OnFixedUpdate()
     {
     }  
     
-    // TODO: move this to AlienBullet class
     private IEnumerator BulletUpdate(AlienBullet bullet)
     {
         Vector3 pos = shoot.transform.position;

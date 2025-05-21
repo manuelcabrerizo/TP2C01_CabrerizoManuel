@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class BulletSpawner :  Spawner<BulletSpawner, Bullet>
 {
-    // TODO: move this to a scriptable object
     [SerializeField] private DroneBullet droneBulletPrefab;
     [SerializeField] private DroneSmallBullet droneSmallBullet;
     [SerializeField] private AlienBullet alienBulletPrefab;

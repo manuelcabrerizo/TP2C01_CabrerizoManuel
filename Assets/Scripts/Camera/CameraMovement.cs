@@ -29,6 +29,7 @@ public class CameraMovement : MonoBehaviour
     
     private void FollowTarget()
     {
+        /*
 	    if(Input.GetMouseButtonDown(0))
 	    {
                 Cursor.lockState = CursorLockMode.Locked;
@@ -37,6 +38,7 @@ public class CameraMovement : MonoBehaviour
 	    {
                 Cursor.lockState = CursorLockMode.None;
 	    }
+        */
         if(Input.GetKeyDown(KeyCode.Q))
 	    {
                 isFirstPerson = !isFirstPerson;
@@ -64,7 +66,6 @@ public class CameraMovement : MonoBehaviour
             }
             else
             {
-                // TODO: test if this realy help
                 if (Physics.Raycast(targetPosition, direction, out hitInfo, cameraData.MaxDistance, wallLayer))
                 {
                     cameraPosition = targetPosition + direction * hitInfo.distance;

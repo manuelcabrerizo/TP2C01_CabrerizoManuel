@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviourSingleton<GameManager>
 {
@@ -8,8 +7,6 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
     public static event Action<int> onScoreChange;
     public static event Action<int> onCitizensKilledChange;
     public static event Action<int> onAliensKilledChange;
-
-    private LevelData levelData;
 
     [SerializeField] private Drone drone;
     private Rigidbody droneBody;
@@ -31,14 +28,16 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
     private StateMachine fsm;
     private CountDownState countDownState;
     private PlayingState playingState;
+    private PauseState pauseState;
     private GameOverState gameOverState;
     private WinState winState;
 
     protected override void OnAwaken()
     {
         LevelManager.onStartNewGame += OnStartNewGame;
-        UIManager.onNextOrResetButtonClick += SetCountDownState;
+        UIManager.onNextOrResetButtonClick += RestartGame;
         UIManager.onMenuButtonClick += OnGoToMenu;
+        UIManager.onResumeButtonClick += ResumeGame;
         Drone.onPlayerKill += OnPlayerKill;
         CitizenOnHit.onAlienKill += OnAlienKill;
         CitizenOnHit.onCitizenKill += OnCitizenKill;
@@ -51,8 +50,9 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
     protected override void OnDestroyed()
     {
         LevelManager.onStartNewGame -= OnStartNewGame;
-        UIManager.onNextOrResetButtonClick -= SetCountDownState;
+        UIManager.onNextOrResetButtonClick -= RestartGame;
         UIManager.onMenuButtonClick -= OnGoToMenu;
+        UIManager.onResumeButtonClick -= ResumeGame;
         Drone.onPlayerKill -= OnPlayerKill;
         CitizenOnHit.onAlienKill -= OnAlienKill;
         CitizenOnHit.onCitizenKill -= OnCitizenKill;
@@ -65,10 +65,11 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
     private void Start()
     {
         fsm = new StateMachine();
-        countDownState = new CountDownState();
-        playingState = new PlayingState();
-        gameOverState = new GameOverState();
-        winState = new WinState();
+        countDownState = new CountDownState(this);
+        playingState = new PlayingState(this);
+        pauseState = new PauseState(this);
+        gameOverState = new GameOverState(this);
+        winState = new WinState(this);
 
         droneBody = drone.GetComponent<Rigidbody>();
         droneMovement = drone.GetComponent<DroneMovement>();
@@ -82,7 +83,8 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
 
     private void Update()
     {
-        fsm.Update(Time.deltaTime);
+        LevelData levelData = LevelManager.Instance.GetCurrentLevelData();
+        fsm.Update();
         // if there is space for a enemy, spawn one
         if (assaultEnemySpawnedCount < levelData.assaultEnemyCount)
         {
@@ -111,12 +113,6 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
 
     private void OnStartNewGame(LevelData data)
     {
-        if (droneBody == null)
-        {
-            int StopHere = 0;
-        }
-
-        levelData = data;
         score = 0;
         onScoreChange?.Invoke(score);
         alienAlive = 0;
@@ -163,7 +159,7 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
     {
         ResetGame();
         Cursor.lockState = CursorLockMode.None;
-        SceneManager.LoadScene("MainMenu");
+        GameSceneManager.Instance.ChangeSceneTo("MainMenu");
     }
 
     private void ResetGame()
@@ -183,6 +179,38 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
         reconEnemySpawnedCount = 0;
         spawnAssaultEnemyTimer = timeToSpawnEnemies;
         spawnReconEnemyTimer = timeToSpawnEnemies;
+    }
+
+    public void PauseGame()
+    {
+        if (fsm.PeekState() == playingState)
+        {
+            fsm.PushState(pauseState);
+        }
+        else if (fsm.PeekState() == pauseState)
+        {
+            fsm.PopState();
+        }
+    }
+
+    public void ResumeGame()
+    {
+        if (fsm.PeekState() == pauseState)
+        {
+            fsm.PopState();
+        }
+    }
+
+    public void RestartGame()
+    {
+        if (fsm.PeekState() == pauseState)
+        {
+            OnStartNewGame(LevelManager.Instance.GetCurrentLevelData());
+        }
+        else
+        {
+            SetCountDownState();
+        }
     }
 
     private void SetCountDownState()

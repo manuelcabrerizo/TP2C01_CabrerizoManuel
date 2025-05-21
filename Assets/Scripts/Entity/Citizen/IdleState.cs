@@ -23,11 +23,11 @@ public class IdleState : MonoBehaviour, IState
 
     }
 
-    public void OnUpdate(float dt)
+    public void OnUpdate()
     {
         if(timer > 0.0f)
         {
-            timer -= dt;
+            timer -= Time.deltaTime;
         }
         else
         {
@@ -35,7 +35,7 @@ public class IdleState : MonoBehaviour, IState
         }
     }
 
-    public void OnFixedUpdate(float dt)
+    public void OnFixedUpdate()
     {
     }
 }

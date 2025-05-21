@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-class CountDownState : IState
+class CountDownState : State
 {
     public static event Action onShowCountDownUI;
     public static event Action onHideCountDownUI;
@@ -12,7 +12,10 @@ class CountDownState : IState
     private int secondCount = 0;
     private int timeToWait = 3;
 
-    public void OnEnter()
+    public CountDownState(GameManager gameManager)
+        : base(gameManager) { }
+
+    public override void OnEnter()
     {
         Cursor.lockState = CursorLockMode.Locked;
         onShowCountDownUI?.Invoke();
@@ -21,18 +24,14 @@ class CountDownState : IState
         secondCount = 0;
     }
 
-    public void OnExit()
+    public override void OnExit()
     {
         timer = 0;
         secondCount = 0;
         onHideCountDownUI?.Invoke();
     }
 
-    public void OnFixedUpdate(float dt)
-    {
-    }
-
-    public void OnUpdate(float dt)
+    public override void OnUpdate()
     {
         if(timer >= 1.0f)
         {

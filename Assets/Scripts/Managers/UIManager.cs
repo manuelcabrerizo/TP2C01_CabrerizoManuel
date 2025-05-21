@@ -1,19 +1,20 @@
 using System;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviourSingleton<UIManager>
 {
     public static event Action onNextOrResetButtonClick;
     public static event Action onMenuButtonClick;
+    public static event Action onResumeButtonClick;
 
     [SerializeField] GameObject countDownUI;
     [SerializeField] GameObject playingUI;
-
     [SerializeField] GameObject winUI;
     [SerializeField] GameObject gameOverUI;
+    [SerializeField] GameObject pauseUI;
 
     [SerializeField] private TextMeshProUGUI aliensAlive;
     [SerializeField] private TextMeshProUGUI score;
@@ -24,11 +25,18 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
     [SerializeField] private Button nextButton;
     [SerializeField] private Button restartButton;
 
+    [SerializeField] private Button pauseResumeButton;
+    [SerializeField] private Button pauseResetButton;
+    [SerializeField] private Button pauseMenuButton;
+
     [SerializeField] private Button winMenuButton;
     [SerializeField] private Button gameOverMenuButton;
 
     [SerializeField] private TextMeshProUGUI countDownText;
-    
+
+    [SerializeField] private GameObject loadingBar;
+    [SerializeField] private Image lodingBarImage;
+
     protected override void OnAwaken()
     {
         CountDownState.onShowCountDownUI += OnShowCountDownUI;
@@ -40,6 +48,9 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
         WinState.onHideWinUI += OnHideWinUI;
         GameOverState.onShowGameOverUI += OnShowGameOverUI;
         GameOverState.onHideGameOverUI += OnHideGameOverUI;
+        PauseState.onShowPauseUI += OnShowPauseUI;
+        PauseState.onHidePuaseUI += OnHidePauseUI;
+        GameSceneManager.onLoadingBarChange += OnLoadingBarChange;
 
         aliensAlive.text = "Aliens Alive: 0";
         score.text = "Score: 0";
@@ -55,6 +66,11 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
         restartButton.onClick.AddListener(OnNextAndRestartButtonClick);
         winMenuButton.onClick.AddListener(OnMenuButtonClick);
         gameOverMenuButton.onClick.AddListener(OnMenuButtonClick);
+
+        pauseResumeButton.onClick.AddListener(OnPauseResumeButtonClick);
+        pauseResetButton.onClick.AddListener(OnNextAndRestartButtonClick);
+        pauseMenuButton.onClick.AddListener(OnMenuButtonClick);
+
     }
 
     protected override void OnDestroyed()
@@ -68,6 +84,9 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
         WinState.onHideWinUI -= OnHideWinUI;
         GameOverState.onShowGameOverUI -= OnShowGameOverUI;
         GameOverState.onHideGameOverUI -= OnHideGameOverUI;
+        PauseState.onShowPauseUI -= OnShowPauseUI;
+        PauseState.onHidePuaseUI -= OnHidePauseUI;
+        GameSceneManager.onLoadingBarChange -= OnLoadingBarChange;
 
         GameManager.onAlienAliveChange -= OnAliensAliveChange;
         GameManager.onScoreChange -= OnScoreChange;
@@ -79,6 +98,10 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
         restartButton.onClick.RemoveAllListeners();
         winMenuButton.onClick.RemoveAllListeners();
         gameOverMenuButton.onClick.RemoveAllListeners();
+
+        pauseResumeButton.onClick.RemoveAllListeners();
+        pauseResetButton.onClick.RemoveAllListeners();
+        pauseMenuButton.onClick.RemoveAllListeners();
     }
     private void OnShowCountDownUI()
     {
@@ -120,6 +143,16 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
         gameOverUI.SetActive(false);
     }
 
+    private void OnShowPauseUI()
+    {
+        pauseUI.SetActive(true);
+    }
+
+    private void OnHidePauseUI()
+    {
+        pauseUI.SetActive(false);
+    }
+
     private void OnNextAndRestartButtonClick()
     {
         onNextOrResetButtonClick?.Invoke();
@@ -127,7 +160,13 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
 
     private void OnMenuButtonClick()
     {
+        loadingBar.SetActive(true);
         onMenuButtonClick?.Invoke();
+    }
+
+    private void OnPauseResumeButtonClick()
+    {
+        onResumeButtonClick?.Invoke();
     }
 
     private void OnAliensAliveChange(int value)
@@ -158,5 +197,10 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
     private void OnCountDownChange(int countDown)
     {   
         countDownText.text = countDown.ToString();
+    }
+
+    private void OnLoadingBarChange(float value)
+    {
+        lodingBarImage.fillAmount = value;
     }
 }

@@ -24,11 +24,11 @@ public class WalkingState : MonoBehaviour, IState
         citizen.CurrentNode = citizen.TargetNode;
     }
 
-    public void OnUpdate(float dt)
+    public void OnUpdate()
     {
     }
 
-    public void OnFixedUpdate(float dt)
+    public void OnFixedUpdate()
     {
         Vector3 toTarget = target - transform.position;
         float distToTarget = toTarget.magnitude;

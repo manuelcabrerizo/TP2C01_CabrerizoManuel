@@ -43,12 +43,12 @@ public class Citizen : Entity
 
     private void Update()
     {
-        fsm.Update(Time.deltaTime);
+        fsm.Update();
     }
 
     private void FixedUpdate()
     {
-        fsm.FixedUpdate(Time.fixedDeltaTime);
+        fsm.FixedUpdate();
     }
 
     public override void OnGet()

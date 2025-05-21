@@ -51,7 +51,7 @@ public abstract class Pickable : MonoBehaviour, IPickable, IPooleable
     public void StartAnimation(Vector3 position)
     {
         Vector2 offset = UnityEngine.Random.insideUnitCircle;
-        Vector3 randomUpForce = (Vector3.up + new Vector3(offset.x, 0.0f, offset.y) * 0.25f).normalized * 10.0f;
+        Vector3 randomUpForce = (Vector3.up + new Vector3(offset.x, 0.0f, offset.y) * 0.25f).normalized * 15.0f;
         body.position = position;
         body.AddForce(randomUpForce, ForceMode.Impulse);
     }

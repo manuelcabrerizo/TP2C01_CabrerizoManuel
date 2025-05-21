@@ -111,6 +111,11 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
 
     private void OnStartNewGame(LevelData data)
     {
+        if (droneBody == null)
+        {
+            int StopHere = 0;
+        }
+
         levelData = data;
         score = 0;
         onScoreChange?.Invoke(score);

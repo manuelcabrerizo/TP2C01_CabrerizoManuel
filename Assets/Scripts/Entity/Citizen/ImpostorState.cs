@@ -5,6 +5,7 @@ using UnityEngine;
 public class ImpostorState : MonoBehaviour, IState
 {
     [SerializeField] private Transform shoot;
+    [SerializeField] private Transform gunTarget;
     private Transform target;
 
     private List<AlienBullet> spawnedBullets;
@@ -38,6 +39,9 @@ public class ImpostorState : MonoBehaviour, IState
     {
         if (target != null)
         {
+            // Update the target of the Animation rigging
+            gunTarget.position = target.position;
+
             Vector3 toTarget = target.position - transform.position;
             toTarget.y = 0;
             toTarget.Normalize();

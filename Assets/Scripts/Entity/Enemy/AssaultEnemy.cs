@@ -45,7 +45,8 @@ public class AssaultEnemy : Enemy
 
     public override void OnRelease()
     {
-        foreach(SmallBullet bullet in spawnedBullets)
+        isTargetSet = false;
+        foreach (SmallBullet bullet in spawnedBullets)
         {
             BulletSpawner.Instance.Release(bullet);
         }

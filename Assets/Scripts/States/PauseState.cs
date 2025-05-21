@@ -11,6 +11,7 @@ public class PauseState : State
 
     public override void OnEnter()
     {
+        AudioManager.Instance.Mute();
         Cursor.lockState = CursorLockMode.None;
         Time.timeScale = 0.0f;
         onShowPauseUI?.Invoke();
@@ -21,6 +22,7 @@ public class PauseState : State
         Cursor.lockState = CursorLockMode.Locked;
         Time.timeScale = 1.0f;
         onHidePuaseUI?.Invoke();
+        AudioManager.Instance.Unmute();
     }
 
     public override void OnUpdate()

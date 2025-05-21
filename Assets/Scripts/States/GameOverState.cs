@@ -12,6 +12,8 @@ class GameOverState : State
         : base(gameManager) { }
     public override void OnEnter()
     {
+        AudioManager.Instance.StopMusic();
+        AudioManager.Instance.Mute();
         Cursor.lockState = CursorLockMode.None;
         onShowGameOverUI?.Invoke();
     }

@@ -47,6 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 745d2a2af5a1b9546a94ae1281bb32e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  soundData: {fileID: 11400000, guid: 2d052fc72d1aaeb49aa60659e57a6964, type: 2}
   lifeTime: 20
 --- !u!135 &5422948886270816597
 SphereCollider:

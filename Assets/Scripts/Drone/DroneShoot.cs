@@ -90,6 +90,7 @@ public class DroneShoot : MonoBehaviour
         }
         if (Input.GetMouseButtonDown(0))
         {
+            AudioManager.Instance.PlayClip(AudioManager.Instance.soundData.playerProjectileSound, AudioSourceType.SFX);
             DroneBullet bullet = BulletSpawner.Instance.Spawn<DroneBullet>();
             bullet.transform.position = gun.transform.position;
             bullet.transform.rotation = Quaternion.LookRotation(transform.forward, transform.up);
@@ -105,6 +106,7 @@ public class DroneShoot : MonoBehaviour
         }
         if (Input.GetMouseButtonDown(0))
         {
+            AudioManager.Instance.PlayClip(AudioManager.Instance.soundData.playerLaserSound, AudioSourceType.SFX);
             DroneSmallBullet bullet = BulletSpawner.Instance.Spawn<DroneSmallBullet>();
             bullet.transform.position = gun.transform.position;
             bullet.transform.rotation = Quaternion.LookRotation(transform.forward, transform.up);

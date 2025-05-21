@@ -15,6 +15,11 @@ public class MainMenu : MonoBehaviour
         GameSceneManager.onLoadingBarChange += OnLoadingBarChange;
     }
 
+    private void Start()
+    {
+        AudioManager.Instance.Mute();
+    }
+
     private void OnDestroy()
     {
         GameSceneManager.onLoadingBarChange -= OnLoadingBarChange;

@@ -26,6 +26,7 @@ public abstract class Entity : MonoBehaviour, IPooleable, IDamagable, IHelable
 
     public void TakeDamage(int damage, int maxLife)
     {
+        AudioManager.Instance.PlayClip(AudioManager.Instance.soundData.entityHit, AudioSourceType.SFX);
         lifebar.gameObject.SetActive(true);
         life -= damage;
         if(life < 0)
@@ -39,6 +40,7 @@ public abstract class Entity : MonoBehaviour, IPooleable, IDamagable, IHelable
 
     public void SendReleaseEvent()
     {
+        AudioManager.Instance.PlayClip(AudioManager.Instance.soundData.enemyExplotion, AudioSourceType.SFX);
         onEntityRelease?.Invoke(this);
     }
 }

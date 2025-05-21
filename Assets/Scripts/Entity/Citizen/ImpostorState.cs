@@ -49,6 +49,7 @@ public class ImpostorState : MonoBehaviour, IState
 
             if (shootTimer <= 0.0f)
             {
+                AudioManager.Instance.PlayClip(AudioManager.Instance.soundData.alienProjectileSound, AudioSourceType.SFX);
                 AlienBullet bullet = BulletSpawner.Instance.Spawn<AlienBullet>();
                 bullet.transform.position = shoot.transform.position;
                 spawnedBullets.Add(bullet);

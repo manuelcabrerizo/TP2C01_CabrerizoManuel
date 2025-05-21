@@ -58,7 +58,7 @@ public class AssaultEnemy : Enemy
     {        
         if(shootTimer <= 0.0f)
         {
-            
+            AudioManager.Instance.PlayClip(AudioManager.Instance.soundData.droneLaserSound, AudioSourceType.SFX);
             SmallBullet leftBullet = BulletSpawner.Instance.Spawn<SmallBullet>();
             SmallBullet rightBullet = BulletSpawner.Instance.Spawn<SmallBullet>();
             leftBullet.transform.position = cannonLeft.position;

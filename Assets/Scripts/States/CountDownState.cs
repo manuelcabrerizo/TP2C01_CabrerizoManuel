@@ -17,6 +17,8 @@ class CountDownState : State
 
     public override void OnEnter()
     {
+        AudioManager.Instance.PlayMusic();
+        AudioManager.Instance.Unmute();
         Cursor.lockState = CursorLockMode.Locked;
         onShowCountDownUI?.Invoke();
         onCountDownChange?.Invoke(timeToWait);

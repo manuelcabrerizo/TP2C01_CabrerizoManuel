@@ -159,6 +159,7 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
     {
         ResetGame();
         Cursor.lockState = CursorLockMode.None;
+        AudioManager.Instance.Mute();
         GameSceneManager.Instance.ChangeSceneTo("MainMenu");
     }
 

@@ -13,6 +13,8 @@ class WinState : State
 
     public override void OnEnter()
     {
+        AudioManager.Instance.StopMusic();
+        AudioManager.Instance.Mute();
         Cursor.lockState = CursorLockMode.None;
         onShowWinUI?.Invoke();
     }

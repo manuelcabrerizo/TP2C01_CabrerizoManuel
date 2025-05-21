@@ -40,6 +40,7 @@ public abstract class Pickable : MonoBehaviour, IPickable, IPooleable
 
     public virtual void Pickup()
     {
+        AudioManager.Instance.PlayClip(AudioManager.Instance.soundData.pickableSound, AudioSourceType.SFX);
         SendReleaseEvent();
     }
 
@@ -61,7 +62,7 @@ public abstract class Pickable : MonoBehaviour, IPickable, IPooleable
         body.isKinematic = true;
         colision.isTrigger = true;
         Vector3 velocity = (position - transform.position);
-        body.position += velocity * (6.0f*Time.deltaTime);
+        body.position += velocity * (10.0f*Time.deltaTime);
     }
 
 }
